@@ -1,0 +1,32 @@
+# Python
+.venv/
+venv/
+src/*.egg-info/
+**/__pycache__/
+.pytest_cache/
+.python-version
+pyrightconfig.json
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+# Environment
+.env
+.env.local
+.env.example
+# IDE
+.DS_Store
+.vscode/
+.idea/
+# Speakeasy
+**/.speakeasy/temp/
+**/.speakeasy/logs/
+.speakeasy/reports
+# Testing examples (don't commit)
+load_env.sh
+restructure.sh
