@@ -1,0 +1,37 @@
+speakeasyVersion: 1.704.0
+sources:
+    DataServer API:
+        sourceNamespace: data-server-api
+        sourceRevisionDigest: sha256:f75758a7eac07123be1629bd738bc6748728b9164182dfa143905511a77cb8fd
+        sourceBlobDigest: sha256:d86d4587c90302a42aa3b52365fdfb5e42926d03e3be5c466145130f95cf11ea
+        tags:
+            - latest
+            - v1
+targets:
+    ttddata:
+        source: DataServer API
+        sourceNamespace: data-server-api
+        sourceRevisionDigest: sha256:f75758a7eac07123be1629bd738bc6748728b9164182dfa143905511a77cb8fd
+        sourceBlobDigest: sha256:d86d4587c90302a42aa3b52365fdfb5e42926d03e3be5c466145130f95cf11ea
+        codeSamplesNamespace: data-server-api-python-code-samples
+        codeSamplesRevisionDigest: sha256:d9735f5b092430f6cf726ff894fffa7d6fa1f97b290f10c22cd0dae26f8308c3
+workflow:
+    workflowVersion: 1.0.0
+    speakeasyVersion: latest
+    sources:
+        DataServer API:
+            inputs:
+                - location: https://usw-data.adsrvr.org/swagger/v1/swagger.json
+            output: .speakeasy/out.openapi.yaml
+            registry:
+                location: registry.speakeasyapi.dev/thetradedesk/data-api/data-server-api
+    targets:
+        ttddata:
+            target: python
+            source: DataServer API
+            codeSamples:
+                registry:
+                    location: registry.speakeasyapi.dev/thetradedesk/data-api/data-server-api-python-code-samples
+                labelOverride:
+                    fixedValue: Python (SDK)
+                blocking: false

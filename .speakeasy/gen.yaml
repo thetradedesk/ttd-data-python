@@ -1,0 +1,85 @@
+configVersion: 2.0.0
+generation:
+  devContainers:
+    enabled: true
+    schemaPath: .speakeasy/out.openapi.yaml
+  sdkClassName: DataAPI
+  maintainOpenAPIOrder: true
+  usageSnippets:
+    optionalPropertyRendering: withExample
+    sdkInitStyle: constructor
+  useClassNamesForArrayFields: true
+  fixes:
+    nameResolutionDec2023: true
+    nameResolutionFeb2025: true
+    parameterOrderingFeb2024: true
+    requestResponseComponentNamesFeb2024: true
+    securityFeb2025: true
+    sharedErrorComponentsApr2025: true
+    sharedNestedComponentsJan2026: true
+  auth:
+    oAuth2ClientCredentialsEnabled: true
+    oAuth2PasswordEnabled: true
+    hoistGlobalSecurity: true
+  inferSSEOverload: true
+  sdkHooksConfigAccess: true
+  schemas:
+    allOfMergeStrategy: shallowMerge
+  requestBodyFieldName: body
+  versioningStrategy: automatic
+  persistentEdits: {}
+  tests:
+    generateTests: false
+    generateNewTests: true
+    skipResponseBodyAssertions: false
+python:
+  version: 0.0.2
+  additionalDependencies:
+    dev: {}
+    main: {}
+  allowedRedefinedBuiltins:
+    - id
+    - object
+    - input
+  asyncMode: both
+  authors:
+    - Speakeasy
+  baseErrorName: DataAPIError
+  clientServerStatusCodesAsErrors: true
+  constFieldCasing: normal
+  defaultErrorName: APIError
+  description: Python Client SDK for TTD Data API.
+  enableCustomCodeRegions: false
+  enumFormat: union
+  envVarPrefix: TTD_DATA
+  fixFlags:
+    asyncPaginationSep2025: true
+    responseRequiredSep2024: true
+  flattenGlobalSecurity: true
+  flattenRequests: true
+  flatteningOrder: parameters-first
+  imports:
+    option: openapi
+    paths:
+      callbacks: ""
+      errors: errors
+      operations: ""
+      shared: ""
+      webhooks: ""
+  inferUnionDiscriminators: true
+  inputModelSuffix: input
+  license: Apache-2.0
+  maxMethodParams: 999
+  methodArguments: infer-optional-args
+  moduleName: ""
+  multipartArrayFormat: standard
+  outputModelSuffix: output
+  packageManager: uv
+  packageName: ttd-data
+  preApplyUnionDiscriminators: true
+  pytestFilterWarnings: []
+  pytestTimeout: 0
+  responseFormat: envelope-http
+  sseFlatResponse: false
+  templateVersion: v2
+  useAsyncHooks: false

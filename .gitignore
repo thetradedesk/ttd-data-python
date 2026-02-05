@@ -1,0 +1,50 @@
+# Python
+.venv/
+venv/
+src/*.egg-info/
+**/__pycache__/
+.pytest_cache/
+.python-version
+pyrightconfig.json
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Environment
+.env
+.env.local
+.env.example
+
+# IDE
+.DS_Store
+.vscode/
+.idea/
+
+# Speakeasy
+**/.speakeasy/temp/
+**/.speakeasy/logs/
+.speakeasy/reports
+
+# Local development workspace (don't commit)
+data-api-local/
+
+# Testing files (don't commit)
+test_local.py
+example_simple.py
+example_no_ssl_verify.py
+load_env.sh
+restructure.sh
+
+# Internal documentation (don't commit)
+TESTING.md
+QUICKSTART.md
+PRODUCTIONIZATION*.md
+COMPARISON.md
+RELEASE_CHECKLIST.md
+DIRECTORY_STRUCTURE.md
