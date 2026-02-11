@@ -5,7 +5,7 @@ from ttd_data import TTDData
 
 
 with TTDData(
-    server_url="https://api.example.com",
+    server_url="https://usw-data.adsrvr.org",
 ) as td_client:
 
     res = td_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
@@ -28,7 +28,7 @@ from ttd_data import TTDData
 async def main():
 
     async with TTDData(
-        server_url="https://api.example.com",
+        server_url="https://usw-data.adsrvr.org",
     ) as td_client:
 
         res = await td_client.advertiser.ingest_advertiser_data_async(advertiser_id="<id>")
