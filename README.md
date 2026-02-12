@@ -122,7 +122,7 @@ from ttd_data import TTDData
 
 
 with TTDData(
-    server_url="https://api.example.com",
+    server_url="https://usw-data.adsrvr.org",
 ) as td_client:
 
     res = td_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
@@ -145,7 +145,7 @@ from ttd_data import TTDData
 async def main():
 
     async with TTDData(
-        server_url="https://api.example.com",
+        server_url="https://usw-data.adsrvr.org",
     ) as td_client:
 
         res = await td_client.advertiser.ingest_advertiser_data_async(advertiser_id="<id>")
@@ -184,7 +184,7 @@ from ttd_data.utils import BackoffStrategy, RetryConfig
 
 
 with TTDData(
-    server_url="https://api.example.com",
+    server_url="https://usw-data.adsrvr.org",
 ) as td_client:
 
     res = td_client.advertiser.ingest_advertiser_data(advertiser_id="<id>",
@@ -204,7 +204,7 @@ from ttd_data.utils import BackoffStrategy, RetryConfig
 
 
 with TTDData(
-    server_url="https://api.example.com",
+    server_url="https://usw-data.adsrvr.org",
     retry_config=RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False),
 ) as td_client:
 
@@ -238,7 +238,7 @@ from ttd_data import TTDData, errors
 
 
 with TTDData(
-    server_url="https://api.example.com",
+    server_url="https://usw-data.adsrvr.org",
 ) as td_client:
     res = None
     try:
@@ -379,7 +379,7 @@ from ttd_data import TTDData
 def main():
 
     with TTDData(
-        server_url="https://api.example.com",
+        server_url="https://usw-data.adsrvr.org",
     ) as td_client:
         # Rest of application here...
 
@@ -388,7 +388,7 @@ def main():
 async def amain():
 
     async with TTDData(
-        server_url="https://api.example.com",
+        server_url="https://usw-data.adsrvr.org",
     ) as td_client:
         # Rest of application here...
 ```

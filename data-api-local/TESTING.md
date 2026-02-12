@@ -51,7 +51,7 @@ export TTD_AUTH_TOKEN="your-ttd-auth-token-here"
 | Variable | Description |
 |---|---|
 | `TTD_AUTH_TOKEN` | **(Required)** Your TTD authentication token |
-| `TTD_DATA_SERVER_URL` | API server URL (defaults to `https://api.example.com`) |
+| `TTD_DATA_SERVER_URL` | API server URL (defaults to `https://usw-data.adsrvr.org`) |
 | `TEST_ADVERTISER_ID` | Your advertiser ID (defaults to `test-advertiser-123`) |
 
 ### Optional Variables

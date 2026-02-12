@@ -33,9 +33,8 @@ from ttd_data.utils import BackoffStrategy, RetryConfig
 # ============================================================================
 
 # Set your test configuration here or via environment variables
-# NOTE: "https://api.example.com" is a placeholder - tests expecting real API
 # calls will skip or show expected network errors. Use a real URL to test API calls.
-SERVER_URL = os.getenv("TTD_DATA_SERVER_URL", "https://api.example.com")
+SERVER_URL = os.getenv("TTD_DATA_SERVER_URL", "https://usw-data.adsrvr.org")
 TTD_AUTH_TOKEN = os.getenv("TTD_AUTH_TOKEN", "")
 ADVERTISER_ID = os.getenv("TEST_ADVERTISER_ID", "test-advertiser-123")
 DATA_PROVIDER_ID = os.getenv("TEST_DATA_PROVIDER_ID", None)
