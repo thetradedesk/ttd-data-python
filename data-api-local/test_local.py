@@ -334,7 +334,7 @@ def test_error_handling():
                 if "nodename nor servname provided" in str(e) or "Name or service not known" in str(e):
                     print_success(f"Correctly caught network error (expected with placeholder URL)")
                     print_info(f"Error: {e}")
-                    print_info("This is normal when using 'api.example.com' as SERVER_URL")
+                    print_info("This is normal when using a placeholder SERVER_URL")
                     return True
                 raise
                 

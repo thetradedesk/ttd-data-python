@@ -18,7 +18,7 @@ from ttd_data import DataClient
 
 
 with DataClient(
-    server_url="https://api.example.com",
+    server_url="https://usw-data.adsrvr.org",
 ) as data_client:
 
     res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
