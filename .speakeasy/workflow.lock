@@ -1,0 +1,40 @@
+speakeasyVersion: 1.711.0
+sources:
+    Data API:
+        sourceNamespace: data-api
+        sourceRevisionDigest: sha256:dd47e4f55dba654da19061e046e9710f32e56a4aa70cc004f7977e3ce645d82b
+        sourceBlobDigest: sha256:4bdcb858fc88cd41f984c2aff9db0baa85ef0fd67d1380a40eaba3edca32f7f6
+        tags:
+            - latest
+            - v1
+targets:
+    data-api:
+        source: Data API
+        sourceNamespace: data-api
+        sourceRevisionDigest: sha256:dd47e4f55dba654da19061e046e9710f32e56a4aa70cc004f7977e3ce645d82b
+        sourceBlobDigest: sha256:4bdcb858fc88cd41f984c2aff9db0baa85ef0fd67d1380a40eaba3edca32f7f6
+        codeSamplesNamespace: data-api-python-code-samples
+        codeSamplesRevisionDigest: sha256:11f3902e67da21a495b1a1bb0262cac8be626f2126ac514282318183cd92cdd4
+workflow:
+    workflowVersion: 1.0.0
+    speakeasyVersion: latest
+    sources:
+        Data API:
+            inputs:
+                - location: https://usw-data.adsrvr.org/swagger/v1/swagger.json
+            output: .speakeasy/out.openapi.yaml
+            registry:
+                location: registry.speakeasyapi.dev/thetradedesk/data-api/data-api
+    targets:
+        data-api:
+            target: python
+            source: Data API
+            publish:
+                pypi:
+                    token: $pypi_token
+            codeSamples:
+                registry:
+                    location: registry.speakeasyapi.dev/thetradedesk/data-api/data-api-python-code-samples
+                labelOverride:
+                    fixedValue: Python (SDK)
+                blocking: false

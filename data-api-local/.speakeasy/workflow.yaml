@@ -1,0 +1,18 @@
+workflowVersion: 1.0.0
+speakeasyVersion: latest
+sources:
+    Data API Local:
+        inputs:
+            - location: https://usw-data.adsrvr.org/swagger/v1/swagger.json
+        registry:
+            location: registry.speakeasyapi.dev/thetradedesk/data-api/data-api-local
+targets:
+    data-api-local:
+        target: python
+        source: Data API Local
+        codeSamples:
+            registry:
+                location: registry.speakeasyapi.dev/thetradedesk/data-api/data-api-local-python-code-samples
+            labelOverride:
+                fixedValue: Python (SDK)
+            blocking: false

@@ -1,0 +1,44 @@
+src/*.egg-info/
+**/.speakeasy/temp/
+**/.speakeasy/logs/
+.speakeasy/reports
+# Python
+.venv/
+venv/
+*.egg-info/
+**/__pycache__/
+.pytest_cache/
+.python-version
+pyrightconfig.json
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.so
+*.egg
+# Locally generated SDK files (DO NOT COMMIT)
+src/
+dist/
+build/
+pyproject.toml
+# Speakeasy-generated files (DO NOT COMMIT)
+.devcontainer/
+docs/
+scripts/
+CONTRIBUTING.md
+USAGE.md
+py.typed
+pylintrc
+.gitattributes
+.speakeasy/gen.lock
+.speakeasy/out.openapi.yaml
+# Environment
+.env
+.env.local
+# IDE
+.DS_Store
+.vscode/
+.idea/
+# Speakeasy temp files
+.speakeasy/temp/
+.speakeasy/logs/
