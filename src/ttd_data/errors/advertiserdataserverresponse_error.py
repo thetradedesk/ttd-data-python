@@ -4,7 +4,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 import httpx
 import pydantic
-from ttd_data.errors import TTDDataError
+from ttd_data.errors import DataError
 from ttd_data.models import (
     advertiserdataserverresponseline as models_advertiserdataserverresponseline,
     httpmetadata as models_httpmetadata,
@@ -29,7 +29,7 @@ class AdvertiserDataServerResponseErrorData(BaseModel):
 
 
 @dataclass(unsafe_hash=True)
-class AdvertiserDataServerResponseError(TTDDataError):
+class AdvertiserDataServerResponseError(DataError):
     data: AdvertiserDataServerResponseErrorData = field(hash=False)
 
     def __init__(

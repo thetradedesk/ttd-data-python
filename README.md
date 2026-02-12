@@ -88,9 +88,9 @@ It's also possible to write a standalone Python script without needing to set up
 # ]
 # ///
 
-from ttd_data import TTDData
+from ttd_data import DataClient
 
-sdk = TTDData(
+sdk = DataClient(
   # SDK arguments
 )
 
@@ -118,14 +118,14 @@ Generally, the SDK will work well with most IDEs out of the box. However, when u
 
 ```python
 # Synchronous Example
-from ttd_data import TTDData
+from ttd_data import DataClient
 
 
-with TTDData(
-    server_url="https://usw-data.adsrvr.org",
-) as td_client:
+with DataClient(
+    server_url="https://api.example.com",
+) as data_client:
 
-    res = td_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
+    res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
 
     assert res.advertiser_data_server_response is not None
 
@@ -140,15 +140,15 @@ The same SDK client can also be used to make asynchronous requests by importing 
 ```python
 # Asynchronous Example
 import asyncio
-from ttd_data import TTDData
+from ttd_data import DataClient
 
 async def main():
 
-    async with TTDData(
-        server_url="https://usw-data.adsrvr.org",
-    ) as td_client:
+    async with DataClient(
+        server_url="https://api.example.com",
+    ) as data_client:
 
-        res = await td_client.advertiser.ingest_advertiser_data_async(advertiser_id="<id>")
+        res = await data_client.advertiser.ingest_advertiser_data_async(advertiser_id="<id>")
 
         assert res.advertiser_data_server_response is not None
 
@@ -179,15 +179,15 @@ Some of the endpoints in this SDK support retries. If you use the SDK without an
 
 To change the default retry strategy for a single API call, simply provide a `RetryConfig` object to the call:
 ```python
-from ttd_data import TTDData
+from ttd_data import DataClient
 from ttd_data.utils import BackoffStrategy, RetryConfig
 
 
-with TTDData(
-    server_url="https://usw-data.adsrvr.org",
-) as td_client:
+with DataClient(
+    server_url="https://api.example.com",
+) as data_client:
 
-    res = td_client.advertiser.ingest_advertiser_data(advertiser_id="<id>",
+    res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>",
         RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
 
     assert res.advertiser_data_server_response is not None
@@ -199,16 +199,16 @@ with TTDData(
 
 If you'd like to override the default retry strategy for all operations that support retries, you can use the `retry_config` optional parameter when initializing the SDK:
 ```python
-from ttd_data import TTDData
+from ttd_data import DataClient
 from ttd_data.utils import BackoffStrategy, RetryConfig
 
 
-with TTDData(
-    server_url="https://usw-data.adsrvr.org",
+with DataClient(
+    server_url="https://api.example.com",
     retry_config=RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False),
-) as td_client:
+) as data_client:
 
-    res = td_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
+    res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
 
     assert res.advertiser_data_server_response is not None
 
@@ -221,7 +221,7 @@ with TTDData(
 <!-- Start Error Handling [errors] -->
 ## Error Handling
 
-[`TTDDataError`](./src/ttd_data/errors/ttddataerror.py) is the base class for all HTTP error responses. It has the following properties:
+[`DataError`](./src/ttd_data/errors/dataerror.py) is the base class for all HTTP error responses. It has the following properties:
 
 | Property           | Type             | Description                                                                             |
 | ------------------ | ---------------- | --------------------------------------------------------------------------------------- |
@@ -234,16 +234,16 @@ with TTDData(
 
 ### Example
 ```python
-from ttd_data import TTDData, errors
+from ttd_data import DataClient, errors
 
 
-with TTDData(
-    server_url="https://usw-data.adsrvr.org",
-) as td_client:
+with DataClient(
+    server_url="https://api.example.com",
+) as data_client:
     res = None
     try:
 
-        res = td_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
+        res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
 
         assert res.advertiser_data_server_response is not None
 
@@ -251,7 +251,7 @@ with TTDData(
         print(res.advertiser_data_server_response)
 
 
-    except errors.TTDDataError as e:
+    except errors.DataError as e:
         # The base class for HTTP error responses
         print(e.message)
         print(e.status_code)
@@ -267,7 +267,7 @@ with TTDData(
 
 ### Error Classes
 **Primary errors:**
-* [`TTDDataError`](./src/ttd_data/errors/ttddataerror.py): The base class for HTTP error responses.
+* [`DataError`](./src/ttd_data/errors/dataerror.py): The base class for HTTP error responses.
   * [`AdvertiserDataServerResponseError`](./src/ttd_data/errors/advertiserdataserverresponseerror.py): Success.
 
 <details><summary>Less common errors (5)</summary>
@@ -280,7 +280,7 @@ with TTDData(
     * [`httpx.TimeoutException`](https://www.python-httpx.org/exceptions/#httpx.TimeoutException): HTTP request timed out.
 
 
-**Inherit from [`TTDDataError`](./src/ttd_data/errors/ttddataerror.py)**:
+**Inherit from [`DataError`](./src/ttd_data/errors/dataerror.py)**:
 * [`ResponseValidationError`](./src/ttd_data/errors/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
 
 </details>
@@ -295,16 +295,16 @@ This allows you to wrap the client with your own custom logic, such as adding cu
 
 For example, you could specify a header for every request that this sdk makes as follows:
 ```python
-from ttd_data import TTDData
+from ttd_data import DataClient
 import httpx
 
 http_client = httpx.Client(headers={"x-custom-header": "someValue"})
-s = TTDData(client=http_client)
+s = DataClient(client=http_client)
 ```
 
 or you could wrap the client with your own custom logic:
 ```python
-from ttd_data import TTDData
+from ttd_data import DataClient
 from ttd_data.httpclient import AsyncHttpClient
 import httpx
 
@@ -363,33 +363,33 @@ class CustomClient(AsyncHttpClient):
             extensions=extensions,
         )
 
-s = TTDData(async_client=CustomClient(httpx.AsyncClient()))
+s = DataClient(async_client=CustomClient(httpx.AsyncClient()))
 ```
 <!-- End Custom HTTP Client [http-client] -->
 
 <!-- Start Resource Management [resource-management] -->
 ## Resource Management
 
-The `TTDData` class implements the context manager protocol and registers a finalizer function to close the underlying sync and async HTTPX clients it uses under the hood. This will close HTTP connections, release memory and free up other resources held by the SDK. In short-lived Python programs and notebooks that make a few SDK method calls, resource management may not be a concern. However, in longer-lived programs, it is beneficial to create a single SDK instance via a [context manager][context-manager] and reuse it across the application.
+The `DataClient` class implements the context manager protocol and registers a finalizer function to close the underlying sync and async HTTPX clients it uses under the hood. This will close HTTP connections, release memory and free up other resources held by the SDK. In short-lived Python programs and notebooks that make a few SDK method calls, resource management may not be a concern. However, in longer-lived programs, it is beneficial to create a single SDK instance via a [context manager][context-manager] and reuse it across the application.
 
 [context-manager]: https://docs.python.org/3/reference/datamodel.html#context-managers
 
 ```python
-from ttd_data import TTDData
+from ttd_data import DataClient
 def main():
 
-    with TTDData(
-        server_url="https://usw-data.adsrvr.org",
-    ) as td_client:
+    with DataClient(
+        server_url="https://api.example.com",
+    ) as data_client:
         # Rest of application here...
 
 
 # Or when using async:
 async def amain():
 
-    async with TTDData(
-        server_url="https://usw-data.adsrvr.org",
-    ) as td_client:
+    async with DataClient(
+        server_url="https://api.example.com",
+    ) as data_client:
         # Rest of application here...
 ```
 <!-- End Resource Management [resource-management] -->
@@ -401,11 +401,11 @@ You can setup your SDK to emit debug logs for SDK requests and responses.
 
 You can pass your own logger class directly into your SDK.
 ```python
-from ttd_data import TTDData
+from ttd_data import DataClient
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
-s = TTDData(server_url="https://example.com", debug_logger=logging.getLogger("ttd_data"))
+s = DataClient(server_url="https://example.com", debug_logger=logging.getLogger("ttd_data"))
 ```
 
 You can also enable a default debug logger by setting an environment variable `TTD_DATA_DEBUG` to true.

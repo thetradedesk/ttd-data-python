@@ -3,7 +3,7 @@ generation:
   devContainers:
     enabled: true
     schemaPath: .speakeasy/swagger.json
-  sdkClassName: TTDData
+  sdkClassName: DataClient
   maintainOpenAPIOrder: true
   usageSnippets:
     optionalPropertyRendering: withExample
@@ -44,7 +44,7 @@ python:
   asyncMode: both
   authors:
     - Speakeasy
-  baseErrorName: TTDDataError
+  baseErrorName: DataError
   clientServerStatusCodesAsErrors: true
   constFieldCasing: normal
   defaultErrorName: APIError

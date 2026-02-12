@@ -1,16 +1,9 @@
-speakeasyVersion: 1.710.0
+speakeasyVersion: 1.711.0
 sources:
     Data API:
         sourceNamespace: data-api
         sourceRevisionDigest: sha256:dd47e4f55dba654da19061e046e9710f32e56a4aa70cc004f7977e3ce645d82b
         sourceBlobDigest: sha256:4bdcb858fc88cd41f984c2aff9db0baa85ef0fd67d1380a40eaba3edca32f7f6
-        tags:
-            - latest
-            - v1
-    Data API Local:
-        sourceNamespace: data-api-local
-        sourceRevisionDigest: sha256:5d71cb5e8191a9ceb68418e28ef410119442e20c853de84424cc7a86960bfab5
-        sourceBlobDigest: sha256:44289561ebc06a29f5a71b45d93d9f1143c0cecab4b1bc112ab93b1814dc3561
         tags:
             - latest
             - v1
@@ -21,30 +14,27 @@ targets:
         sourceRevisionDigest: sha256:dd47e4f55dba654da19061e046e9710f32e56a4aa70cc004f7977e3ce645d82b
         sourceBlobDigest: sha256:4bdcb858fc88cd41f984c2aff9db0baa85ef0fd67d1380a40eaba3edca32f7f6
         codeSamplesNamespace: data-api-python-code-samples
-        codeSamplesRevisionDigest: sha256:bdad130da30ccc2e25af549d31e8475b33a869f1367777a4290947390c2e385a
-    data-api-local:
-        source: Data API Local
-        sourceNamespace: data-api-local
-        sourceRevisionDigest: sha256:5d71cb5e8191a9ceb68418e28ef410119442e20c853de84424cc7a86960bfab5
-        sourceBlobDigest: sha256:44289561ebc06a29f5a71b45d93d9f1143c0cecab4b1bc112ab93b1814dc3561
-        codeSamplesNamespace: data-api-local-python-code-samples
-        codeSamplesRevisionDigest: sha256:f02cfa27be4b67502ca2f6f11084f62aeb4ed5dc2807bb013f7c1e29339d65a2
+        codeSamplesRevisionDigest: sha256:11f3902e67da21a495b1a1bb0262cac8be626f2126ac514282318183cd92cdd4
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
     sources:
-        Data API Local:
+        Data API:
             inputs:
                 - location: https://usw-data.adsrvr.org/swagger/v1/swagger.json
+            output: .speakeasy/out.openapi.yaml
             registry:
-                location: registry.speakeasyapi.dev/thetradedesk/data-api/data-api-local
+                location: registry.speakeasyapi.dev/thetradedesk/data-api/data-api
     targets:
-        data-api-local:
+        data-api:
             target: python
-            source: Data API Local
+            source: Data API
+            publish:
+                pypi:
+                    token: $pypi_token
             codeSamples:
                 registry:
-                    location: registry.speakeasyapi.dev/thetradedesk/data-api/data-api-local-python-code-samples
+                    location: registry.speakeasyapi.dev/thetradedesk/data-api/data-api-python-code-samples
                 labelOverride:
                     fixedValue: Python (SDK)
                 blocking: false

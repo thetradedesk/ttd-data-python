@@ -4,11 +4,11 @@ import httpx
 from typing import Optional
 from dataclasses import dataclass
 
-from ttd_data.errors import TTDDataError
+from ttd_data.errors import DataError
 
 
 @dataclass(unsafe_hash=True)
-class ResponseValidationError(TTDDataError):
+class ResponseValidationError(DataError):
     """Error raised when there is a type mismatch between the response data and the expected Pydantic model."""
 
     def __init__(

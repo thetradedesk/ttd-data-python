@@ -1,14 +1,14 @@
 <!-- Start SDK Example Usage [usage] -->
 ```python
 # Synchronous Example
-from ttd_data import TTDData
+from ttd_data import DataClient
 
 
-with TTDData(
-    server_url="https://usw-data.adsrvr.org",
-) as td_client:
+with DataClient(
+    server_url="https://api.example.com",
+) as data_client:
 
-    res = td_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
+    res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
 
     assert res.advertiser_data_server_response is not None
 
@@ -23,15 +23,15 @@ The same SDK client can also be used to make asynchronous requests by importing 
 ```python
 # Asynchronous Example
 import asyncio
-from ttd_data import TTDData
+from ttd_data import DataClient
 
 async def main():
 
-    async with TTDData(
-        server_url="https://usw-data.adsrvr.org",
-    ) as td_client:
+    async with DataClient(
+        server_url="https://api.example.com",
+    ) as data_client:
 
-        res = await td_client.advertiser.ingest_advertiser_data_async(advertiser_id="<id>")
+        res = await data_client.advertiser.ingest_advertiser_data_async(advertiser_id="<id>")
 
         assert res.advertiser_data_server_response is not None
 

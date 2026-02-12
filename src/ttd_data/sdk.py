@@ -17,7 +17,7 @@ if TYPE_CHECKING:
     from ttd_data.advertiser import Advertiser
 
 
-class TTDData(BaseSDK):
+class DataClient(BaseSDK):
     advertiser: "Advertiser"
     _sub_sdk_map = {
         "advertiser": ("ttd_data.advertiser", "Advertiser"),

@@ -24,7 +24,7 @@ except ImportError:
 
 # Import the locally generated SDK
 # Note: The module is named 'ttd_data' as configured in the workflow
-from ttd_data import TTDData, models, errors
+from ttd_data import DataClient, models, errors
 from ttd_data.utils import BackoffStrategy, RetryConfig
 
 
@@ -82,7 +82,7 @@ def test_sdk_initialization():
     print_section("Test 1: SDK Initialization")
     
     try:
-        with TTDData(server_url=SERVER_URL) as client:
+        with DataClient(server_url=SERVER_URL) as client:
             print_success("SDK initialized successfully")
             print_info(f"Server URL: {SERVER_URL}")
             print_info(f"SDK has advertiser attribute: {hasattr(client, 'advertiser')}")
@@ -106,7 +106,7 @@ def test_basic_data_ingestion():
         return False
     
     try:
-        with TTDData(server_url=SERVER_URL) as client:
+        with DataClient(server_url=SERVER_URL) as client:
             # Create a simple data item using sample TDID
             data_item = models.AdvertiserDataItem(
                 tdid=SAMPLE_TDID,
@@ -168,7 +168,7 @@ def test_advanced_data_ingestion():
         return False
     
     try:
-        with TTDData(server_url=SERVER_URL) as client:
+        with DataClient(server_url=SERVER_URL) as client:
             # Create a comprehensive data item with all fields using sample DAID
             data_item = models.AdvertiserDataItem(
                 daid=SAMPLE_DAID,
@@ -248,7 +248,7 @@ def test_multiple_user_ids():
         return False
     
     try:
-        with TTDData(server_url=SERVER_URL) as client:
+        with DataClient(server_url=SERVER_URL) as client:
             # Test with different ID types using sample IDs
             test_items = [
                 models.AdvertiserDataItem(
@@ -308,7 +308,7 @@ def test_error_handling():
     print_section("Test 5: Error Handling")
     
     try:
-        with TTDData(server_url=SERVER_URL) as client:
+        with DataClient(server_url=SERVER_URL) as client:
             # Try to ingest without authentication (should fail)
             print_info("Testing error handling with missing authentication...")
             
@@ -325,7 +325,7 @@ def test_error_handling():
                 print_error("Expected authentication error but succeeded")
                 return False
                 
-            except errors.TTDDataError as e:
+            except errors.DataError as e:
                 print_success(f"Correctly caught TTD API error: {e.message}")
                 print_info(f"Status code: {e.status_code}")
                 return True
@@ -364,7 +364,7 @@ def test_retry_configuration():
             retry_connection_errors=True
         )
         
-        with TTDData(
+        with DataClient(
             server_url=SERVER_URL,
             retry_config=retry_config
         ) as client:
@@ -393,7 +393,7 @@ async def test_async_operations():
     try:
         import asyncio
         
-        async with TTDData(server_url=SERVER_URL) as client:
+        async with DataClient(server_url=SERVER_URL) as client:
             data_item = models.AdvertiserDataItem(
                 tdid=SAMPLE_TDID,
                 data=[models.AdvertiserData(name="async_segment")]
