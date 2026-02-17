@@ -17,9 +17,7 @@ Upload first-party data for the specified ID for use in audience targeting.
 from ttd_data import DataClient
 
 
-with DataClient(
-    server_url="https://api.example.com",
-) as data_client:
+with DataClient() as data_client:
 
     res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
 

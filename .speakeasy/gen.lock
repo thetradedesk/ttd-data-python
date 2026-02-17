@@ -1,19 +1,19 @@
 lockVersion: 2.0.0
 id: 1927f304-b110-462d-9e13-326cfa243f23
 management:
-  docChecksum: c7e35bb7243143a43bc037d80256d9d9
+  docChecksum: 49ddbb9ff52156d98710d5dbda57fb4c
   docVersion: v1
   speakeasyVersion: 1.722.0
   generationVersion: 2.829.1
-  releaseVersion: 0.0.2
-  configChecksum: 6c2d4c47ea4a601317028fddd6d830e4
+  releaseVersion: 0.0.3
+  configChecksum: 910134ba8bb293312cd2184511b5b53f
   repoURL: https://github.com/thetradedesk/ttd-data-python.git
   installationURL: https://github.com/thetradedesk/ttd-data-python.git
   published: true
 persistentEdits:
-  generation_id: 676a1624-feaa-41e8-969c-55c378a9feee
-  pristine_commit_hash: 97eb4bedfb8336eeca69bc95927efa47f0391524
-  pristine_tree_hash: 317ddc033d5b74e4d1943795f0f7ce0f222dcd71
+  generation_id: b0671a7b-deab-4a26-a7b0-56864b2bbf04
+  pristine_commit_hash: 49564dfd32d3db39ba8ebf625405329a0ae1f236
+  pristine_tree_hash: d6725b92e0f99d499f0d7d0c0da950198a97475f
 features:
   python:
     additionalDependencies: 1.0.0
@@ -54,8 +54,8 @@ trackedFiles:
     pristine_git_object: 8d79f0abb72526f1fb34a4c03e5bba612c6ba2ae
   USAGE.md:
     id: 3aed33ce6e6f
-    last_write_checksum: sha1:1e6f1017a784f9b7a13ef3a5637521df665fd199
-    pristine_git_object: da7107ee22fc30c109620a8f283c641354b08db4
+    last_write_checksum: sha1:abcd01a0b153defc53708b6115152bcd0dcd9445
+    pristine_git_object: 85c63afd966abe16d6c49bd7d1dd14ff47bfcb95
   docs/errors/advertiserdataserverresponseerror.md:
     id: 6995891cb1b0
     last_write_checksum: sha1:efb0f825612b14c3f84ddcd57b80a6b4f76b4c41
@@ -102,8 +102,8 @@ trackedFiles:
     pristine_git_object: 69dd549ec7f5f885101d08dd502e25748183aebf
   docs/sdks/advertiser/README.md:
     id: 099f9b8a0a2d
-    last_write_checksum: sha1:5b0c58b39ab713f31f237c82489722b2f729bead
-    pristine_git_object: 1176cfa8c6a88686ed79de11e13022ebee589c55
+    last_write_checksum: sha1:2776d0b8f9ba4380a8c05957c0d78c55e4c153e9
+    pristine_git_object: 2d26eaed1fd4c3c39fc28066acf44e7572c0cdde
   py.typed:
     id: 258c3ed47ae4
     last_write_checksum: sha1:8efc425ffe830805ffcc0f3055871bdcdc542c60
@@ -114,8 +114,8 @@ trackedFiles:
     pristine_git_object: 42430b45b2d5dbeaebed8f5dc8eaa49a68f28b9e
   pyproject.toml:
     id: 5d07e7d72637
-    last_write_checksum: sha1:7ecfa70b2a649d985139a4d0097e10f8127c88d9
-    pristine_git_object: dea6303535e5d189c5f2364be4eb58c82610e0fd
+    last_write_checksum: sha1:235a6b262f8dab740fb8e1e4e968f0bb01167c52
+    pristine_git_object: 9f232b283157e7f9b885b9d923f7a226ea81a2c5
   scripts/prepare_readme.py:
     id: e0c5957a6035
     last_write_checksum: sha1:a2b33b92e3f8fed0f4be1d661d68b6decdf9f525
@@ -142,8 +142,8 @@ trackedFiles:
     pristine_git_object: 232e51401d91ec209d9de0c41a959ffc37c2eadb
   src/ttd_data/_version.py:
     id: 7feb4586507e
-    last_write_checksum: sha1:aa3828aafe8b93601216f2196c39c71e7e2fe7d5
-    pristine_git_object: d0100ea474fe5e73fa16ba426e83ae554e214703
+    last_write_checksum: sha1:d902159af525b1d13e88c04d7e2eb201071f04fb
+    pristine_git_object: 6ff0051e6e18d84e218c2bad26dde13b521eef2c
   src/ttd_data/advertiser.py:
     id: 392ead635b4f
     last_write_checksum: sha1:ad2d8ec8cec99ca7f9aeba4b68c8abf25eed687c
@@ -222,12 +222,12 @@ trackedFiles:
     pristine_git_object: 3e38f1a929f7d6b1d6de74604aa87e3d8f010544
   src/ttd_data/sdk.py:
     id: 1472df75b98c
-    last_write_checksum: sha1:92d95adc724037f3220c534af083405543ab9fb0
-    pristine_git_object: df9dc07ffcb182d1e70ebddbd462b044d7c3790d
+    last_write_checksum: sha1:f99423675b4f7e9176a2bac82bbb2b2c3868c72a
+    pristine_git_object: 1bdda828389026905a477db17cb291d92a831575
   src/ttd_data/sdkconfiguration.py:
     id: 6c07cde690cd
-    last_write_checksum: sha1:0cd71c959c52f4fb8675e1cf7fb1d882829c1886
-    pristine_git_object: 5c93f3dad8c45b3349188a6fae6c60c199f5533b
+    last_write_checksum: sha1:118c5c1ae8b2a3dfb7f01363fdfa55825dcc870a
+    pristine_git_object: 292ec30b62ace095d2619933ee8c41f7fbb70159
   src/ttd_data/types/__init__.py:
     id: 219a89572292
     last_write_checksum: sha1:140ebdd01a46f92ffc710c52c958c4eba3cf68ed

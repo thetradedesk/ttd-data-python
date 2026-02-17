@@ -26,6 +26,7 @@ Developer-friendly & type-safe Python SDK specifically catered to leverage *ttd-
   * [Available Resources and Operations](#available-resources-and-operations)
   * [Retries](#retries)
   * [Error Handling](#error-handling)
+  * [Server Selection](#server-selection)
   * [Custom HTTP Client](#custom-http-client)
   * [Resource Management](#resource-management)
   * [Debugging](#debugging)
@@ -121,9 +122,7 @@ Generally, the SDK will work well with most IDEs out of the box. However, when u
 from ttd_data import DataClient
 
 
-with DataClient(
-    server_url="https://api.example.com",
-) as data_client:
+with DataClient() as data_client:
 
     res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
 
@@ -144,9 +143,7 @@ from ttd_data import DataClient
 
 async def main():
 
-    async with DataClient(
-        server_url="https://api.example.com",
-    ) as data_client:
+    async with DataClient() as data_client:
 
         res = await data_client.advertiser.ingest_advertiser_data_async(advertiser_id="<id>")
 
@@ -183,9 +180,7 @@ from ttd_data import DataClient
 from ttd_data.utils import BackoffStrategy, RetryConfig
 
 
-with DataClient(
-    server_url="https://api.example.com",
-) as data_client:
+with DataClient() as data_client:
 
     res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>",
         RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
@@ -204,7 +199,6 @@ from ttd_data.utils import BackoffStrategy, RetryConfig
 
 
 with DataClient(
-    server_url="https://api.example.com",
     retry_config=RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False),
 ) as data_client:
 
@@ -237,9 +231,7 @@ with DataClient(
 from ttd_data import DataClient, errors
 
 
-with DataClient(
-    server_url="https://api.example.com",
-) as data_client:
+with DataClient() as data_client:
     res = None
     try:
 
@@ -285,6 +277,30 @@ with DataClient(
 
 </details>
 <!-- End Error Handling [errors] -->
+
+<!-- Start Server Selection [server] -->
+## Server Selection
+
+### Override Server URL Per-Client
+
+The default server can be overridden globally by passing a URL to the `server_url: str` optional parameter when initializing the SDK client instance. For example:
+```python
+from ttd_data import DataClient
+
+
+with DataClient(
+    server_url="https://usw-data.adsrvr.org",
+) as data_client:
+
+    res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
+
+    assert res.advertiser_data_server_response is not None
+
+    # Handle response
+    print(res.advertiser_data_server_response)
+
+```
+<!-- End Server Selection [server] -->
 
 <!-- Start Custom HTTP Client [http-client] -->
 ## Custom HTTP Client
@@ -378,18 +394,14 @@ The `DataClient` class implements the context manager protocol and registers a f
 from ttd_data import DataClient
 def main():
 
-    with DataClient(
-        server_url="https://api.example.com",
-    ) as data_client:
+    with DataClient() as data_client:
         # Rest of application here...
 
 
 # Or when using async:
 async def amain():
 
-    async with DataClient(
-        server_url="https://api.example.com",
-    ) as data_client:
+    async with DataClient() as data_client:
         # Rest of application here...
 ```
 <!-- End Resource Management [resource-management] -->
@@ -405,7 +417,7 @@ from ttd_data import DataClient
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
-s = DataClient(server_url="https://example.com", debug_logger=logging.getLogger("ttd_data"))
+s = DataClient(debug_logger=logging.getLogger("ttd_data"))
 ```
 
 You can also enable a default debug logger by setting an environment variable `TTD_DATA_DEBUG` to true.

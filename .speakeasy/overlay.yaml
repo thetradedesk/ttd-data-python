@@ -1,0 +1,10 @@
+overlay: 1.0.0
+info:
+  title: Add server URL
+  version: 1.0.0
+actions:
+  - target: "$"
+    update:
+      servers:
+        - url: https://usw-data.adsrvr.org
+          description: US West Data Server

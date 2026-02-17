@@ -1,287 +1,200 @@
-{
-  "openapi": "3.0.4",
-  "info": {
-    "title": "DataServer API",
-    "version": "v1"
-  },
-  "paths": {
-    "/data/advertiser": {
-      "post": {
-        "tags": [
-          "Advertiser"
-        ],
-        "summary": "Upload first-party data for the specified ID for use in audience targeting.",
-        "operationId": "IngestAdvertiserData",
-        "parameters": [
-          {
-            "name": "TTD-Auth",
-            "in": "header",
-            "description": "Data API token for authentication. If not provided, TtdSignature is required.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "TtdSignature",
-            "in": "header",
-            "description": "Legacy signature-based authentication. Required if TTD-Auth is not provided.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AdvertiserDataRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AdvertiserDataServerResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request - Invalid JSON, missing items, advertiser not configured, or policy restrictions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AdvertiserDataServerResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden - Cannot create new targeting data for this advertiser",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "413": {
-            "description": "Request Entity Too Large - Request size exceeds the allowed limit",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too Many Requests - Rate limit exceeded",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AdvertiserDataServerResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error - Unexpected server error"
-          },
-          "503": {
-            "description": "Service Unavailable - Handler disabled or request dropped"
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "AdvertiserData": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "baseBidCPM": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "baseBidCPMMetadata": {
-            "type": "string",
-            "nullable": true
-          },
-          "bidFactor": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "name": {
-            "type": "string"
-          },
-          "timestampUtc": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "ttlInMinutes": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "AdvertiserDataItem": {
-        "required": [
-          "data"
-        ],
-        "type": "object",
-        "properties": {
-          "tdid": {
-            "type": "string",
-            "nullable": true
-          },
-          "daid": {
-            "type": "string",
-            "nullable": true
-          },
-          "uiD2": {
-            "type": "string",
-            "nullable": true
-          },
-          "uiD2Token": {
-            "type": "string",
-            "nullable": true
-          },
-          "rampID": {
-            "type": "string",
-            "nullable": true
-          },
-          "coreID": {
-            "type": "string",
-            "nullable": true
-          },
-          "euid": {
-            "type": "string",
-            "nullable": true
-          },
-          "euidToken": {
-            "type": "string",
-            "nullable": true
-          },
-          "iD5": {
-            "type": "string",
-            "nullable": true
-          },
-          "netID": {
-            "type": "string",
-            "nullable": true
-          },
-          "firstID": {
-            "type": "string",
-            "nullable": true
-          },
-          "merkuryID": {
-            "type": "string",
-            "nullable": true
-          },
-          "iqviaPPID": {
-            "type": "string",
-            "nullable": true
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AdvertiserData"
-            }
-          },
-          "cookieMappingPartnerId": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "AdvertiserDataRequest": {
-        "required": [
-          "advertiserId"
-        ],
-        "type": "object",
-        "properties": {
-          "dataProviderId": {
-            "type": "string",
-            "nullable": true
-          },
-          "advertiserId": {
-            "type": "string"
-          },
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AdvertiserDataItem"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "AdvertiserDataResponseErrorCode": {
-        "enum": [
-          "Unknown",
-          "BaseBidCPMMetadataTooLong",
-          "MissingUserId",
-          "UserNotMapped",
-          "Deprecated_MissingCookieMappingPartnerId",
-          "InvalidBidFactor",
-          "DataNameTooLong",
-          "InvalidTtlInMinutes",
-          "InvalidBaseBidCPM"
-        ],
-        "type": "string"
-      },
-      "AdvertiserDataServerResponse": {
-        "type": "object",
-        "properties": {
-          "failedLines": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AdvertiserDataServerResponseLine"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "AdvertiserDataServerResponseLine": {
-        "type": "object",
-        "properties": {
-          "tdid": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "dataName": {
-            "type": "string",
-            "nullable": true
-          },
-          "errorCode": {
-            "$ref": "#/components/schemas/AdvertiserDataResponseErrorCode"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      }
-    }
-  }
-}
+openapi: "3.0.4"
+info:
+  title: "DataServer API"
+  version: "v1"
+paths:
+  /data/advertiser:
+    post:
+      tags:
+        - "Advertiser"
+      summary: "Upload first-party data for the specified ID for use in audience targeting."
+      operationId: "IngestAdvertiserData"
+      parameters:
+        - name: "TTD-Auth"
+          in: "header"
+          description: "Data API token for authentication. If not provided, TtdSignature is required."
+          schema:
+            type: "string"
+        - name: "TtdSignature"
+          in: "header"
+          description: "Legacy signature-based authentication. Required if TTD-Auth is not provided."
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdvertiserDataRequest"
+        required: true
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdvertiserDataServerResponse"
+        "400":
+          description: "Bad Request - Invalid JSON, missing items, advertiser not configured, or policy restrictions"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdvertiserDataServerResponse"
+        "403":
+          description: "Forbidden - Cannot create new targeting data for this advertiser"
+          content:
+            application/json:
+              schema:
+                type: "string"
+        "413":
+          description: "Request Entity Too Large - Request size exceeds the allowed limit"
+          content:
+            application/json:
+              schema:
+                type: "string"
+        "429":
+          description: "Too Many Requests - Rate limit exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdvertiserDataServerResponse"
+        "500":
+          description: "Internal Server Error - Unexpected server error"
+        "503":
+          description: "Service Unavailable - Handler disabled or request dropped"
+components:
+  schemas:
+    AdvertiserData:
+      required:
+        - "name"
+      type: "object"
+      properties:
+        baseBidCPM:
+          type: "number"
+          format: "double"
+          nullable: true
+        baseBidCPMMetadata:
+          type: "string"
+          nullable: true
+        bidFactor:
+          type: "number"
+          format: "double"
+          nullable: true
+        name:
+          type: "string"
+        timestampUtc:
+          type: "string"
+          format: "date-time"
+          nullable: true
+        ttlInMinutes:
+          type: "integer"
+          format: "int32"
+          nullable: true
+      additionalProperties: false
+    AdvertiserDataItem:
+      required:
+        - "data"
+      type: "object"
+      properties:
+        tdid:
+          type: "string"
+          nullable: true
+        daid:
+          type: "string"
+          nullable: true
+        uiD2:
+          type: "string"
+          nullable: true
+        uiD2Token:
+          type: "string"
+          nullable: true
+        rampID:
+          type: "string"
+          nullable: true
+        coreID:
+          type: "string"
+          nullable: true
+        euid:
+          type: "string"
+          nullable: true
+        euidToken:
+          type: "string"
+          nullable: true
+        iD5:
+          type: "string"
+          nullable: true
+        netID:
+          type: "string"
+          nullable: true
+        firstID:
+          type: "string"
+          nullable: true
+        merkuryID:
+          type: "string"
+          nullable: true
+        iqviaPPID:
+          type: "string"
+          nullable: true
+        data:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/AdvertiserData"
+        cookieMappingPartnerId:
+          type: "string"
+          nullable: true
+      additionalProperties: false
+    AdvertiserDataRequest:
+      required:
+        - "advertiserId"
+      type: "object"
+      properties:
+        dataProviderId:
+          type: "string"
+          nullable: true
+        advertiserId:
+          type: "string"
+        items:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/AdvertiserDataItem"
+          nullable: true
+      additionalProperties: false
+    AdvertiserDataResponseErrorCode:
+      enum:
+        - "Unknown"
+        - "BaseBidCPMMetadataTooLong"
+        - "MissingUserId"
+        - "UserNotMapped"
+        - "Deprecated_MissingCookieMappingPartnerId"
+        - "InvalidBidFactor"
+        - "DataNameTooLong"
+        - "InvalidTtlInMinutes"
+        - "InvalidBaseBidCPM"
+      type: "string"
+    AdvertiserDataServerResponse:
+      type: "object"
+      properties:
+        failedLines:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/AdvertiserDataServerResponseLine"
+          nullable: true
+      additionalProperties: false
+    AdvertiserDataServerResponseLine:
+      type: "object"
+      properties:
+        tdid:
+          type: "string"
+          format: "uuid"
+          nullable: true
+        dataName:
+          type: "string"
+          nullable: true
+        errorCode:
+          $ref: "#/components/schemas/AdvertiserDataResponseErrorCode"
+        message:
+          type: "string"
+          nullable: true
+      additionalProperties: false
+servers:
+  - url: https://usw-data.adsrvr.org
+    description: US West Data Server
