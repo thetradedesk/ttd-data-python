@@ -11,8 +11,8 @@ management:
   installationURL: https://github.com/thetradedesk/ttd-data-python.git
   published: true
 persistentEdits:
-  generation_id: 3a7bc4aa-ef04-46f8-a826-06f82e0ab4c8
-  pristine_commit_hash: d065887c0ed623ff6dc0b243f5812bcdb4a9ceb9
+  generation_id: e248a6cc-9e38-41d6-8667-db50a3445c2d
+  pristine_commit_hash: 281328ed82fa3ee0ab2b1a94e52f47786144dfd6
   pristine_tree_hash: 63e17335f2ab15cb942ca9121de04125567be270
 features:
   python:
