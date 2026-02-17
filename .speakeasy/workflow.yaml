@@ -4,6 +4,8 @@ sources:
     Data API:
         inputs:
             - location: https://usw-data.adsrvr.org/swagger/v1/swagger.json
+        overlays:
+            - location: .speakeasy/overlay.yaml
         output: .speakeasy/out.openapi.yaml
         registry:
             location: registry.speakeasyapi.dev/thetradedesk/data-api/data-api

@@ -80,3 +80,9 @@ class AdvertiserData(BaseModel):
                     m[k] = val
 
         return m
+
+
+try:
+    AdvertiserData.model_rebuild()
+except NameError:
+    pass

@@ -54,11 +54,13 @@ python:
   envVarPrefix: TTD_DATA
   fixFlags:
     asyncPaginationSep2025: true
+    conflictResistantModelImportsFeb2026: false
     responseRequiredSep2024: true
   flattenGlobalSecurity: true
   flattenRequests: true
   flatteningOrder: parameters-first
   forwardCompatibleEnumsByDefault: false
+  forwardCompatibleUnionsByDefault: "false"
   imports:
     option: openapi
     paths:

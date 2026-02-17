@@ -19,20 +19,19 @@ Developer-friendly & type-safe Python SDK specifically catered to leverage *ttd-
 <!-- Start Table of Contents [toc] -->
 ## Table of Contents
 <!-- $toc-max-depth=2 -->
-* [ttd-data](#ttd-data)
-  * [SDK Installation](#sdk-installation)
-  * [IDE Support](#ide-support)
-  * [SDK Example Usage](#sdk-example-usage)
-  * [Available Resources and Operations](#available-resources-and-operations)
-  * [Retries](#retries)
-  * [Error Handling](#error-handling)
-  * [Server Selection](#server-selection)
-  * [Custom HTTP Client](#custom-http-client)
-  * [Resource Management](#resource-management)
-  * [Debugging](#debugging)
-* [Development](#development)
-  * [Maturity](#maturity)
-  * [Contributions](#contributions)
+* [ttd-data](https://github.com/thetradedesk/ttd-data-python/blob/master/#ttd-data)
+  * [SDK Installation](https://github.com/thetradedesk/ttd-data-python/blob/master/#sdk-installation)
+  * [IDE Support](https://github.com/thetradedesk/ttd-data-python/blob/master/#ide-support)
+  * [SDK Example Usage](https://github.com/thetradedesk/ttd-data-python/blob/master/#sdk-example-usage)
+  * [Available Resources and Operations](https://github.com/thetradedesk/ttd-data-python/blob/master/#available-resources-and-operations)
+  * [Retries](https://github.com/thetradedesk/ttd-data-python/blob/master/#retries)
+  * [Error Handling](https://github.com/thetradedesk/ttd-data-python/blob/master/#error-handling)
+  * [Custom HTTP Client](https://github.com/thetradedesk/ttd-data-python/blob/master/#custom-http-client)
+  * [Resource Management](https://github.com/thetradedesk/ttd-data-python/blob/master/#resource-management)
+  * [Debugging](https://github.com/thetradedesk/ttd-data-python/blob/master/#debugging)
+* [Development](https://github.com/thetradedesk/ttd-data-python/blob/master/#development)
+  * [Maturity](https://github.com/thetradedesk/ttd-data-python/blob/master/#maturity)
+  * [Contributions](https://github.com/thetradedesk/ttd-data-python/blob/master/#contributions)
 
 <!-- End Table of Contents [toc] -->
 
@@ -122,7 +121,9 @@ Generally, the SDK will work well with most IDEs out of the box. However, when u
 from ttd_data import DataClient
 
 
-with DataClient() as data_client:
+with DataClient(
+    server_url="https://api.example.com",
+) as data_client:
 
     res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
 
@@ -143,7 +144,9 @@ from ttd_data import DataClient
 
 async def main():
 
-    async with DataClient() as data_client:
+    async with DataClient(
+        server_url="https://api.example.com",
+    ) as data_client:
 
         res = await data_client.advertiser.ingest_advertiser_data_async(advertiser_id="<id>")
 
@@ -162,9 +165,9 @@ asyncio.run(main())
 <details open>
 <summary>Available methods</summary>
 
-### [Advertiser](docs/sdks/advertiser/README.md)
+### [Advertiser](https://github.com/thetradedesk/ttd-data-python/blob/master/docs/sdks/advertiser/README.md)
 
-* [ingest_advertiser_data](docs/sdks/advertiser/README.md#ingest_advertiser_data) - Upload first-party data for the specified ID for use in audience targeting.
+* [ingest_advertiser_data](https://github.com/thetradedesk/ttd-data-python/blob/master/docs/sdks/advertiser/README.md#ingest_advertiser_data) - Upload first-party data for the specified ID for use in audience targeting.
 
 </details>
 <!-- End Available Resources and Operations [operations] -->
@@ -180,7 +183,9 @@ from ttd_data import DataClient
 from ttd_data.utils import BackoffStrategy, RetryConfig
 
 
-with DataClient() as data_client:
+with DataClient(
+    server_url="https://api.example.com",
+) as data_client:
 
     res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>",
         RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
@@ -199,6 +204,7 @@ from ttd_data.utils import BackoffStrategy, RetryConfig
 
 
 with DataClient(
+    server_url="https://api.example.com",
     retry_config=RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False),
 ) as data_client:
 
@@ -215,7 +221,7 @@ with DataClient(
 <!-- Start Error Handling [errors] -->
 ## Error Handling
 
-[`DataError`](./src/ttd_data/errors/dataerror.py) is the base class for all HTTP error responses. It has the following properties:
+[`DataError`](https://github.com/thetradedesk/ttd-data-python/blob/master/./src/ttd_data/errors/dataerror.py) is the base class for all HTTP error responses. It has the following properties:
 
 | Property           | Type             | Description                                                                             |
 | ------------------ | ---------------- | --------------------------------------------------------------------------------------- |
@@ -224,14 +230,16 @@ with DataClient(
 | `err.headers`      | `httpx.Headers`  | HTTP response headers                                                                   |
 | `err.body`         | `str`            | HTTP body. Can be empty string if no body is returned.                                  |
 | `err.raw_response` | `httpx.Response` | Raw HTTP response                                                                       |
-| `err.data`         |                  | Optional. Some errors may contain structured data. [See Error Classes](#error-classes). |
+| `err.data`         |                  | Optional. Some errors may contain structured data. [See Error Classes](https://github.com/thetradedesk/ttd-data-python/blob/master/#error-classes). |
 
 ### Example
 ```python
 from ttd_data import DataClient, errors
 
 
-with DataClient() as data_client:
+with DataClient(
+    server_url="https://api.example.com",
+) as data_client:
     res = None
     try:
 
@@ -259,8 +267,8 @@ with DataClient() as data_client:
 
 ### Error Classes
 **Primary errors:**
-* [`DataError`](./src/ttd_data/errors/dataerror.py): The base class for HTTP error responses.
-  * [`AdvertiserDataServerResponseError`](./src/ttd_data/errors/advertiserdataserverresponseerror.py): Success.
+* [`DataError`](https://github.com/thetradedesk/ttd-data-python/blob/master/./src/ttd_data/errors/dataerror.py): The base class for HTTP error responses.
+  * [`AdvertiserDataServerResponseError`](https://github.com/thetradedesk/ttd-data-python/blob/master/./src/ttd_data/errors/advertiserdataserverresponseerror.py): Success.
 
 <details><summary>Less common errors (5)</summary>
 
@@ -272,35 +280,11 @@ with DataClient() as data_client:
     * [`httpx.TimeoutException`](https://www.python-httpx.org/exceptions/#httpx.TimeoutException): HTTP request timed out.
 
 
-**Inherit from [`DataError`](./src/ttd_data/errors/dataerror.py)**:
-* [`ResponseValidationError`](./src/ttd_data/errors/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
+**Inherit from [`DataError`](https://github.com/thetradedesk/ttd-data-python/blob/master/./src/ttd_data/errors/dataerror.py)**:
+* [`ResponseValidationError`](https://github.com/thetradedesk/ttd-data-python/blob/master/./src/ttd_data/errors/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
 
 </details>
 <!-- End Error Handling [errors] -->
-
-<!-- Start Server Selection [server] -->
-## Server Selection
-
-### Override Server URL Per-Client
-
-The default server can be overridden globally by passing a URL to the `server_url: str` optional parameter when initializing the SDK client instance. For example:
-```python
-from ttd_data import DataClient
-
-
-with DataClient(
-    server_url="https://usw-data.adsrvr.org",
-) as data_client:
-
-    res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
-
-    assert res.advertiser_data_server_response is not None
-
-    # Handle response
-    print(res.advertiser_data_server_response)
-
-```
-<!-- End Server Selection [server] -->
 
 <!-- Start Custom HTTP Client [http-client] -->
 ## Custom HTTP Client
@@ -394,14 +378,18 @@ The `DataClient` class implements the context manager protocol and registers a f
 from ttd_data import DataClient
 def main():
 
-    with DataClient() as data_client:
+    with DataClient(
+        server_url="https://api.example.com",
+    ) as data_client:
         # Rest of application here...
 
 
 # Or when using async:
 async def amain():
 
-    async with DataClient() as data_client:
+    async with DataClient(
+        server_url="https://api.example.com",
+    ) as data_client:
         # Rest of application here...
 ```
 <!-- End Resource Management [resource-management] -->
@@ -417,7 +405,7 @@ from ttd_data import DataClient
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
-s = DataClient(debug_logger=logging.getLogger("ttd_data"))
+s = DataClient(server_url="https://example.com", debug_logger=logging.getLogger("ttd_data"))
 ```
 
 You can also enable a default debug logger by setting an environment variable `TTD_DATA_DEBUG` to true.

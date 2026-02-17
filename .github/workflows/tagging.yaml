@@ -1,4 +1,4 @@
-gitname: Speakeasy Tagging
+name: Speakeasy Tagging
 permissions:
   checks: write
   contents: write
