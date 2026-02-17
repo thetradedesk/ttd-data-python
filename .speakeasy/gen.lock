@@ -5,15 +5,15 @@ management:
   docVersion: v1
   speakeasyVersion: 1.722.0
   generationVersion: 2.829.1
-  releaseVersion: 0.0.3
-  configChecksum: 910134ba8bb293312cd2184511b5b53f
+  releaseVersion: 0.0.1
+  configChecksum: 9153ceb7fca2c8441eb950bf32e1fea0
   repoURL: https://github.com/thetradedesk/ttd-data-python.git
   installationURL: https://github.com/thetradedesk/ttd-data-python.git
   published: true
 persistentEdits:
-  generation_id: b0671a7b-deab-4a26-a7b0-56864b2bbf04
-  pristine_commit_hash: 49564dfd32d3db39ba8ebf625405329a0ae1f236
-  pristine_tree_hash: d6725b92e0f99d499f0d7d0c0da950198a97475f
+  generation_id: 3a7bc4aa-ef04-46f8-a826-06f82e0ab4c8
+  pristine_commit_hash: d065887c0ed623ff6dc0b243f5812bcdb4a9ceb9
+  pristine_tree_hash: 63e17335f2ab15cb942ca9121de04125567be270
 features:
   python:
     additionalDependencies: 1.0.0
@@ -114,8 +114,8 @@ trackedFiles:
     pristine_git_object: 42430b45b2d5dbeaebed8f5dc8eaa49a68f28b9e
   pyproject.toml:
     id: 5d07e7d72637
-    last_write_checksum: sha1:235a6b262f8dab740fb8e1e4e968f0bb01167c52
-    pristine_git_object: 9f232b283157e7f9b885b9d923f7a226ea81a2c5
+    last_write_checksum: sha1:a8cb675a58492d910c95080403d24d5bfc06205d
+    pristine_git_object: 20eb6380beab9f98108f9ab1c8e8891de779c95a
   scripts/prepare_readme.py:
     id: e0c5957a6035
     last_write_checksum: sha1:a2b33b92e3f8fed0f4be1d661d68b6decdf9f525
@@ -142,8 +142,8 @@ trackedFiles:
     pristine_git_object: 232e51401d91ec209d9de0c41a959ffc37c2eadb
   src/ttd_data/_version.py:
     id: 7feb4586507e
-    last_write_checksum: sha1:d902159af525b1d13e88c04d7e2eb201071f04fb
-    pristine_git_object: 6ff0051e6e18d84e218c2bad26dde13b521eef2c
+    last_write_checksum: sha1:c21b022461aef548f08da22eb21b4172e548ff86
+    pristine_git_object: 51680cdf3a23c1672cb0416988717c071b77b903
   src/ttd_data/advertiser.py:
     id: 392ead635b4f
     last_write_checksum: sha1:ad2d8ec8cec99ca7f9aeba4b68c8abf25eed687c
