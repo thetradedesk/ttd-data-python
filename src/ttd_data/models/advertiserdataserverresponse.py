@@ -46,3 +46,9 @@ class AdvertiserDataServerResponse(BaseModel):
                     m[k] = val
 
         return m
+
+
+try:
+    AdvertiserDataServerResponse.model_rebuild()
+except NameError:
+    pass

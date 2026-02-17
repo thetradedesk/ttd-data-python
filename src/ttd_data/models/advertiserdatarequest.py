@@ -48,3 +48,9 @@ class AdvertiserDataRequest(BaseModel):
                     m[k] = val
 
         return m
+
+
+try:
+    AdvertiserDataRequest.model_rebuild()
+except NameError:
+    pass

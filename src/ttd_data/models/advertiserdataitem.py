@@ -126,3 +126,9 @@ class AdvertiserDataItem(BaseModel):
                     m[k] = val
 
         return m
+
+
+try:
+    AdvertiserDataItem.model_rebuild()
+except NameError:
+    pass

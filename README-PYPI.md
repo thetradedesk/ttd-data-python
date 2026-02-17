@@ -19,19 +19,19 @@ Developer-friendly & type-safe Python SDK specifically catered to leverage *ttd-
 <!-- Start Table of Contents [toc] -->
 ## Table of Contents
 <!-- $toc-max-depth=2 -->
-* [ttd-data](#ttd-data)
-  * [SDK Installation](#sdk-installation)
-  * [IDE Support](#ide-support)
-  * [SDK Example Usage](#sdk-example-usage)
-  * [Available Resources and Operations](#available-resources-and-operations)
-  * [Retries](#retries)
-  * [Error Handling](#error-handling)
-  * [Custom HTTP Client](#custom-http-client)
-  * [Resource Management](#resource-management)
-  * [Debugging](#debugging)
-* [Development](#development)
-  * [Maturity](#maturity)
-  * [Contributions](#contributions)
+* [ttd-data](https://github.com/thetradedesk/ttd-data-python/blob/master/#ttd-data)
+  * [SDK Installation](https://github.com/thetradedesk/ttd-data-python/blob/master/#sdk-installation)
+  * [IDE Support](https://github.com/thetradedesk/ttd-data-python/blob/master/#ide-support)
+  * [SDK Example Usage](https://github.com/thetradedesk/ttd-data-python/blob/master/#sdk-example-usage)
+  * [Available Resources and Operations](https://github.com/thetradedesk/ttd-data-python/blob/master/#available-resources-and-operations)
+  * [Retries](https://github.com/thetradedesk/ttd-data-python/blob/master/#retries)
+  * [Error Handling](https://github.com/thetradedesk/ttd-data-python/blob/master/#error-handling)
+  * [Custom HTTP Client](https://github.com/thetradedesk/ttd-data-python/blob/master/#custom-http-client)
+  * [Resource Management](https://github.com/thetradedesk/ttd-data-python/blob/master/#resource-management)
+  * [Debugging](https://github.com/thetradedesk/ttd-data-python/blob/master/#debugging)
+* [Development](https://github.com/thetradedesk/ttd-data-python/blob/master/#development)
+  * [Maturity](https://github.com/thetradedesk/ttd-data-python/blob/master/#maturity)
+  * [Contributions](https://github.com/thetradedesk/ttd-data-python/blob/master/#contributions)
 
 <!-- End Table of Contents [toc] -->
 
@@ -165,9 +165,9 @@ asyncio.run(main())
 <details open>
 <summary>Available methods</summary>
 
-### [Advertiser](docs/sdks/advertiser/README.md)
+### [Advertiser](https://github.com/thetradedesk/ttd-data-python/blob/master/docs/sdks/advertiser/README.md)
 
-* [ingest_advertiser_data](docs/sdks/advertiser/README.md#ingest_advertiser_data) - Upload first-party data for the specified ID for use in audience targeting.
+* [ingest_advertiser_data](https://github.com/thetradedesk/ttd-data-python/blob/master/docs/sdks/advertiser/README.md#ingest_advertiser_data) - Upload first-party data for the specified ID for use in audience targeting.
 
 </details>
 <!-- End Available Resources and Operations [operations] -->
@@ -221,7 +221,7 @@ with DataClient(
 <!-- Start Error Handling [errors] -->
 ## Error Handling
 
-[`DataError`](./src/ttd_data/errors/dataerror.py) is the base class for all HTTP error responses. It has the following properties:
+[`DataError`](https://github.com/thetradedesk/ttd-data-python/blob/master/./src/ttd_data/errors/dataerror.py) is the base class for all HTTP error responses. It has the following properties:
 
 | Property           | Type             | Description                                                                             |
 | ------------------ | ---------------- | --------------------------------------------------------------------------------------- |
@@ -230,7 +230,7 @@ with DataClient(
 | `err.headers`      | `httpx.Headers`  | HTTP response headers                                                                   |
 | `err.body`         | `str`            | HTTP body. Can be empty string if no body is returned.                                  |
 | `err.raw_response` | `httpx.Response` | Raw HTTP response                                                                       |
-| `err.data`         |                  | Optional. Some errors may contain structured data. [See Error Classes](#error-classes). |
+| `err.data`         |                  | Optional. Some errors may contain structured data. [See Error Classes](https://github.com/thetradedesk/ttd-data-python/blob/master/#error-classes). |
 
 ### Example
 ```python
@@ -267,8 +267,8 @@ with DataClient(
 
 ### Error Classes
 **Primary errors:**
-* [`DataError`](./src/ttd_data/errors/dataerror.py): The base class for HTTP error responses.
-  * [`AdvertiserDataServerResponseError`](./src/ttd_data/errors/advertiserdataserverresponseerror.py): Success.
+* [`DataError`](https://github.com/thetradedesk/ttd-data-python/blob/master/./src/ttd_data/errors/dataerror.py): The base class for HTTP error responses.
+  * [`AdvertiserDataServerResponseError`](https://github.com/thetradedesk/ttd-data-python/blob/master/./src/ttd_data/errors/advertiserdataserverresponseerror.py): Success.
 
 <details><summary>Less common errors (5)</summary>
 
@@ -280,8 +280,8 @@ with DataClient(
     * [`httpx.TimeoutException`](https://www.python-httpx.org/exceptions/#httpx.TimeoutException): HTTP request timed out.
 
 
-**Inherit from [`DataError`](./src/ttd_data/errors/dataerror.py)**:
-* [`ResponseValidationError`](./src/ttd_data/errors/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
+**Inherit from [`DataError`](https://github.com/thetradedesk/ttd-data-python/blob/master/./src/ttd_data/errors/dataerror.py)**:
+* [`ResponseValidationError`](https://github.com/thetradedesk/ttd-data-python/blob/master/./src/ttd_data/errors/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
 
 </details>
 <!-- End Error Handling [errors] -->

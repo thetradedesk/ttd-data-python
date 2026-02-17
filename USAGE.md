@@ -5,7 +5,7 @@ from ttd_data import DataClient
 
 
 with DataClient(
-    server_url="https://usw-data.adsrvr.org",
+    server_url="https://api.example.com",
 ) as data_client:
 
     res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
@@ -28,7 +28,7 @@ from ttd_data import DataClient
 async def main():
 
     async with DataClient(
-        server_url="https://usw-data.adsrvr.org",
+        server_url="https://api.example.com",
     ) as data_client:
 
         res = await data_client.advertiser.ingest_advertiser_data_async(advertiser_id="<id>")
