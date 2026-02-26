@@ -24,7 +24,7 @@ class AdvertiserDataServerResponseErrorData(BaseModel):
                 models_advertiserdataserverresponseline.AdvertiserDataServerResponseLine
             ]
         ],
-        pydantic.Field(alias="failedLines"),
+        pydantic.Field(alias="FailedLines"),
     ] = UNSET
 
 

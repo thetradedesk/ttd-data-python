@@ -12,9 +12,8 @@ class Advertiser(BaseSDK):
     def ingest_advertiser_data(
         self,
         *,
+        ttd_auth: str,
         advertiser_id: str,
-        ttd_auth: Optional[str] = None,
-        ttd_signature: Optional[str] = None,
         data_provider_id: OptionalNullable[str] = UNSET,
         items: OptionalNullable[
             Union[
@@ -29,9 +28,8 @@ class Advertiser(BaseSDK):
     ) -> models.IngestAdvertiserDataResponse:
         r"""Upload first-party data for the specified ID for use in audience targeting.
 
+        :param ttd_auth: Data API token for authentication.
         :param advertiser_id:
-        :param ttd_auth: Data API token for authentication. If not provided, TtdSignature is required.
-        :param ttd_signature: Legacy signature-based authentication. Required if TTD-Auth is not provided.
         :param data_provider_id:
         :param items:
         :param retries: Override the default retry configuration for this method
@@ -47,14 +45,13 @@ class Advertiser(BaseSDK):
         if server_url is not None:
             base_url = server_url
         else:
-            base_url = self._get_url(base_url, url_variables)
+            base_url = models.INGEST_ADVERTISER_DATA_OP_SERVERS[0]
 
         request = models.IngestAdvertiserDataRequest(
             ttd_auth=ttd_auth,
-            ttd_signature=ttd_signature,
             body=models.AdvertiserDataRequest(
-                data_provider_id=data_provider_id,
                 advertiser_id=advertiser_id,
+                data_provider_id=data_provider_id,
                 items=utils.get_pydantic_model(
                     items, OptionalNullable[List[models.AdvertiserDataItem]]
                 ),
@@ -129,9 +126,8 @@ class Advertiser(BaseSDK):
     async def ingest_advertiser_data_async(
         self,
         *,
+        ttd_auth: str,
         advertiser_id: str,
-        ttd_auth: Optional[str] = None,
-        ttd_signature: Optional[str] = None,
         data_provider_id: OptionalNullable[str] = UNSET,
         items: OptionalNullable[
             Union[
@@ -146,9 +142,8 @@ class Advertiser(BaseSDK):
     ) -> models.IngestAdvertiserDataResponse:
         r"""Upload first-party data for the specified ID for use in audience targeting.
 
+        :param ttd_auth: Data API token for authentication.
         :param advertiser_id:
-        :param ttd_auth: Data API token for authentication. If not provided, TtdSignature is required.
-        :param ttd_signature: Legacy signature-based authentication. Required if TTD-Auth is not provided.
         :param data_provider_id:
         :param items:
         :param retries: Override the default retry configuration for this method
@@ -164,14 +159,13 @@ class Advertiser(BaseSDK):
         if server_url is not None:
             base_url = server_url
         else:
-            base_url = self._get_url(base_url, url_variables)
+            base_url = models.INGEST_ADVERTISER_DATA_OP_SERVERS[0]
 
         request = models.IngestAdvertiserDataRequest(
             ttd_auth=ttd_auth,
-            ttd_signature=ttd_signature,
             body=models.AdvertiserDataRequest(
-                data_provider_id=data_provider_id,
                 advertiser_id=advertiser_id,
+                data_provider_id=data_provider_id,
                 items=utils.get_pydantic_model(
                     items, OptionalNullable[List[models.AdvertiserDataItem]]
                 ),

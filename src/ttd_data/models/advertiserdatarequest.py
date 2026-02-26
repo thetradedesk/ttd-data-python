@@ -16,18 +16,20 @@ class AdvertiserDataRequestTypedDict(TypedDict):
 
 
 class AdvertiserDataRequest(BaseModel):
-    advertiser_id: Annotated[str, pydantic.Field(alias="advertiserId")]
+    advertiser_id: Annotated[str, pydantic.Field(alias="AdvertiserId")]
 
     data_provider_id: Annotated[
-        OptionalNullable[str], pydantic.Field(alias="dataProviderId")
+        OptionalNullable[str], pydantic.Field(alias="DataProviderId")
     ] = UNSET
 
-    items: OptionalNullable[List[AdvertiserDataItem]] = UNSET
+    items: Annotated[
+        OptionalNullable[List[AdvertiserDataItem]], pydantic.Field(alias="Items")
+    ] = UNSET
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = set(["dataProviderId", "items"])
-        nullable_fields = set(["dataProviderId", "items"])
+        optional_fields = set(["DataProviderId", "Items"])
+        nullable_fields = set(["DataProviderId", "Items"])
         serialized = handler(self)
         m = {}
 
