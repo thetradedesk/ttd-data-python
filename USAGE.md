@@ -6,7 +6,7 @@ from ttd_data import DataClient
 
 with DataClient() as data_client:
 
-    res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
+    res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
 
     assert res.advertiser_data_server_response is not None
 
@@ -27,7 +27,7 @@ async def main():
 
     async with DataClient() as data_client:
 
-        res = await data_client.advertiser.ingest_advertiser_data_async(advertiser_id="<id>")
+        res = await data_client.advertiser.ingest_advertiser_data_async(ttd_auth="<value>", advertiser_id="<id>")
 
         assert res.advertiser_data_server_response is not None
 

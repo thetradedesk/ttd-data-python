@@ -19,13 +19,13 @@ class AdvertiserDataServerResponseTypedDict(TypedDict):
 class AdvertiserDataServerResponse(BaseModel):
     failed_lines: Annotated[
         OptionalNullable[List[AdvertiserDataServerResponseLine]],
-        pydantic.Field(alias="failedLines"),
+        pydantic.Field(alias="FailedLines"),
     ] = UNSET
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = set(["failedLines"])
-        nullable_fields = set(["failedLines"])
+        optional_fields = set(["FailedLines"])
+        nullable_fields = set(["FailedLines"])
         serialized = handler(self)
         m = {}
 

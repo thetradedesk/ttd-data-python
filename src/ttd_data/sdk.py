@@ -16,12 +16,21 @@ import weakref
 
 if TYPE_CHECKING:
     from ttd_data.advertiser import Advertiser
+    from ttd_data.deletionoptout import DeletionOptOut
+    from ttd_data.offlineconversion import OfflineConversion
+    from ttd_data.thirdparty import ThirdParty
 
 
 class DataClient(BaseSDK):
     advertiser: "Advertiser"
+    third_party: "ThirdParty"
+    offline_conversion: "OfflineConversion"
+    deletion_opt_out: "DeletionOptOut"
     _sub_sdk_map = {
         "advertiser": ("ttd_data.advertiser", "Advertiser"),
+        "third_party": ("ttd_data.thirdparty", "ThirdParty"),
+        "offline_conversion": ("ttd_data.offlineconversion", "OfflineConversion"),
+        "deletion_opt_out": ("ttd_data.deletionoptout", "DeletionOptOut"),
     }
 
     def __init__(

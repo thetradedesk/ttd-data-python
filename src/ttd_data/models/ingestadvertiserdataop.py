@@ -15,49 +15,29 @@ from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
 
+INGEST_ADVERTISER_DATA_OP_SERVERS = [
+    "https://usw-data.adsrvr.org",
+]
+
+
 class IngestAdvertiserDataRequestTypedDict(TypedDict):
+    ttd_auth: str
+    r"""Data API token for authentication."""
     body: AdvertiserDataRequestTypedDict
-    ttd_auth: NotRequired[str]
-    r"""Data API token for authentication. If not provided, TtdSignature is required."""
-    ttd_signature: NotRequired[str]
-    r"""Legacy signature-based authentication. Required if TTD-Auth is not provided."""
 
 
 class IngestAdvertiserDataRequest(BaseModel):
+    ttd_auth: Annotated[
+        str,
+        pydantic.Field(alias="TTD-Auth"),
+        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
+    ]
+    r"""Data API token for authentication."""
+
     body: Annotated[
         AdvertiserDataRequest,
         FieldMetadata(request=RequestMetadata(media_type="application/json")),
     ]
-
-    ttd_auth: Annotated[
-        Optional[str],
-        pydantic.Field(alias="TTD-Auth"),
-        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = None
-    r"""Data API token for authentication. If not provided, TtdSignature is required."""
-
-    ttd_signature: Annotated[
-        Optional[str],
-        pydantic.Field(alias="TtdSignature"),
-        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = None
-    r"""Legacy signature-based authentication. Required if TTD-Auth is not provided."""
-
-    @model_serializer(mode="wrap")
-    def serialize_model(self, handler):
-        optional_fields = set(["TTD-Auth", "TtdSignature"])
-        serialized = handler(self)
-        m = {}
-
-        for n, f in type(self).model_fields.items():
-            k = f.alias or n
-            val = serialized.get(k)
-
-            if val != UNSET_SENTINEL:
-                if val is not None or k not in optional_fields:
-                    m[k] = val
-
-        return m
 
 
 class IngestAdvertiserDataResponseTypedDict(TypedDict):

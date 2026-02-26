@@ -124,7 +124,7 @@ from ttd_data import DataClient
 
 with DataClient() as data_client:
 
-    res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
+    res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
 
     assert res.advertiser_data_server_response is not None
 
@@ -145,7 +145,7 @@ async def main():
 
     async with DataClient() as data_client:
 
-        res = await data_client.advertiser.ingest_advertiser_data_async(advertiser_id="<id>")
+        res = await data_client.advertiser.ingest_advertiser_data_async(ttd_auth="<value>", advertiser_id="<id>")
 
         assert res.advertiser_data_server_response is not None
 
@@ -166,6 +166,20 @@ asyncio.run(main())
 
 * [ingest_advertiser_data](docs/sdks/advertiser/README.md#ingest_advertiser_data) - Upload first-party data for the specified ID for use in audience targeting.
 
+### [DeletionOptOut](docs/sdks/deletionoptout/README.md)
+
+* [data_subject_request_advertiser_data](docs/sdks/deletionoptout/README.md#data_subject_request_advertiser_data) - Delete IDs shared with The Trade Desk for the specified advertiser ID.
+* [data_subject_request_merchant_data](docs/sdks/deletionoptout/README.md#data_subject_request_merchant_data) - Delete IDs shared with The Trade Desk via a product catalog for the specified merchant ID.
+* [data_subject_request_third_party_data](docs/sdks/deletionoptout/README.md#data_subject_request_third_party_data) - Delete IDs shared with The Trade Desk for the specified data provider ID.
+
+### [OfflineConversion](docs/sdks/offlineconversion/README.md)
+
+* [ingest_offline_conversion_data](docs/sdks/offlineconversion/README.md#ingest_offline_conversion_data) - Upload offline conversion data for the specified data provider.
+
+### [ThirdParty](docs/sdks/thirdparty/README.md)
+
+* [ingest_third_party_data](docs/sdks/thirdparty/README.md#ingest_third_party_data) - Upload third-party data for the specified data provider for use in audience targeting.
+
 </details>
 <!-- End Available Resources and Operations [operations] -->
 
@@ -182,7 +196,7 @@ from ttd_data.utils import BackoffStrategy, RetryConfig
 
 with DataClient() as data_client:
 
-    res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>",
+    res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>",
         RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
 
     assert res.advertiser_data_server_response is not None
@@ -202,7 +216,7 @@ with DataClient(
     retry_config=RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False),
 ) as data_client:
 
-    res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
+    res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
 
     assert res.advertiser_data_server_response is not None
 
@@ -235,7 +249,7 @@ with DataClient() as data_client:
     res = None
     try:
 
-        res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
+        res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
 
         assert res.advertiser_data_server_response is not None
 
@@ -258,11 +272,10 @@ with DataClient() as data_client:
 ```
 
 ### Error Classes
-**Primary errors:**
+**Primary error:**
 * [`DataError`](./src/ttd_data/errors/dataerror.py): The base class for HTTP error responses.
-  * [`AdvertiserDataServerResponseError`](./src/ttd_data/errors/advertiserdataserverresponseerror.py): Success.
 
-<details><summary>Less common errors (5)</summary>
+<details><summary>Less common errors (11)</summary>
 
 <br />
 
@@ -273,9 +286,17 @@ with DataClient() as data_client:
 
 
 **Inherit from [`DataError`](./src/ttd_data/errors/dataerror.py)**:
+* [`AdvertiserDataServerResponseError`](./src/ttd_data/errors/advertiserdataserverresponseerror.py): Success. Applicable to 1 of 6 methods.*
+* [`ThirdPartyDataServerResponseError`](./src/ttd_data/errors/thirdpartydataserverresponseerror.py): Success. Applicable to 1 of 6 methods.*
+* [`OfflineConversionDataServerResponseError`](./src/ttd_data/errors/offlineconversiondataserverresponseerror.py): Success. Applicable to 1 of 6 methods.*
+* [`AdvertiserDsrResponseError`](./src/ttd_data/errors/advertiserdsrresponseerror.py): Success. Applicable to 1 of 6 methods.*
+* [`MerchantDsrResponseError`](./src/ttd_data/errors/merchantdsrresponseerror.py): Success. Applicable to 1 of 6 methods.*
+* [`ThirdPartyDsrResponseError`](./src/ttd_data/errors/thirdpartydsrresponseerror.py): Success. Applicable to 1 of 6 methods.*
 * [`ResponseValidationError`](./src/ttd_data/errors/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
 
 </details>
+
+\* Check [the method documentation](#available-resources-and-operations) to see if the error is applicable.
 <!-- End Error Handling [errors] -->
 
 <!-- Start Server Selection [server] -->
@@ -292,7 +313,25 @@ with DataClient(
     server_url="https://usw-data.adsrvr.org",
 ) as data_client:
 
-    res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
+    res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
+
+    assert res.advertiser_data_server_response is not None
+
+    # Handle response
+    print(res.advertiser_data_server_response)
+
+```
+
+### Override Server URL Per-Operation
+
+The server URL can also be overridden on a per-operation basis, provided a server list was specified for the operation. For example:
+```python
+from ttd_data import DataClient
+
+
+with DataClient() as data_client:
+
+    res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>", server_url="https://usw-data.adsrvr.org")
 
     assert res.advertiser_data_server_response is not None
 

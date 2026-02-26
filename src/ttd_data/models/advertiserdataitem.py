@@ -13,13 +13,13 @@ class AdvertiserDataItemTypedDict(TypedDict):
     data: List[AdvertiserDataTypedDict]
     tdid: NotRequired[Nullable[str]]
     daid: NotRequired[Nullable[str]]
-    ui_d2: NotRequired[Nullable[str]]
-    ui_d2_token: NotRequired[Nullable[str]]
+    uid2: NotRequired[Nullable[str]]
+    uid2_token: NotRequired[Nullable[str]]
     ramp_id: NotRequired[Nullable[str]]
     core_id: NotRequired[Nullable[str]]
     euid: NotRequired[Nullable[str]]
     euid_token: NotRequired[Nullable[str]]
-    i_d5: NotRequired[Nullable[str]]
+    id5: NotRequired[Nullable[str]]
     net_id: NotRequired[Nullable[str]]
     first_id: NotRequired[Nullable[str]]
     merkury_id: NotRequired[Nullable[str]]
@@ -28,82 +28,82 @@ class AdvertiserDataItemTypedDict(TypedDict):
 
 
 class AdvertiserDataItem(BaseModel):
-    data: List[AdvertiserData]
+    data: Annotated[List[AdvertiserData], pydantic.Field(alias="Data")]
 
-    tdid: OptionalNullable[str] = UNSET
+    tdid: Annotated[OptionalNullable[str], pydantic.Field(alias="TDID")] = UNSET
 
-    daid: OptionalNullable[str] = UNSET
+    daid: Annotated[OptionalNullable[str], pydantic.Field(alias="DAID")] = UNSET
 
-    ui_d2: Annotated[OptionalNullable[str], pydantic.Field(alias="uiD2")] = UNSET
+    uid2: Annotated[OptionalNullable[str], pydantic.Field(alias="UID2")] = UNSET
 
-    ui_d2_token: Annotated[OptionalNullable[str], pydantic.Field(alias="uiD2Token")] = (
+    uid2_token: Annotated[OptionalNullable[str], pydantic.Field(alias="UID2Token")] = (
         UNSET
     )
 
-    ramp_id: Annotated[OptionalNullable[str], pydantic.Field(alias="rampID")] = UNSET
+    ramp_id: Annotated[OptionalNullable[str], pydantic.Field(alias="RampID")] = UNSET
 
-    core_id: Annotated[OptionalNullable[str], pydantic.Field(alias="coreID")] = UNSET
+    core_id: Annotated[OptionalNullable[str], pydantic.Field(alias="CoreID")] = UNSET
 
-    euid: OptionalNullable[str] = UNSET
+    euid: Annotated[OptionalNullable[str], pydantic.Field(alias="EUID")] = UNSET
 
-    euid_token: Annotated[OptionalNullable[str], pydantic.Field(alias="euidToken")] = (
+    euid_token: Annotated[OptionalNullable[str], pydantic.Field(alias="EUIDToken")] = (
         UNSET
     )
 
-    i_d5: Annotated[OptionalNullable[str], pydantic.Field(alias="iD5")] = UNSET
+    id5: Annotated[OptionalNullable[str], pydantic.Field(alias="ID5")] = UNSET
 
-    net_id: Annotated[OptionalNullable[str], pydantic.Field(alias="netID")] = UNSET
+    net_id: Annotated[OptionalNullable[str], pydantic.Field(alias="NetID")] = UNSET
 
-    first_id: Annotated[OptionalNullable[str], pydantic.Field(alias="firstID")] = UNSET
+    first_id: Annotated[OptionalNullable[str], pydantic.Field(alias="FirstID")] = UNSET
 
-    merkury_id: Annotated[OptionalNullable[str], pydantic.Field(alias="merkuryID")] = (
+    merkury_id: Annotated[OptionalNullable[str], pydantic.Field(alias="MerkuryID")] = (
         UNSET
     )
 
-    iqvia_ppid: Annotated[OptionalNullable[str], pydantic.Field(alias="iqviaPPID")] = (
+    iqvia_ppid: Annotated[OptionalNullable[str], pydantic.Field(alias="IqviaPPID")] = (
         UNSET
     )
 
     cookie_mapping_partner_id: Annotated[
-        OptionalNullable[str], pydantic.Field(alias="cookieMappingPartnerId")
+        OptionalNullable[str], pydantic.Field(alias="CookieMappingPartnerId")
     ] = UNSET
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
         optional_fields = set(
             [
-                "tdid",
-                "daid",
-                "uiD2",
-                "uiD2Token",
-                "rampID",
-                "coreID",
-                "euid",
-                "euidToken",
-                "iD5",
-                "netID",
-                "firstID",
-                "merkuryID",
-                "iqviaPPID",
-                "cookieMappingPartnerId",
+                "TDID",
+                "DAID",
+                "UID2",
+                "UID2Token",
+                "RampID",
+                "CoreID",
+                "EUID",
+                "EUIDToken",
+                "ID5",
+                "NetID",
+                "FirstID",
+                "MerkuryID",
+                "IqviaPPID",
+                "CookieMappingPartnerId",
             ]
         )
         nullable_fields = set(
             [
-                "tdid",
-                "daid",
-                "uiD2",
-                "uiD2Token",
-                "rampID",
-                "coreID",
-                "euid",
-                "euidToken",
-                "iD5",
-                "netID",
-                "firstID",
-                "merkuryID",
-                "iqviaPPID",
-                "cookieMappingPartnerId",
+                "TDID",
+                "DAID",
+                "UID2",
+                "UID2Token",
+                "RampID",
+                "CoreID",
+                "EUID",
+                "EUIDToken",
+                "ID5",
+                "NetID",
+                "FirstID",
+                "MerkuryID",
+                "IqviaPPID",
+                "CookieMappingPartnerId",
             ]
         )
         serialized = handler(self)

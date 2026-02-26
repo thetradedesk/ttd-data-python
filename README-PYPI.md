@@ -26,6 +26,7 @@ Developer-friendly & type-safe Python SDK specifically catered to leverage *ttd-
   * [Available Resources and Operations](https://github.com/thetradedesk/ttd-data-python/blob/master/#available-resources-and-operations)
   * [Retries](https://github.com/thetradedesk/ttd-data-python/blob/master/#retries)
   * [Error Handling](https://github.com/thetradedesk/ttd-data-python/blob/master/#error-handling)
+  * [Server Selection](https://github.com/thetradedesk/ttd-data-python/blob/master/#server-selection)
   * [Custom HTTP Client](https://github.com/thetradedesk/ttd-data-python/blob/master/#custom-http-client)
   * [Resource Management](https://github.com/thetradedesk/ttd-data-python/blob/master/#resource-management)
   * [Debugging](https://github.com/thetradedesk/ttd-data-python/blob/master/#debugging)
@@ -121,11 +122,9 @@ Generally, the SDK will work well with most IDEs out of the box. However, when u
 from ttd_data import DataClient
 
 
-with DataClient(
-    server_url="https://api.example.com",
-) as data_client:
+with DataClient() as data_client:
 
-    res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
+    res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
 
     assert res.advertiser_data_server_response is not None
 
@@ -144,11 +143,9 @@ from ttd_data import DataClient
 
 async def main():
 
-    async with DataClient(
-        server_url="https://api.example.com",
-    ) as data_client:
+    async with DataClient() as data_client:
 
-        res = await data_client.advertiser.ingest_advertiser_data_async(advertiser_id="<id>")
+        res = await data_client.advertiser.ingest_advertiser_data_async(ttd_auth="<value>", advertiser_id="<id>")
 
         assert res.advertiser_data_server_response is not None
 
@@ -169,6 +166,20 @@ asyncio.run(main())
 
 * [ingest_advertiser_data](https://github.com/thetradedesk/ttd-data-python/blob/master/docs/sdks/advertiser/README.md#ingest_advertiser_data) - Upload first-party data for the specified ID for use in audience targeting.
 
+### [DeletionOptOut](https://github.com/thetradedesk/ttd-data-python/blob/master/docs/sdks/deletionoptout/README.md)
+
+* [data_subject_request_advertiser_data](https://github.com/thetradedesk/ttd-data-python/blob/master/docs/sdks/deletionoptout/README.md#data_subject_request_advertiser_data) - Delete IDs shared with The Trade Desk for the specified advertiser ID.
+* [data_subject_request_merchant_data](https://github.com/thetradedesk/ttd-data-python/blob/master/docs/sdks/deletionoptout/README.md#data_subject_request_merchant_data) - Delete IDs shared with The Trade Desk via a product catalog for the specified merchant ID.
+* [data_subject_request_third_party_data](https://github.com/thetradedesk/ttd-data-python/blob/master/docs/sdks/deletionoptout/README.md#data_subject_request_third_party_data) - Delete IDs shared with The Trade Desk for the specified data provider ID.
+
+### [OfflineConversion](https://github.com/thetradedesk/ttd-data-python/blob/master/docs/sdks/offlineconversion/README.md)
+
+* [ingest_offline_conversion_data](https://github.com/thetradedesk/ttd-data-python/blob/master/docs/sdks/offlineconversion/README.md#ingest_offline_conversion_data) - Upload offline conversion data for the specified data provider.
+
+### [ThirdParty](https://github.com/thetradedesk/ttd-data-python/blob/master/docs/sdks/thirdparty/README.md)
+
+* [ingest_third_party_data](https://github.com/thetradedesk/ttd-data-python/blob/master/docs/sdks/thirdparty/README.md#ingest_third_party_data) - Upload third-party data for the specified data provider for use in audience targeting.
+
 </details>
 <!-- End Available Resources and Operations [operations] -->
 
@@ -183,11 +194,9 @@ from ttd_data import DataClient
 from ttd_data.utils import BackoffStrategy, RetryConfig
 
 
-with DataClient(
-    server_url="https://api.example.com",
-) as data_client:
+with DataClient() as data_client:
 
-    res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>",
+    res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>",
         RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
 
     assert res.advertiser_data_server_response is not None
@@ -204,11 +213,10 @@ from ttd_data.utils import BackoffStrategy, RetryConfig
 
 
 with DataClient(
-    server_url="https://api.example.com",
     retry_config=RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False),
 ) as data_client:
 
-    res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
+    res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
 
     assert res.advertiser_data_server_response is not None
 
@@ -237,13 +245,11 @@ with DataClient(
 from ttd_data import DataClient, errors
 
 
-with DataClient(
-    server_url="https://api.example.com",
-) as data_client:
+with DataClient() as data_client:
     res = None
     try:
 
-        res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
+        res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
 
         assert res.advertiser_data_server_response is not None
 
@@ -266,11 +272,10 @@ with DataClient(
 ```
 
 ### Error Classes
-**Primary errors:**
+**Primary error:**
 * [`DataError`](https://github.com/thetradedesk/ttd-data-python/blob/master/./src/ttd_data/errors/dataerror.py): The base class for HTTP error responses.
-  * [`AdvertiserDataServerResponseError`](https://github.com/thetradedesk/ttd-data-python/blob/master/./src/ttd_data/errors/advertiserdataserverresponseerror.py): Success.
 
-<details><summary>Less common errors (5)</summary>
+<details><summary>Less common errors (11)</summary>
 
 <br />
 
@@ -281,10 +286,60 @@ with DataClient(
 
 
 **Inherit from [`DataError`](https://github.com/thetradedesk/ttd-data-python/blob/master/./src/ttd_data/errors/dataerror.py)**:
+* [`AdvertiserDataServerResponseError`](https://github.com/thetradedesk/ttd-data-python/blob/master/./src/ttd_data/errors/advertiserdataserverresponseerror.py): Success. Applicable to 1 of 6 methods.*
+* [`ThirdPartyDataServerResponseError`](https://github.com/thetradedesk/ttd-data-python/blob/master/./src/ttd_data/errors/thirdpartydataserverresponseerror.py): Success. Applicable to 1 of 6 methods.*
+* [`OfflineConversionDataServerResponseError`](https://github.com/thetradedesk/ttd-data-python/blob/master/./src/ttd_data/errors/offlineconversiondataserverresponseerror.py): Success. Applicable to 1 of 6 methods.*
+* [`AdvertiserDsrResponseError`](https://github.com/thetradedesk/ttd-data-python/blob/master/./src/ttd_data/errors/advertiserdsrresponseerror.py): Success. Applicable to 1 of 6 methods.*
+* [`MerchantDsrResponseError`](https://github.com/thetradedesk/ttd-data-python/blob/master/./src/ttd_data/errors/merchantdsrresponseerror.py): Success. Applicable to 1 of 6 methods.*
+* [`ThirdPartyDsrResponseError`](https://github.com/thetradedesk/ttd-data-python/blob/master/./src/ttd_data/errors/thirdpartydsrresponseerror.py): Success. Applicable to 1 of 6 methods.*
 * [`ResponseValidationError`](https://github.com/thetradedesk/ttd-data-python/blob/master/./src/ttd_data/errors/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
 
 </details>
+
+\* Check [the method documentation](https://github.com/thetradedesk/ttd-data-python/blob/master/#available-resources-and-operations) to see if the error is applicable.
 <!-- End Error Handling [errors] -->
+
+<!-- Start Server Selection [server] -->
+## Server Selection
+
+### Override Server URL Per-Client
+
+The default server can be overridden globally by passing a URL to the `server_url: str` optional parameter when initializing the SDK client instance. For example:
+```python
+from ttd_data import DataClient
+
+
+with DataClient(
+    server_url="https://usw-data.adsrvr.org",
+) as data_client:
+
+    res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
+
+    assert res.advertiser_data_server_response is not None
+
+    # Handle response
+    print(res.advertiser_data_server_response)
+
+```
+
+### Override Server URL Per-Operation
+
+The server URL can also be overridden on a per-operation basis, provided a server list was specified for the operation. For example:
+```python
+from ttd_data import DataClient
+
+
+with DataClient() as data_client:
+
+    res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>", server_url="https://usw-data.adsrvr.org")
+
+    assert res.advertiser_data_server_response is not None
+
+    # Handle response
+    print(res.advertiser_data_server_response)
+
+```
+<!-- End Server Selection [server] -->
 
 <!-- Start Custom HTTP Client [http-client] -->
 ## Custom HTTP Client
@@ -378,18 +433,14 @@ The `DataClient` class implements the context manager protocol and registers a f
 from ttd_data import DataClient
 def main():
 
-    with DataClient(
-        server_url="https://api.example.com",
-    ) as data_client:
+    with DataClient() as data_client:
         # Rest of application here...
 
 
 # Or when using async:
 async def amain():
 
-    async with DataClient(
-        server_url="https://api.example.com",
-    ) as data_client:
+    async with DataClient() as data_client:
         # Rest of application here...
 ```
 <!-- End Resource Management [resource-management] -->
@@ -405,7 +456,7 @@ from ttd_data import DataClient
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
-s = DataClient(server_url="https://example.com", debug_logger=logging.getLogger("ttd_data"))
+s = DataClient(debug_logger=logging.getLogger("ttd_data"))
 ```
 
 You can also enable a default debug logger by setting an environment variable `TTD_DATA_DEBUG` to true.

@@ -10,54 +10,54 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 
 class AdvertiserDataTypedDict(TypedDict):
     name: str
+    timestamp_utc: NotRequired[Nullable[datetime]]
+    ttl_in_minutes: NotRequired[Nullable[int]]
     base_bid_cpm: NotRequired[Nullable[float]]
     base_bid_cpm_metadata: NotRequired[Nullable[str]]
     bid_factor: NotRequired[Nullable[float]]
-    timestamp_utc: NotRequired[Nullable[datetime]]
-    ttl_in_minutes: NotRequired[Nullable[int]]
 
 
 class AdvertiserData(BaseModel):
-    name: str
-
-    base_bid_cpm: Annotated[
-        OptionalNullable[float], pydantic.Field(alias="baseBidCPM")
-    ] = UNSET
-
-    base_bid_cpm_metadata: Annotated[
-        OptionalNullable[str], pydantic.Field(alias="baseBidCPMMetadata")
-    ] = UNSET
-
-    bid_factor: Annotated[
-        OptionalNullable[float], pydantic.Field(alias="bidFactor")
-    ] = UNSET
+    name: Annotated[str, pydantic.Field(alias="Name")]
 
     timestamp_utc: Annotated[
-        OptionalNullable[datetime], pydantic.Field(alias="timestampUtc")
+        OptionalNullable[datetime], pydantic.Field(alias="TimestampUtc")
     ] = UNSET
 
     ttl_in_minutes: Annotated[
-        OptionalNullable[int], pydantic.Field(alias="ttlInMinutes")
+        OptionalNullable[int], pydantic.Field(alias="TtlInMinutes")
+    ] = UNSET
+
+    base_bid_cpm: Annotated[
+        OptionalNullable[float], pydantic.Field(alias="BaseBidCPM")
+    ] = UNSET
+
+    base_bid_cpm_metadata: Annotated[
+        OptionalNullable[str], pydantic.Field(alias="BaseBidCPMMetadata")
+    ] = UNSET
+
+    bid_factor: Annotated[
+        OptionalNullable[float], pydantic.Field(alias="BidFactor")
     ] = UNSET
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
         optional_fields = set(
             [
-                "baseBidCPM",
-                "baseBidCPMMetadata",
-                "bidFactor",
-                "timestampUtc",
-                "ttlInMinutes",
+                "TimestampUtc",
+                "TtlInMinutes",
+                "BaseBidCPM",
+                "BaseBidCPMMetadata",
+                "BidFactor",
             ]
         )
         nullable_fields = set(
             [
-                "baseBidCPM",
-                "baseBidCPMMetadata",
-                "bidFactor",
-                "timestampUtc",
-                "ttlInMinutes",
+                "TimestampUtc",
+                "TtlInMinutes",
+                "BaseBidCPM",
+                "BaseBidCPMMetadata",
+                "BidFactor",
             ]
         )
         serialized = handler(self)
