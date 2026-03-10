@@ -12,6 +12,7 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 class ThirdPartyDataRequestTypedDict(TypedDict):
     data_provider_id: str
     items: NotRequired[Nullable[List[ThirdPartyDataItemTypedDict]]]
+    data_load_trace_id: NotRequired[Nullable[str]]
     is_user_id_already_hashed: NotRequired[bool]
 
 
@@ -22,20 +23,24 @@ class ThirdPartyDataRequest(BaseModel):
         OptionalNullable[List[ThirdPartyDataItem]], pydantic.Field(alias="Items")
     ] = UNSET
 
+    data_load_trace_id: Annotated[
+        OptionalNullable[str], pydantic.Field(alias="DataLoadTraceId")
+    ] = UNSET
+
     is_user_id_already_hashed: Annotated[
         Optional[bool], pydantic.Field(alias="IsUserIdAlreadyHashed")
     ] = False
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = set(["Items", "IsUserIdAlreadyHashed"])
-        nullable_fields = set(["Items"])
+        optional_fields = set(["Items", "DataLoadTraceId", "IsUserIdAlreadyHashed"])
+        nullable_fields = set(["Items", "DataLoadTraceId"])
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
+            val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
                 and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member

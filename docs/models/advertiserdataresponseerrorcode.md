@@ -1,5 +1,13 @@
 # AdvertiserDataResponseErrorCode
 
+## Example Usage
+
+```python
+from ttd_data.models import AdvertiserDataResponseErrorCode
+
+value = AdvertiserDataResponseErrorCode.UNKNOWN
+```
+
 
 ## Values
 

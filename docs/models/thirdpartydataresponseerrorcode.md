@@ -1,5 +1,13 @@
 # ThirdPartyDataResponseErrorCode
 
+## Example Usage
+
+```python
+from ttd_data.models import ThirdPartyDataResponseErrorCode
+
+value = ThirdPartyDataResponseErrorCode.UNKNOWN
+```
+
 
 ## Values
 

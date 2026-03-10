@@ -13,6 +13,7 @@ class AdvertiserDataRequestTypedDict(TypedDict):
     advertiser_id: str
     data_provider_id: NotRequired[Nullable[str]]
     items: NotRequired[Nullable[List[AdvertiserDataItemTypedDict]]]
+    data_load_trace_id: NotRequired[Nullable[str]]
 
 
 class AdvertiserDataRequest(BaseModel):
@@ -26,16 +27,20 @@ class AdvertiserDataRequest(BaseModel):
         OptionalNullable[List[AdvertiserDataItem]], pydantic.Field(alias="Items")
     ] = UNSET
 
+    data_load_trace_id: Annotated[
+        OptionalNullable[str], pydantic.Field(alias="DataLoadTraceId")
+    ] = UNSET
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = set(["DataProviderId", "Items"])
-        nullable_fields = set(["DataProviderId", "Items"])
+        optional_fields = set(["DataProviderId", "Items", "DataLoadTraceId"])
+        nullable_fields = set(["DataProviderId", "Items", "DataLoadTraceId"])
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
+            val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
                 and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member

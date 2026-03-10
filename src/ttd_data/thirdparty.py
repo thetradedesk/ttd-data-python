@@ -20,6 +20,7 @@ class ThirdParty(BaseSDK):
                 List[models.ThirdPartyDataItemTypedDict],
             ]
         ] = UNSET,
+        data_load_trace_id: OptionalNullable[str] = UNSET,
         is_user_id_already_hashed: Optional[bool] = False,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -31,6 +32,7 @@ class ThirdParty(BaseSDK):
         :param ttd_auth: Data API token for authentication.
         :param data_provider_id:
         :param items:
+        :param data_load_trace_id:
         :param is_user_id_already_hashed:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -54,6 +56,7 @@ class ThirdParty(BaseSDK):
                 items=utils.get_pydantic_model(
                     items, OptionalNullable[List[models.ThirdPartyDataItem]]
                 ),
+                data_load_trace_id=data_load_trace_id,
                 is_user_id_already_hashed=is_user_id_already_hashed,
             ),
         )
@@ -134,6 +137,7 @@ class ThirdParty(BaseSDK):
                 List[models.ThirdPartyDataItemTypedDict],
             ]
         ] = UNSET,
+        data_load_trace_id: OptionalNullable[str] = UNSET,
         is_user_id_already_hashed: Optional[bool] = False,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -145,6 +149,7 @@ class ThirdParty(BaseSDK):
         :param ttd_auth: Data API token for authentication.
         :param data_provider_id:
         :param items:
+        :param data_load_trace_id:
         :param is_user_id_already_hashed:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -168,6 +173,7 @@ class ThirdParty(BaseSDK):
                 items=utils.get_pydantic_model(
                     items, OptionalNullable[List[models.ThirdPartyDataItem]]
                 ),
+                data_load_trace_id=data_load_trace_id,
                 is_user_id_already_hashed=is_user_id_already_hashed,
             ),
         )

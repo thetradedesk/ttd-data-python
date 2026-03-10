@@ -21,6 +21,7 @@ class DeletionOptOut(BaseSDK):
                 List[models.PartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
+        data_load_trace_id: OptionalNullable[str] = UNSET,
         request_type: Optional[models.PartnerDsrRequestType] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -33,6 +34,7 @@ class DeletionOptOut(BaseSDK):
         :param advertiser_id:
         :param data_provider_id:
         :param items:
+        :param data_load_trace_id:
         :param request_type:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -57,6 +59,7 @@ class DeletionOptOut(BaseSDK):
                 items=utils.get_pydantic_model(
                     items, OptionalNullable[List[models.PartnerDsrDataItem]]
                 ),
+                data_load_trace_id=data_load_trace_id,
                 request_type=request_type,
             ),
         )
@@ -138,6 +141,7 @@ class DeletionOptOut(BaseSDK):
                 List[models.PartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
+        data_load_trace_id: OptionalNullable[str] = UNSET,
         request_type: Optional[models.PartnerDsrRequestType] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -150,6 +154,7 @@ class DeletionOptOut(BaseSDK):
         :param advertiser_id:
         :param data_provider_id:
         :param items:
+        :param data_load_trace_id:
         :param request_type:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -174,6 +179,7 @@ class DeletionOptOut(BaseSDK):
                 items=utils.get_pydantic_model(
                     items, OptionalNullable[List[models.PartnerDsrDataItem]]
                 ),
+                data_load_trace_id=data_load_trace_id,
                 request_type=request_type,
             ),
         )
@@ -254,6 +260,7 @@ class DeletionOptOut(BaseSDK):
                 List[models.PartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
+        data_load_trace_id: OptionalNullable[str] = UNSET,
         request_type: Optional[models.PartnerDsrRequestType] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -265,6 +272,7 @@ class DeletionOptOut(BaseSDK):
         :param ttd_auth: Data API token for authentication.
         :param merchant_id:
         :param items:
+        :param data_load_trace_id:
         :param request_type:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -288,6 +296,7 @@ class DeletionOptOut(BaseSDK):
                 items=utils.get_pydantic_model(
                     items, OptionalNullable[List[models.PartnerDsrDataItem]]
                 ),
+                data_load_trace_id=data_load_trace_id,
                 request_type=request_type,
             ),
         )
@@ -368,6 +377,7 @@ class DeletionOptOut(BaseSDK):
                 List[models.PartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
+        data_load_trace_id: OptionalNullable[str] = UNSET,
         request_type: Optional[models.PartnerDsrRequestType] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -379,6 +389,7 @@ class DeletionOptOut(BaseSDK):
         :param ttd_auth: Data API token for authentication.
         :param merchant_id:
         :param items:
+        :param data_load_trace_id:
         :param request_type:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -402,6 +413,7 @@ class DeletionOptOut(BaseSDK):
                 items=utils.get_pydantic_model(
                     items, OptionalNullable[List[models.PartnerDsrDataItem]]
                 ),
+                data_load_trace_id=data_load_trace_id,
                 request_type=request_type,
             ),
         )
@@ -483,6 +495,7 @@ class DeletionOptOut(BaseSDK):
                 List[models.PartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
+        data_load_trace_id: OptionalNullable[str] = UNSET,
         request_type: Optional[models.PartnerDsrRequestType] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -495,6 +508,7 @@ class DeletionOptOut(BaseSDK):
         :param data_provider_id:
         :param brand_id:
         :param items:
+        :param data_load_trace_id:
         :param request_type:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -519,6 +533,7 @@ class DeletionOptOut(BaseSDK):
                 items=utils.get_pydantic_model(
                     items, OptionalNullable[List[models.PartnerDsrDataItem]]
                 ),
+                data_load_trace_id=data_load_trace_id,
                 request_type=request_type,
             ),
         )
@@ -600,6 +615,7 @@ class DeletionOptOut(BaseSDK):
                 List[models.PartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
+        data_load_trace_id: OptionalNullable[str] = UNSET,
         request_type: Optional[models.PartnerDsrRequestType] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -612,6 +628,7 @@ class DeletionOptOut(BaseSDK):
         :param data_provider_id:
         :param brand_id:
         :param items:
+        :param data_load_trace_id:
         :param request_type:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -636,6 +653,7 @@ class DeletionOptOut(BaseSDK):
                 items=utils.get_pydantic_model(
                     items, OptionalNullable[List[models.PartnerDsrDataItem]]
                 ),
+                data_load_trace_id=data_load_trace_id,
                 request_type=request_type,
             ),
         )

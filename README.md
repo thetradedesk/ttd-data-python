@@ -305,22 +305,7 @@ with DataClient() as data_client:
 ### Override Server URL Per-Client
 
 The default server can be overridden globally by passing a URL to the `server_url: str` optional parameter when initializing the SDK client instance. For example:
-```python
-from ttd_data import DataClient
 
-
-with DataClient(
-    server_url="https://usw-data.adsrvr.org",
-) as data_client:
-
-    res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
-
-    assert res.advertiser_data_server_response is not None
-
-    # Handle response
-    print(res.advertiser_data_server_response)
-
-```
 
 ### Override Server URL Per-Operation
 

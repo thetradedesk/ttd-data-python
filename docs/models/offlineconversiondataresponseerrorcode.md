@@ -1,5 +1,13 @@
 # OfflineConversionDataResponseErrorCode
 
+## Example Usage
+
+```python
+from ttd_data.models import OfflineConversionDataResponseErrorCode
+
+value = OfflineConversionDataResponseErrorCode.UNKNOWN
+```
+
 
 ## Values
 
