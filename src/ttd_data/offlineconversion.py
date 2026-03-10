@@ -21,6 +21,7 @@ class OfflineConversion(BaseSDK):
                 List[models.OfflineConversionDataItemTypedDict],
             ]
         ] = UNSET,
+        data_load_trace_id: OptionalNullable[str] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -32,6 +33,7 @@ class OfflineConversion(BaseSDK):
         :param data_provider_id:
         :param user_id_array_metadata_format:
         :param items:
+        :param data_load_trace_id:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -55,6 +57,7 @@ class OfflineConversion(BaseSDK):
                 items=utils.get_pydantic_model(
                     items, OptionalNullable[List[models.OfflineConversionDataItem]]
                 ),
+                data_load_trace_id=data_load_trace_id,
             ),
         )
 
@@ -137,6 +140,7 @@ class OfflineConversion(BaseSDK):
                 List[models.OfflineConversionDataItemTypedDict],
             ]
         ] = UNSET,
+        data_load_trace_id: OptionalNullable[str] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -148,6 +152,7 @@ class OfflineConversion(BaseSDK):
         :param data_provider_id:
         :param user_id_array_metadata_format:
         :param items:
+        :param data_load_trace_id:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -171,6 +176,7 @@ class OfflineConversion(BaseSDK):
                 items=utils.get_pydantic_model(
                     items, OptionalNullable[List[models.OfflineConversionDataItem]]
                 ),
+                data_load_trace_id=data_load_trace_id,
             ),
         )
 

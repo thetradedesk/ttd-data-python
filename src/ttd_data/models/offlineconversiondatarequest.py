@@ -16,6 +16,7 @@ class OfflineConversionDataRequestTypedDict(TypedDict):
     data_provider_id: str
     user_id_array_metadata_format: NotRequired[Nullable[List[str]]]
     items: NotRequired[Nullable[List[OfflineConversionDataItemTypedDict]]]
+    data_load_trace_id: NotRequired[Nullable[str]]
 
 
 class OfflineConversionDataRequest(BaseModel):
@@ -29,16 +30,20 @@ class OfflineConversionDataRequest(BaseModel):
         OptionalNullable[List[OfflineConversionDataItem]], pydantic.Field(alias="Items")
     ] = UNSET
 
+    data_load_trace_id: Annotated[
+        OptionalNullable[str], pydantic.Field(alias="DataLoadTraceId")
+    ] = UNSET
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = set(["UserIdArrayMetadataFormat", "Items"])
-        nullable_fields = set(["UserIdArrayMetadataFormat", "Items"])
+        optional_fields = set(["UserIdArrayMetadataFormat", "Items", "DataLoadTraceId"])
+        nullable_fields = set(["UserIdArrayMetadataFormat", "Items", "DataLoadTraceId"])
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
+            val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
                 and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member

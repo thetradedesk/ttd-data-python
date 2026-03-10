@@ -14,6 +14,7 @@ class ThirdPartyDsrRequestTypedDict(TypedDict):
     data_provider_id: NotRequired[Nullable[str]]
     brand_id: NotRequired[Nullable[str]]
     items: NotRequired[Nullable[List[PartnerDsrDataItemTypedDict]]]
+    data_load_trace_id: NotRequired[Nullable[str]]
     request_type: NotRequired[PartnerDsrRequestType]
 
 
@@ -28,20 +29,26 @@ class ThirdPartyDsrRequest(BaseModel):
         OptionalNullable[List[PartnerDsrDataItem]], pydantic.Field(alias="Items")
     ] = UNSET
 
+    data_load_trace_id: Annotated[
+        OptionalNullable[str], pydantic.Field(alias="DataLoadTraceId")
+    ] = UNSET
+
     request_type: Annotated[
         Optional[PartnerDsrRequestType], pydantic.Field(alias="RequestType")
     ] = None
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = set(["DataProviderId", "BrandId", "Items", "RequestType"])
-        nullable_fields = set(["DataProviderId", "BrandId", "Items"])
+        optional_fields = set(
+            ["DataProviderId", "BrandId", "Items", "DataLoadTraceId", "RequestType"]
+        )
+        nullable_fields = set(["DataProviderId", "BrandId", "Items", "DataLoadTraceId"])
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
+            val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
                 and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member

@@ -21,6 +21,7 @@ class Advertiser(BaseSDK):
                 List[models.AdvertiserDataItemTypedDict],
             ]
         ] = UNSET,
+        data_load_trace_id: OptionalNullable[str] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -32,6 +33,7 @@ class Advertiser(BaseSDK):
         :param advertiser_id:
         :param data_provider_id:
         :param items:
+        :param data_load_trace_id:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -55,6 +57,7 @@ class Advertiser(BaseSDK):
                 items=utils.get_pydantic_model(
                     items, OptionalNullable[List[models.AdvertiserDataItem]]
                 ),
+                data_load_trace_id=data_load_trace_id,
             ),
         )
 
@@ -135,6 +138,7 @@ class Advertiser(BaseSDK):
                 List[models.AdvertiserDataItemTypedDict],
             ]
         ] = UNSET,
+        data_load_trace_id: OptionalNullable[str] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -146,6 +150,7 @@ class Advertiser(BaseSDK):
         :param advertiser_id:
         :param data_provider_id:
         :param items:
+        :param data_load_trace_id:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -169,6 +174,7 @@ class Advertiser(BaseSDK):
                 items=utils.get_pydantic_model(
                     items, OptionalNullable[List[models.AdvertiserDataItem]]
                 ),
+                data_load_trace_id=data_load_trace_id,
             ),
         )
 
