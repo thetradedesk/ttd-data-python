@@ -9,10 +9,6 @@ from .realtimeconversioneventsprivacysetting import (
     RealTimeConversionEventsPrivacySetting,
     RealTimeConversionEventsPrivacySettingTypedDict,
 )
-from .stringstringvaluetuple import (
-    StringStringValueTuple,
-    StringStringValueTupleTypedDict,
-)
 from datetime import datetime
 import pydantic
 from pydantic import model_serializer
@@ -32,7 +28,8 @@ class OfflineConversionDataItemTypedDict(TypedDict):
     euid: NotRequired[Nullable[str]]
     euid_token: NotRequired[Nullable[str]]
     data_provider_user_id: NotRequired[Nullable[str]]
-    user_id_array: NotRequired[Nullable[List[StringStringValueTupleTypedDict]]]
+    user_id_array: NotRequired[Nullable[List[List[str]]]]
+    r"""Array of [type, id] pairs."""
     cookie_mapping_partner_id: NotRequired[Nullable[str]]
     order_id: NotRequired[Nullable[str]]
     impression_id: NotRequired[Nullable[str]]
@@ -88,9 +85,9 @@ class OfflineConversionDataItem(BaseModel):
     ] = UNSET
 
     user_id_array: Annotated[
-        OptionalNullable[List[StringStringValueTuple]],
-        pydantic.Field(alias="UserIdArray"),
+        OptionalNullable[List[List[str]]], pydantic.Field(alias="UserIdArray")
     ] = UNSET
+    r"""Array of [type, id] pairs."""
 
     cookie_mapping_partner_id: Annotated[
         OptionalNullable[str], pydantic.Field(alias="CookieMappingPartnerId")
