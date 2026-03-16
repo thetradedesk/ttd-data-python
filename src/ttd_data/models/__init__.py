@@ -111,10 +111,6 @@ if TYPE_CHECKING:
         RealTimeConversionEventsPrivacySetting,
         RealTimeConversionEventsPrivacySettingTypedDict,
     )
-    from .stringstringvaluetuple import (
-        StringStringValueTuple,
-        StringStringValueTupleTypedDict,
-    )
     from .thirdpartydata import ThirdPartyData, ThirdPartyDataTypedDict
     from .thirdpartydataitem import ThirdPartyDataItem, ThirdPartyDataItemTypedDict
     from .thirdpartydatarequest import (
@@ -216,8 +212,6 @@ __all__ = [
     "RealTimeConversionEventLineItemTypedDict",
     "RealTimeConversionEventsPrivacySetting",
     "RealTimeConversionEventsPrivacySettingTypedDict",
-    "StringStringValueTuple",
-    "StringStringValueTupleTypedDict",
     "ThirdPartyData",
     "ThirdPartyDataItem",
     "ThirdPartyDataItemTypedDict",
@@ -310,8 +304,6 @@ _dynamic_imports: dict[str, str] = {
     "RealTimeConversionEventLineItemTypedDict": ".realtimeconversioneventlineitem",
     "RealTimeConversionEventsPrivacySetting": ".realtimeconversioneventsprivacysetting",
     "RealTimeConversionEventsPrivacySettingTypedDict": ".realtimeconversioneventsprivacysetting",
-    "StringStringValueTuple": ".stringstringvaluetuple",
-    "StringStringValueTupleTypedDict": ".stringstringvaluetuple",
     "ThirdPartyData": ".thirdpartydata",
     "ThirdPartyDataTypedDict": ".thirdpartydata",
     "ThirdPartyDataItem": ".thirdpartydataitem",

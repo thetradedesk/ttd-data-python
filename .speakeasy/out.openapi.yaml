@@ -605,7 +605,12 @@ components:
         UserIdArray:
           type: "array"
           items:
-            $ref: "#/components/schemas/StringStringValueTuple"
+            maxItems: 2
+            minItems: 2
+            type: "array"
+            items:
+              type: "string"
+          description: "Array of [type, id] pairs."
           nullable: true
         CookieMappingPartnerId:
           type: "string"
