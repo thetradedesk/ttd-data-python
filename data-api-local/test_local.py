@@ -484,12 +484,138 @@ def test_model_validation():
 
 
 # ============================================================================
-# Test 9: DataOrigins - Advertiser Endpoint
+# Test 9: DataOrigins Hook - default injected when not provided
+# ============================================================================
+
+def test_data_origins_hook_default():
+    """Verify the BeforeRequestHook injects ttd_data_sdk when data_origins is not provided."""
+    import json
+    import httpx as _httpx
+
+    print_section("Test 9: DataOrigins Hook - default injection (no data_origins passed)")
+
+    # Shared dict that CapturingTransport writes into so we can inspect the
+    # outgoing request body after the SDK call completes.
+    captured = {}
+
+    # Replace httpx's real network transport with a mock to capture the request
+    # but does not actually send a request. Returns a 200 to prevent the SDK
+    # from raising an exception. Use captured request to verify appropriate
+    # setting of DataOrigins.
+    class CapturingTransport(_httpx.BaseTransport):
+        def handle_request(self, request):
+            captured["body"] = json.loads(request.content)
+            return _httpx.Response(200, json={"ProcessedLines": 1, "FailedLines": None})
+
+    try:
+        http_client = _httpx.Client(transport=CapturingTransport())
+        with DataClient(server_url=SERVER_URL, client=http_client) as client:
+            client.advertiser.ingest_advertiser_data(
+                advertiser_id=ADVERTISER_ID,
+                ttd_auth=TTD_AUTH_TOKEN or "test",
+                items=[
+                    models.AdvertiserDataItem(
+                        tdid=SAMPLE_TDID,
+                        data=[models.AdvertiserData(name="hook_test_segment")],
+                    )
+                ],
+                # NOTE: data_origins intentionally omitted — the hook should inject ttd_data_sdk.
+            )
+
+        # Inspect what the hook wrote into the request body.
+        data_origin_list = captured.get("body", {}).get("DataOrigins", [])
+        ids = [origin.get("Id") for origin in data_origin_list]
+
+        if "ttd_data_sdk" not in ids:
+            print_error(f"Expected ttd_data_sdk in DataOrigins but got: {data_origin_list}")
+            return False
+
+        print_success(f"Hook correctly injected DataOrigins: {data_origin_list}")
+        return True
+
+    except Exception as e:
+        print_error(f"Unexpected error: {e}")
+        return False
+
+
+# ============================================================================
+# Test 10: DataOrigins Hook - ttd_data_sdk appended when caller provides origins
+# ============================================================================
+
+def test_data_origins_hook_append():
+    """Verify the BeforeRequestHook appends ttd_data_sdk when data_origins is already provided."""
+    import json
+    import httpx as _httpx
+
+    print_section("Test 10: DataOrigins Hook - append to caller-provided origins")
+
+    # Shared dict that CapturingTransport writes into so we can inspect the
+    # outgoing request body after the SDK call completes.
+    captured = {}
+
+    # Replace httpx's real network transport with a mock to capture the request
+    # but does not actually send a request. Returns a 200 to prevent the SDK
+    # from raising an exception. Use captured request to verify appropriate
+    # setting of DataOrigins.
+    class CapturingTransport(_httpx.BaseTransport):
+        def handle_request(self, request):
+            captured["body"] = json.loads(request.content)
+            return _httpx.Response(200, json={"ProcessedLines": 1, "FailedLines": None})
+
+    try:
+        http_client = _httpx.Client(transport=CapturingTransport())
+        with DataClient(server_url=SERVER_URL, client=http_client) as client:
+            client.advertiser.ingest_advertiser_data(
+                advertiser_id=ADVERTISER_ID,
+                ttd_auth=TTD_AUTH_TOKEN or "test",
+                items=[
+                    models.AdvertiserDataItem(
+                        tdid=SAMPLE_TDID,
+                        data=[models.AdvertiserData(name="hook_test_segment")],
+                    )
+                ],
+                # Simulates ttd-databricks-sdk passing its own origin —
+                # the hook should append ttd_data_sdk without removing this.
+                data_origins=[
+                    models.DataOrigin(id="ttd_databricks_sdk", type=models.DataOriginType.INTEGRATION)
+                ],
+            )
+
+        # Inspect what the hook produced — both origins should be present.
+        data_origin_list = captured.get("body", {}).get("DataOrigins", [])
+        ids = [origin.get("Id") for origin in data_origin_list]
+
+        if "ttd_databricks_sdk" not in ids:
+            print_error(f"Expected ttd_databricks_sdk in DataOrigins but got: {data_origin_list}")
+            return False
+
+        if "ttd_data_sdk" not in ids:
+            print_error(f"Expected ttd_data_sdk to be appended but got: {data_origin_list}")
+            return False
+
+        if len(data_origin_list) != 2:
+            print_error(f"Expected exactly 2 DataOrigins entries but got: {data_origin_list}")
+            return False
+
+        if ids != ["ttd_databricks_sdk", "ttd_data_sdk"]:
+            print_error(f"Expected order [ttd_databricks_sdk, ttd_data_sdk] but got: {ids}")
+            return False
+
+        print_success(f"Hook correctly appended DataOrigins: {data_origin_list}")
+        return True
+
+    except Exception as e:
+        print_error(f"Unexpected error: {e}")
+        return False
+
+
+# ============================================================================
+# Test 11: DataOrigins - Advertiser Endpoint
 # ============================================================================
 
 def test_data_origins_advertiser():
     """Test advertiser data ingestion with explicit DataOrigins set."""
-    print_section("Test 9: DataOrigins Field - /data/advertiser")
+    print_section("Test 11: DataOrigins Field - /data/advertiser")
 
     if not TTD_AUTH_TOKEN:
         print_error("TTD_AUTH_TOKEN not set. Skipping this test.")
@@ -666,6 +792,8 @@ def main():
         results["Basic Data Ingestion"] = test_basic_data_ingestion()
         results["Advanced Data Ingestion"] = test_advanced_data_ingestion()
         results["Multiple User IDs"] = test_multiple_user_ids()
+        results["DataOrigins Hook - Default"] = test_data_origins_hook_default()
+        results["DataOrigins Hook - Append"] = test_data_origins_hook_append()
         results["DataOrigins - Advertiser"] = test_data_origins_advertiser()
         results["DataOrigins - ThirdParty"] = test_data_origins_thirdparty()
         results["DataOrigins - Offline Conversion"] = test_data_origins_offline_conversion()
