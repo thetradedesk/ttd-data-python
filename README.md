@@ -26,7 +26,6 @@ Developer-friendly & type-safe Python SDK specifically catered to leverage *ttd-
   * [Available Resources and Operations](#available-resources-and-operations)
   * [Retries](#retries)
   * [Error Handling](#error-handling)
-  * [Server Selection](#server-selection)
   * [Custom HTTP Client](#custom-http-client)
   * [Resource Management](#resource-management)
   * [Debugging](#debugging)
@@ -299,33 +298,6 @@ with DataClient() as data_client:
 \* Check [the method documentation](#available-resources-and-operations) to see if the error is applicable.
 <!-- End Error Handling [errors] -->
 
-<!-- Start Server Selection [server] -->
-## Server Selection
-
-### Override Server URL Per-Client
-
-The default server can be overridden globally by passing a URL to the `server_url: str` optional parameter when initializing the SDK client instance. For example:
-
-
-### Override Server URL Per-Operation
-
-The server URL can also be overridden on a per-operation basis, provided a server list was specified for the operation. For example:
-```python
-from ttd_data import DataClient
-
-
-with DataClient() as data_client:
-
-    res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>", server_url="https://usw-data.adsrvr.org")
-
-    assert res.advertiser_data_server_response is not None
-
-    # Handle response
-    print(res.advertiser_data_server_response)
-
-```
-<!-- End Server Selection [server] -->
-
 <!-- Start Custom HTTP Client [http-client] -->
 ## Custom HTTP Client
 
@@ -441,7 +413,7 @@ from ttd_data import DataClient
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
-s = DataClient(debug_logger=logging.getLogger("ttd_data"))
+s = DataClient(server_url="https://example.com", debug_logger=logging.getLogger("ttd_data"))
 ```
 
 You can also enable a default debug logger by setting an environment variable `TTD_DATA_DEBUG` to true.

@@ -8,10 +8,9 @@ from .utils.retries import RetryConfig
 import httpx
 import importlib
 import sys
-from ttd_data import utils
 from ttd_data._hooks import SDKHooks
 from ttd_data.types import OptionalNullable, UNSET
-from typing import Dict, Optional, TYPE_CHECKING, cast
+from typing import Optional, TYPE_CHECKING, cast
 import weakref
 
 if TYPE_CHECKING:
@@ -35,8 +34,6 @@ class DataClient(BaseSDK):
 
     def __init__(
         self,
-        server_idx: Optional[int] = None,
-        url_params: Optional[Dict[str, str]] = None,
         server_url: Optional[str] = None,
         client: Optional[HttpClient] = None,
         async_client: Optional[AsyncHttpClient] = None,
@@ -75,10 +72,6 @@ class DataClient(BaseSDK):
             type(async_client), AsyncHttpClient
         ), "The provided async_client must implement the AsyncHttpClient protocol."
 
-        if server_url is not None:
-            if url_params is not None:
-                server_url = utils.template_url(server_url, url_params)
-
         BaseSDK.__init__(
             self,
             SDKConfiguration(
@@ -87,7 +80,6 @@ class DataClient(BaseSDK):
                 async_client=async_client,
                 async_client_supplied=async_client_supplied,
                 server_url=server_url,
-                server_idx=server_idx,
                 retry_config=retry_config,
                 timeout_ms=timeout_ms,
                 debug_logger=debug_logger,

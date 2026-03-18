@@ -438,6 +438,14 @@ components:
         DataLoadTraceId:
           type: "string"
           nullable: true
+        DataOrigins:
+          type: array
+          items:
+            $ref: "#/components/schemas/DataOrigin"
+          nullable: true
+          default:
+            - Type: "Integration"
+              Id: "ttd_data_sdk"
       additionalProperties: false
     AdvertiserDataResponseErrorCode:
       enum:
@@ -711,6 +719,14 @@ components:
         DataLoadTraceId:
           type: "string"
           nullable: true
+        DataOrigins:
+          type: array
+          items:
+            $ref: "#/components/schemas/DataOrigin"
+          nullable: true
+          default:
+            - Type: "Integration"
+              Id: "ttd_data_sdk"
       additionalProperties: false
     OfflineConversionDataResponseErrorCode:
       enum:
@@ -940,6 +956,14 @@ components:
         IsUserIdAlreadyHashed:
           type: "boolean"
           default: false
+        DataOrigins:
+          type: array
+          items:
+            $ref: "#/components/schemas/DataOrigin"
+          nullable: true
+          default:
+            - Type: "Integration"
+              Id: "ttd_data_sdk"
       additionalProperties: false
     ThirdPartyDataResponseErrorCode:
       enum:
@@ -1023,6 +1047,21 @@ components:
             $ref: "#/components/schemas/ThirdPartyDsrFailedLine"
           nullable: true
       additionalProperties: false
-servers:
-  - url: https://usw-data.adsrvr.org
-    description: US West Data Server
+    DataOriginType:
+      type: string
+      enum:
+        - "Advertiser"
+        - "DataProvider"
+        - "Integration"
+        - "Onboarder"
+    DataOrigin:
+      required:
+        - "Id"
+        - "Type"
+      type: object
+      properties:
+        Id:
+          type: string
+        Type:
+          $ref: "#/components/schemas/DataOriginType"
+      additionalProperties: false

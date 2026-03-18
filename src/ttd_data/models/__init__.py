@@ -32,6 +32,8 @@ if TYPE_CHECKING:
         AdvertiserDsrResponse,
         AdvertiserDsrResponseTypedDict,
     )
+    from .dataorigin import DataOrigin, DataOriginTypedDict
+    from .dataorigintype import DataOriginType
     from .datasubjectrequestadvertiserdataop import (
         DATA_SUBJECT_REQUEST_ADVERTISER_DATA_OP_SERVERS,
         DataSubjectRequestAdvertiserDataRequest,
@@ -160,6 +162,9 @@ __all__ = [
     "DATA_SUBJECT_REQUEST_ADVERTISER_DATA_OP_SERVERS",
     "DATA_SUBJECT_REQUEST_MERCHANT_DATA_OP_SERVERS",
     "DATA_SUBJECT_REQUEST_THIRD_PARTY_DATA_OP_SERVERS",
+    "DataOrigin",
+    "DataOriginType",
+    "DataOriginTypedDict",
     "DataSubjectRequestAdvertiserDataRequest",
     "DataSubjectRequestAdvertiserDataRequestTypedDict",
     "DataSubjectRequestAdvertiserDataResponse",
@@ -249,6 +254,9 @@ _dynamic_imports: dict[str, str] = {
     "AdvertiserDsrRequestTypedDict": ".advertiserdsrrequest",
     "AdvertiserDsrResponse": ".advertiserdsrresponse",
     "AdvertiserDsrResponseTypedDict": ".advertiserdsrresponse",
+    "DataOrigin": ".dataorigin",
+    "DataOriginTypedDict": ".dataorigin",
+    "DataOriginType": ".dataorigintype",
     "DATA_SUBJECT_REQUEST_ADVERTISER_DATA_OP_SERVERS": ".datasubjectrequestadvertiserdataop",
     "DataSubjectRequestAdvertiserDataRequest": ".datasubjectrequestadvertiserdataop",
     "DataSubjectRequestAdvertiserDataRequestTypedDict": ".datasubjectrequestadvertiserdataop",
