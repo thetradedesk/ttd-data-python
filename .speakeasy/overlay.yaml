@@ -31,9 +31,6 @@ actions:
         items:
           $ref: "#/components/schemas/DataOrigin"
         nullable: true
-        default:
-          - Type: "Integration"
-            Id: "ttd_data_sdk"
 
   - target: "$.components.schemas.ThirdPartyDataRequest.properties"
     update:
@@ -42,9 +39,6 @@ actions:
         items:
           $ref: "#/components/schemas/DataOrigin"
         nullable: true
-        default:
-          - Type: "Integration"
-            Id: "ttd_data_sdk"
 
   - target: "$.components.schemas.OfflineConversionDataRequest.properties"
     update:
@@ -53,6 +47,3 @@ actions:
         items:
           $ref: "#/components/schemas/DataOrigin"
         nullable: true
-        default:
-          - Type: "Integration"
-            Id: "ttd_data_sdk"
