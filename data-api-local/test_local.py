@@ -36,8 +36,9 @@ from ttd_data.utils import BackoffStrategy, RetryConfig
 # calls will skip or show expected network errors. Use a real URL to test API calls.
 SERVER_URL = os.getenv("TTD_DATA_SERVER_URL", "https://usw-data.adsrvr.org")
 TTD_AUTH_TOKEN = os.getenv("TTD_AUTH_TOKEN", "")
-ADVERTISER_ID = os.getenv("TEST_ADVERTISER_ID", "test-advertiser-123")
-DATA_PROVIDER_ID = os.getenv("TEST_DATA_PROVIDER_ID", None)
+ADVERTISER_ID = os.getenv("TEST_ADVERTISER_ID", "xjagv7s")
+DATA_PROVIDER_ID = os.getenv("TEST_DATA_PROVIDER_ID", "eltoro")
+TRACKING_TAG_ID = os.getenv("TEST_TRACKING_TAG_ID", "l1ustb2")
 
 # Sample User IDs for testing different ID types
 # You can override these with environment variables
@@ -128,11 +129,11 @@ def test_basic_data_ingestion():
             )
             
             print_success("Data ingestion completed")
-            print_info(f"Success: {response.success}")
-            if response.processed_lines is not None:
-                print_info(f"Processed lines: {response.processed_lines}")
-            if response.failed_lines is not None:
-                print_info(f"Failed lines: {response.failed_lines}")
+            server_response = response.advertiser_data_server_response
+            if server_response and server_response.failed_lines:
+                print_info(f"Failed lines: {server_response.failed_lines}")
+            else:
+                print_info("No failed lines")
             
             return True
             
@@ -208,9 +209,11 @@ def test_advanced_data_ingestion():
             response = client.advertiser.ingest_advertiser_data(**kwargs)
             
             print_success("Advanced data ingestion completed")
-            print_info(f"Success: {response.success}")
-            if response.processed_lines is not None:
-                print_info(f"Processed lines: {response.processed_lines}")
+            server_response = response.advertiser_data_server_response
+            if server_response and server_response.failed_lines:
+                print_info(f"Failed lines: {server_response.failed_lines}")
+            else:
+                print_info("No failed lines")
             
             return True
             
@@ -282,7 +285,11 @@ def test_multiple_user_ids():
             )
             
             print_success("Multiple ID types ingestion completed")
-            print_info(f"Processed lines: {response.processed_lines}")
+            server_response = response.advertiser_data_server_response
+            if server_response and server_response.failed_lines:
+                print_info(f"Failed lines: {server_response.failed_lines}")
+            else:
+                print_info("No failed lines")
             
             return True
             
@@ -315,6 +322,7 @@ def test_error_handling():
             try:
                 response = client.advertiser.ingest_advertiser_data(
                     advertiser_id=ADVERTISER_ID,
+                    ttd_auth="",
                     items=[
                         models.AdvertiserDataItem(
                             tdid="test",
@@ -409,7 +417,11 @@ async def test_async_operations():
             )
             
             print_success("Async data ingestion completed")
-            print_info(f"Success: {response.success}")
+            server_response = response.advertiser_data_server_response
+            if server_response and server_response.failed_lines:
+                print_info(f"Failed lines: {server_response.failed_lines}")
+            else:
+                print_info("No failed lines")
             return True
             
     except ImportError:
@@ -472,6 +484,155 @@ def test_model_validation():
 
 
 # ============================================================================
+# Test 9: DataOrigins - Advertiser Endpoint
+# ============================================================================
+
+def test_data_origins_advertiser():
+    """Test advertiser data ingestion with explicit DataOrigins set."""
+    print_section("Test 9: DataOrigins Field - /data/advertiser")
+
+    if not TTD_AUTH_TOKEN:
+        print_error("TTD_AUTH_TOKEN not set. Skipping this test.")
+        return False
+
+    try:
+        with DataClient(server_url=SERVER_URL) as client:
+            data_origin = models.DataOrigin(
+                id="test_ttd_data",
+                type=models.DataOriginType.INTEGRATION,
+            )
+            print_info(f"DataOrigins: [{{Type: '{data_origin.type}', Id: '{data_origin.id}'}}]")
+
+            response = client.advertiser.ingest_advertiser_data(
+                advertiser_id=ADVERTISER_ID,
+                ttd_auth=TTD_AUTH_TOKEN,
+                items=[
+                    models.AdvertiserDataItem(
+                        tdid=SAMPLE_TDID,
+                        data=[models.AdvertiserData(name="data_origins_segment")]
+                    )
+                ],
+                data_origins=[data_origin],
+            )
+
+            print_success("Advertiser ingestion with DataOrigins completed")
+            server_response = response.advertiser_data_server_response
+            if server_response and server_response.failed_lines:
+                print_info(f"Failed lines: {server_response.failed_lines}")
+            else:
+                print_info("No failed lines")
+            return True
+
+    except errors.AdvertiserDataServerResponseError as e:
+        print_error(f"Server returned error: {e.message}")
+        print_error(f"Status code: {e.status_code}")
+        return False
+    except errors.APIError as e:
+        print_error(f"API error: {str(e)}")
+        return False
+    except Exception as e:
+        print_error(f"Unexpected error: {e}")
+        return False
+
+
+# ============================================================================
+# Test 10: DataOrigins - ThirdParty Endpoint
+# ============================================================================
+
+def test_data_origins_thirdparty():
+    """Test third-party data ingestion with explicit DataOrigins set."""
+    print_section("Test 10: DataOrigins Field - /data/thirdparty")
+
+    if not TTD_AUTH_TOKEN:
+        print_error("TTD_AUTH_TOKEN not set. Skipping this test.")
+        return False
+
+    try:
+        with DataClient(server_url=SERVER_URL) as client:
+            data_origin = models.DataOrigin(
+                id="test_ttd_data",
+                type=models.DataOriginType.INTEGRATION,
+            )
+            print_info(f"DataOrigins: [{{Type: '{data_origin.type}', Id: '{data_origin.id}'}}]")
+
+            response = client.third_party.ingest_third_party_data(
+                data_provider_id=DATA_PROVIDER_ID,
+                ttd_auth=TTD_AUTH_TOKEN,
+                items=[
+                    models.ThirdPartyDataItem(
+                        tdid=SAMPLE_TDID,
+                        data=[models.ThirdPartyData(name="data_origins_segment")]
+                    )
+                ],
+                data_origins=[data_origin],
+            )
+
+            print_success("ThirdParty ingestion with DataOrigins completed")
+            server_response = response.third_party_data_server_response
+            if server_response and server_response.failed_lines:
+                print_info(f"Failed lines: {server_response.failed_lines}")
+            else:
+                print_info("No failed lines")
+            return True
+
+    except errors.APIError as e:
+        print_error(f"API error: {str(e)}")
+        return False
+    except Exception as e:
+        print_error(f"Unexpected error: {e}")
+        return False
+
+
+# ============================================================================
+# Test 11: DataOrigins - Offline Conversion Endpoint
+# ============================================================================
+
+def test_data_origins_offline_conversion():
+    """Test offline conversion data ingestion with explicit DataOrigins set."""
+    print_section("Test 11: DataOrigins Field - /providerapi/offlineconversion")
+
+    if not TTD_AUTH_TOKEN:
+        print_error("TTD_AUTH_TOKEN not set. Skipping this test.")
+        return False
+
+    try:
+        with DataClient(server_url=SERVER_URL) as client:
+            data_origin = models.DataOrigin(
+                id="test_ttd_data",
+                type=models.DataOriginType.INTEGRATION,
+            )
+            print_info(f"DataOrigins: [{{Type: '{data_origin.type}', Id: '{data_origin.id}'}}]")
+
+            response = client.offline_conversion.ingest_offline_conversion_data(
+                data_provider_id=DATA_PROVIDER_ID,
+                ttd_auth=TTD_AUTH_TOKEN,
+                items=[
+                    models.OfflineConversionDataItem(
+                        tracking_tag_id=TRACKING_TAG_ID,
+                        timestamp_utc=datetime.now(timezone.utc),
+                        tdid=SAMPLE_TDID,
+                    )
+                ],
+                data_origins=[data_origin],
+            )
+
+            print_success("Offline conversion ingestion with DataOrigins completed")
+            server_response = response.offline_conversion_data_server_response
+            if server_response and server_response.failed_lines:
+                print_info(f"Failed lines: {server_response.failed_lines}")
+            else:
+                print_info("No failed lines")
+            return True
+
+    except errors.APIError as e:
+        print_error(f"API error: {str(e)}")
+        return False
+    except Exception as e:
+        print_error(f"Unexpected error: {e}")
+        return False
+
+
+# ============================================================================
 # Main Test Runner
 # ============================================================================
 
@@ -505,7 +666,10 @@ def main():
         results["Basic Data Ingestion"] = test_basic_data_ingestion()
         results["Advanced Data Ingestion"] = test_advanced_data_ingestion()
         results["Multiple User IDs"] = test_multiple_user_ids()
-        
+        results["DataOrigins - Advertiser"] = test_data_origins_advertiser()
+        results["DataOrigins - ThirdParty"] = test_data_origins_thirdparty()
+        results["DataOrigins - Offline Conversion"] = test_data_origins_offline_conversion()
+
         # Async test (optional)
         try:
             import asyncio

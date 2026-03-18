@@ -1,10 +1,58 @@
 overlay: 1.0.0
 info:
-  title: Add server URL
+  title: Add DataOrigins field
   version: 1.0.0
 actions:
-  - target: "$"
+  - target: "$.components.schemas"
     update:
-      servers:
-        - url: https://usw-data.adsrvr.org
-          description: US West Data Server
+      DataOriginType:
+        type: string
+        enum:
+          - "Advertiser"
+          - "DataProvider"
+          - "Integration"
+          - "Onboarder"
+      DataOrigin:
+        required:
+          - "Id"
+          - "Type"
+        type: object
+        properties:
+          Id:
+            type: string
+          Type:
+            $ref: "#/components/schemas/DataOriginType"
+        additionalProperties: false
+
+  - target: "$.components.schemas.AdvertiserDataRequest.properties"
+    update:
+      DataOrigins:
+        type: array
+        items:
+          $ref: "#/components/schemas/DataOrigin"
+        nullable: true
+        default:
+          - Type: "Integration"
+            Id: "ttd_data_sdk"
+
+  - target: "$.components.schemas.ThirdPartyDataRequest.properties"
+    update:
+      DataOrigins:
+        type: array
+        items:
+          $ref: "#/components/schemas/DataOrigin"
+        nullable: true
+        default:
+          - Type: "Integration"
+            Id: "ttd_data_sdk"
+
+  - target: "$.components.schemas.OfflineConversionDataRequest.properties"
+    update:
+      DataOrigins:
+        type: array
+        items:
+          $ref: "#/components/schemas/DataOrigin"
+        nullable: true
+        default:
+          - Type: "Integration"
+            Id: "ttd_data_sdk"
