@@ -17,6 +17,7 @@ generation:
     securityFeb2025: true
     sharedErrorComponentsApr2025: true
     sharedNestedComponentsJan2026: true
+    nameOverrideFeb2026: false
   auth:
     oAuth2ClientCredentialsEnabled: true
     oAuth2PasswordEnabled: true
@@ -54,11 +55,13 @@ python:
   envVarPrefix: TTD_DATA_LOCAL
   fixFlags:
     asyncPaginationSep2025: true
+    conflictResistantModelImportsFeb2026: true
     responseRequiredSep2024: true
   flattenGlobalSecurity: true
   flattenRequests: true
   flatteningOrder: parameters-first
   forwardCompatibleEnumsByDefault: false
+  forwardCompatibleUnionsByDefault: tagged-only
   imports:
     option: openapi
     paths:
