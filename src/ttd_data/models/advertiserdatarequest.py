@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 from .advertiserdataitem import AdvertiserDataItem, AdvertiserDataItemTypedDict
+from .dataorigin import DataOrigin, DataOriginTypedDict
 import pydantic
 from pydantic import model_serializer
 from ttd_data.types import BaseModel, Nullable, OptionalNullable, UNSET, UNSET_SENTINEL
@@ -14,6 +15,7 @@ class AdvertiserDataRequestTypedDict(TypedDict):
     data_provider_id: NotRequired[Nullable[str]]
     items: NotRequired[Nullable[List[AdvertiserDataItemTypedDict]]]
     data_load_trace_id: NotRequired[Nullable[str]]
+    data_origins: NotRequired[Nullable[List[DataOriginTypedDict]]]
 
 
 class AdvertiserDataRequest(BaseModel):
@@ -31,10 +33,18 @@ class AdvertiserDataRequest(BaseModel):
         OptionalNullable[str], pydantic.Field(alias="DataLoadTraceId")
     ] = UNSET
 
+    data_origins: Annotated[
+        OptionalNullable[List[DataOrigin]], pydantic.Field(alias="DataOrigins")
+    ] = UNSET
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = set(["DataProviderId", "Items", "DataLoadTraceId"])
-        nullable_fields = set(["DataProviderId", "Items", "DataLoadTraceId"])
+        optional_fields = set(
+            ["DataProviderId", "Items", "DataLoadTraceId", "DataOrigins"]
+        )
+        nullable_fields = set(
+            ["DataProviderId", "Items", "DataLoadTraceId", "DataOrigins"]
+        )
         serialized = handler(self)
         m = {}
 

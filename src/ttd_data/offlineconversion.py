@@ -22,6 +22,9 @@ class OfflineConversion(BaseSDK):
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
+        data_origins: OptionalNullable[
+            Union[List[models.DataOrigin], List[models.DataOriginTypedDict]]
+        ] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -34,6 +37,7 @@ class OfflineConversion(BaseSDK):
         :param user_id_array_metadata_format:
         :param items:
         :param data_load_trace_id:
+        :param data_origins:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -58,6 +62,9 @@ class OfflineConversion(BaseSDK):
                     items, OptionalNullable[List[models.OfflineConversionDataItem]]
                 ),
                 data_load_trace_id=data_load_trace_id,
+                data_origins=utils.get_pydantic_model(
+                    data_origins, OptionalNullable[List[models.DataOrigin]]
+                ),
             ),
         )
 
@@ -141,6 +148,9 @@ class OfflineConversion(BaseSDK):
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
+        data_origins: OptionalNullable[
+            Union[List[models.DataOrigin], List[models.DataOriginTypedDict]]
+        ] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -153,6 +163,7 @@ class OfflineConversion(BaseSDK):
         :param user_id_array_metadata_format:
         :param items:
         :param data_load_trace_id:
+        :param data_origins:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -177,6 +188,9 @@ class OfflineConversion(BaseSDK):
                     items, OptionalNullable[List[models.OfflineConversionDataItem]]
                 ),
                 data_load_trace_id=data_load_trace_id,
+                data_origins=utils.get_pydantic_model(
+                    data_origins, OptionalNullable[List[models.DataOrigin]]
+                ),
             ),
         )
 

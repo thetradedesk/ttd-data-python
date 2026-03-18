@@ -22,6 +22,9 @@ class ThirdParty(BaseSDK):
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
         is_user_id_already_hashed: Optional[bool] = False,
+        data_origins: OptionalNullable[
+            Union[List[models.DataOrigin], List[models.DataOriginTypedDict]]
+        ] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -34,6 +37,7 @@ class ThirdParty(BaseSDK):
         :param items:
         :param data_load_trace_id:
         :param is_user_id_already_hashed:
+        :param data_origins:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -58,6 +62,9 @@ class ThirdParty(BaseSDK):
                 ),
                 data_load_trace_id=data_load_trace_id,
                 is_user_id_already_hashed=is_user_id_already_hashed,
+                data_origins=utils.get_pydantic_model(
+                    data_origins, OptionalNullable[List[models.DataOrigin]]
+                ),
             ),
         )
 
@@ -139,6 +146,9 @@ class ThirdParty(BaseSDK):
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
         is_user_id_already_hashed: Optional[bool] = False,
+        data_origins: OptionalNullable[
+            Union[List[models.DataOrigin], List[models.DataOriginTypedDict]]
+        ] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -151,6 +161,7 @@ class ThirdParty(BaseSDK):
         :param items:
         :param data_load_trace_id:
         :param is_user_id_already_hashed:
+        :param data_origins:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -175,6 +186,9 @@ class ThirdParty(BaseSDK):
                 ),
                 data_load_trace_id=data_load_trace_id,
                 is_user_id_already_hashed=is_user_id_already_hashed,
+                data_origins=utils.get_pydantic_model(
+                    data_origins, OptionalNullable[List[models.DataOrigin]]
+                ),
             ),
         )
 
