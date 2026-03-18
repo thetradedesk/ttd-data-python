@@ -597,6 +597,10 @@ def test_data_origins_hook_append():
             print_error(f"Expected exactly 2 DataOrigins entries but got: {data_origin_list}")
             return False
 
+        if ids != ["ttd_databricks_sdk", "ttd_data_sdk"]:
+            print_error(f"Expected order [ttd_databricks_sdk, ttd_data_sdk] but got: {ids}")
+            return False
+
         print_success(f"Hook correctly appended DataOrigins: {data_origin_list}")
         return True
 
