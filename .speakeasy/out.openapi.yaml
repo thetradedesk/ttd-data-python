@@ -443,9 +443,6 @@ components:
           items:
             $ref: "#/components/schemas/DataOrigin"
           nullable: true
-          default:
-            - Type: "Integration"
-              Id: "ttd_data_sdk"
       additionalProperties: false
     AdvertiserDataResponseErrorCode:
       enum:
@@ -724,9 +721,6 @@ components:
           items:
             $ref: "#/components/schemas/DataOrigin"
           nullable: true
-          default:
-            - Type: "Integration"
-              Id: "ttd_data_sdk"
       additionalProperties: false
     OfflineConversionDataResponseErrorCode:
       enum:
@@ -961,9 +955,6 @@ components:
           items:
             $ref: "#/components/schemas/DataOrigin"
           nullable: true
-          default:
-            - Type: "Integration"
-              Id: "ttd_data_sdk"
       additionalProperties: false
     ThirdPartyDataResponseErrorCode:
       enum:
