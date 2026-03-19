@@ -1,0 +1,35 @@
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint & type check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: uv sync --group dev
+
+      - name: mypy
+        run: uv run python -m mypy src/ttd_data
+
+      - name: pyright
+        run: uv run python -m pyright src/ttd_data
+
+      - name: pylint
+        run: uv run python -m pylint -j=0 src/ttd_data
