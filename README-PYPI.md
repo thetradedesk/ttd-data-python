@@ -6,14 +6,23 @@ Developer-friendly & type-safe Python SDK specifically catered to leverage *ttd-
 [![License: MIT](https://img.shields.io/badge/LICENSE_//_MIT-3b5bdb?style=for-the-badge&labelColor=eff6ff)](https://mit-license.org/)
 
 
-<br /><br />
-> [!IMPORTANT]
-> This SDK is not yet ready for production use. To complete setup please follow the steps outlined in your [workspace](https://app.speakeasy.com/org/thetradedesk/data-api). Delete this section before > publishing to a package manager.
+
 
 <!-- Start Summary [summary] -->
 ## Summary
 
+TTD Data API: Python SDK for The Trade Desk Data API. Provides operations for ingesting advertiser data,
+third-party data, and offline conversions, as well as handling data subject deletion and opt-out requests.
 
+For more information, see the official API documentation:
+- [Advertiser targeting data (1PD)](https://open.thetradedesk.com/advertiser/docsApp/GuidesAdvertiser/data/doc/post-data-advertiser-firstparty)
+- [Third-party targeting data (3PD)](https://open.thetradedesk.com/provider/docsApp/GuidesProvider/audience/doc/post-data-thirdparty)
+- [Offline conversions (CAPI)](https://open.thetradedesk.com/advertiser/docsApp/GuidesAdvertiser/data/doc/post-providerapi-offlineconversion)
+
+Deletions and opt-outs:
+- [Advertiser](https://open.thetradedesk.com/advertiser/docsApp/GuidesAdvertiser/data/doc/post-data-deletion-optout-advertiser)
+- [Third party](https://open.thetradedesk.com/provider/docsApp/GuidesProvider/audience/doc/post-data-deletion-optout-thirdparty)
+- [Merchant](https://open.thetradedesk.com/provider/docsApp/GuidesProvider/retail/doc/post-data-deletion-optout-merchant)
 <!-- End Summary [summary] -->
 
 <!-- Start Table of Contents [toc] -->
@@ -111,49 +120,151 @@ Generally, the SDK will work well with most IDEs out of the box. However, when u
 - [PyCharm Pydantic Plugin](https://docs.pydantic.dev/latest/integrations/pycharm/)
 <!-- End IDE Support [idesupport] -->
 
-<!-- Start SDK Example Usage [usage] -->
 ## SDK Example Usage
 
-### Example
+### 1. Advertiser targeting Data (1PD)
 
 ```python
-# Synchronous Example
-from ttd_data import DataClient
+from ttd_data import DataClient, models
 
+with DataClient() as client:
+    response = client.advertiser.ingest_advertiser_data(
+        ttd_auth=TTD_AUTH_TOKEN,
+        advertiser_id=ADVERTISER_ID,
+        items=[
+            models.AdvertiserDataItem(
+                tdid="<TDID>",
+                data=[
+                    models.AdvertiserData(name="loyalty_members"),
+                ],
+            )
+        ],
+    )
 
-with DataClient() as data_client:
-
-    res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
-
-    assert res.advertiser_data_server_response is not None
-
-    # Handle response
-    print(res.advertiser_data_server_response)
 ```
 
-</br>
+### 2. Third Party Targeting Data (3PD)
+
+```python
+from ttd_data import DataClient, models
+
+with DataClient() as client:
+    response = client.third_party.ingest_third_party_data(
+        ttd_auth=TTD_AUTH_TOKEN,
+        data_provider_id=DATA_PROVIDER_ID,
+        items=[
+            models.ThirdPartyDataItem(
+                tdid="<TDID>",
+                data=[
+                    models.ThirdPartyData(name="in_market_auto"),
+                ],
+            )
+        ],
+    )
+```
+
+### 3. Offline Conversions Data (CAPI)
+
+```python
+from ttd_data import DataClient, models
+
+with DataClient() as client:
+    response = client.offline_conversion.ingest_offline_conversion_data(
+        ttd_auth=TTD_AUTH_TOKEN,
+        data_provider_id=DATA_PROVIDER_ID,
+        items=[
+            models.OfflineConversionDataItem(
+                tracking_tag_id=TRACKING_TAG_ID,
+                timestamp_utc=datetime.now(timezone.utc),
+                tdid="<TDID>",
+            )
+        ],
+    )
+```
+
+### 4. Optouts and Deletion - Advertiser - Data Subject Request
+
+```python
+from ttd_data import DataClient, models
+
+with DataClient() as client:
+    response = client.deletion_opt_out.data_subject_request_advertiser_data(
+        ttd_auth=TTD_AUTH_TOKEN,
+        advertiser_id=ADVERTISER_ID,
+        request_type=models.PartnerDsrRequestType.DELETION,
+        items=[
+            models.PartnerDsrDataItem(tdid="<TDID>"),
+            models.PartnerDsrDataItem(daid="<DAID>"),
+            models.PartnerDsrDataItem(euid="<EUID>"),
+        ],
+    )
+```
+
+### 5. Optouts and Deletion - Data Provider - Data Subject Request
+
+```python
+from ttd_data import DataClient, models
+
+with DataClient() as client:
+    response = client.deletion_opt_out.data_subject_request_third_party_data(
+        ttd_auth=TTD_AUTH_TOKEN,
+        data_provider_id=DATA_PROVIDER_ID,
+        request_type=models.PartnerDsrRequestType.OPT_OUT,
+        items=[
+            models.PartnerDsrDataItem(tdid="<TDID>"),
+            models.PartnerDsrDataItem(ramp_id="<RAMP_ID>"),
+        ],
+    )
+```
+
+### 6. Optouts and Deletion - Merchant - Data Subject Request
+
+```python
+from ttd_data import DataClient, models
+
+with DataClient() as client:
+    response = client.deletion_opt_out.data_subject_request_merchant_data(
+        ttd_auth=TTD_AUTH_TOKEN,
+        merchant_id=MERCHANT_ID,
+        request_type=models.PartnerDsrRequestType.DELETION,
+        items=[
+            models.PartnerDsrDataItem(tdid="<TDID>"),
+        ],
+    )
+```
+
+
+### 7. Async usage
 
 The same SDK client can also be used to make asynchronous requests by importing asyncio.
 
 ```python
 # Asynchronous Example
 import asyncio
-from ttd_data import DataClient
+from ttd_data import DataClient, models
 
 async def main():
 
     async with DataClient() as data_client:
-
-        res = await data_client.advertiser.ingest_advertiser_data_async(ttd_auth="<value>", advertiser_id="<id>")
-
-        assert res.advertiser_data_server_response is not None
+        response = client.advertiser.ingest_advertiser_data(
+            ttd_auth=TTD_AUTH_TOKEN,
+            advertiser_id=ADVERTISER_ID,
+            items=[
+                models.AdvertiserDataItem(
+                    tdid="<TDID>",
+                    data=[
+                        models.AdvertiserData(name="loyalty_members"),
+                    ],
+                )
+            ],
+        )
 
         # Handle response
-        print(res.advertiser_data_server_response)
+        print(response.advertiser_data_server_response)
 
 asyncio.run(main())
 ```
-<!-- End SDK Example Usage [usage] -->
+<!-- No SDK Example Usage [usage] -->
 
 <!-- Start Available Resources and Operations [operations] -->
 ## Available Resources and Operations
