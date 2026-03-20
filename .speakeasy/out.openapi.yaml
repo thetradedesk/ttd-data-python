@@ -2,6 +2,19 @@ openapi: "3.0.4"
 info:
   title: "TTD Data API"
   version: "v0.1"
+  description: |
+    Python SDK for The Trade Desk Data API. Provides operations for ingesting advertiser data,
+    third-party data, and offline conversions, as well as handling data subject deletion and opt-out requests.
+
+    For more information, see the official API documentation:
+    - [Advertiser targeting data (1PD)](https://open.thetradedesk.com/advertiser/docsApp/GuidesAdvertiser/data/doc/post-data-advertiser-firstparty)
+    - [Third-party targeting data (3PD)](https://open.thetradedesk.com/provider/docsApp/GuidesProvider/audience/doc/post-data-thirdparty)
+    - [Offline conversions (CAPI)](https://open.thetradedesk.com/advertiser/docsApp/GuidesAdvertiser/data/doc/post-providerapi-offlineconversion)
+
+    Deletions and opt-outs:
+    - [Advertiser](https://open.thetradedesk.com/advertiser/docsApp/GuidesAdvertiser/data/doc/post-data-deletion-optout-advertiser)
+    - [Third party](https://open.thetradedesk.com/provider/docsApp/GuidesProvider/audience/doc/post-data-deletion-optout-thirdparty)
+    - [Merchant](https://open.thetradedesk.com/provider/docsApp/GuidesProvider/retail/doc/post-data-deletion-optout-merchant)
 paths:
   /data/advertiser:
     post:
