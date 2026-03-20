@@ -30,3 +30,7 @@ build/
 # Testing examples (don't commit)
 load_env.sh
 restructure.sh
+# AI
+.agents
+.claude
+.cursor
