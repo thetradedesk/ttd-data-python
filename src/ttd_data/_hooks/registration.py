@@ -1,4 +1,5 @@
 from .data_origins_hook import DataOriginsHook
+from .plain_text_error_normalizer import PlainTextErrorNormalizer
 from .types import Hooks
 
 
@@ -12,3 +13,4 @@ def init_hooks(hooks: Hooks):
     with an instance of a hook that implements that specific Hook interface
     Hooks are registered per SDK instance, and are valid for the lifetime of the SDK instance"""
     hooks.register_before_request_hook(DataOriginsHook())
+    hooks.register_after_error_hook(PlainTextErrorNormalizer())

@@ -38,6 +38,7 @@ pythonpath = ["src"]
 disable_error_code = "misc"
 explicit_package_bases = true
 mypy_path = "src"
+exclude = ["data-api-local"]
 
 [[tool.mypy.overrides]]
 module = "typing_inspect"
@@ -50,5 +51,6 @@ ignore_missing_imports = true
 [tool.pyright]
 venvPath = "."
 venv = ".venv"
+exclude = ["data-api-local", ".venv"]
 
 
