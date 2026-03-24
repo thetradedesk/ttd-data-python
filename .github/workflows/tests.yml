@@ -1,0 +1,35 @@
+name: Tests
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install -e ".[dev]" pytest pytest-asyncio
+
+      - name: Run unit and integration tests
+        run: pytest tests/unit tests/integration -v
+
+      - name: Run E2E tests
+        if: env.TTD_AUTH_TOKEN != ''
+        env:
+          TTD_AUTH_TOKEN: ${{ secrets.TTD_AUTH_TOKEN }}
+          TEST_ADVERTISER_ID: ${{ vars.TEST_ADVERTISER_ID }}
+          TEST_DATA_PROVIDER_ID: ${{ vars.TEST_DATA_PROVIDER_ID }}
+          TEST_TRACKING_TAG_ID: ${{ vars.TEST_TRACKING_TAG_ID }}
+          TEST_MERCHANT_ID: ${{ vars.TEST_MERCHANT_ID }}
+        run: pytest tests/e2e -v
