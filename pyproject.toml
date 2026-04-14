@@ -11,7 +11,10 @@ dependencies = [
     "pydantic >=2.11.2",
 ]
 urls.repository = "https://github.com/thetradedesk/ttd-data-python.git"
-license = { text = "map[name:The MIT License (MIT) shortName:MIT url:https://mit-license.org/]" }
+license = { text = "Apache-2.0" }
+classifiers = [
+    "License :: OSI Approved :: Apache Software License",
+]
 
 [dependency-groups]
 dev = [

@@ -73,9 +73,9 @@ python:
   inferUnionDiscriminators: true
   inputModelSuffix: input
   license:
-    name: The MIT License (MIT)
-    shortName: MIT
-    url: https://mit-license.org/
+    name: Apache License 2.0
+    shortName: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
   maxMethodParams: 999
   methodArguments: infer-optional-args
   moduleName: ""
