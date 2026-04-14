@@ -10,22 +10,15 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 
 
 class AdvertiserDsrFailedLineTypedDict(TypedDict):
+    advertiser_id: NotRequired[Nullable[str]]
+    data_provider_id: NotRequired[Nullable[str]]
     tdid: NotRequired[Nullable[str]]
     error_code: NotRequired[DsrErrorCode]
     message: NotRequired[Nullable[str]]
-    advertiser_id: NotRequired[Nullable[str]]
-    data_provider_id: NotRequired[Nullable[str]]
+    item_number: NotRequired[Nullable[str]]
 
 
 class AdvertiserDsrFailedLine(BaseModel):
-    tdid: Annotated[OptionalNullable[str], pydantic.Field(alias="TDID")] = UNSET
-
-    error_code: Annotated[Optional[DsrErrorCode], pydantic.Field(alias="ErrorCode")] = (
-        None
-    )
-
-    message: Annotated[OptionalNullable[str], pydantic.Field(alias="Message")] = UNSET
-
     advertiser_id: Annotated[
         OptionalNullable[str], pydantic.Field(alias="AdvertiserId")
     ] = UNSET
@@ -34,12 +27,33 @@ class AdvertiserDsrFailedLine(BaseModel):
         OptionalNullable[str], pydantic.Field(alias="DataProviderId")
     ] = UNSET
 
+    tdid: Annotated[OptionalNullable[str], pydantic.Field(alias="TDID")] = UNSET
+
+    error_code: Annotated[Optional[DsrErrorCode], pydantic.Field(alias="ErrorCode")] = (
+        None
+    )
+
+    message: Annotated[OptionalNullable[str], pydantic.Field(alias="Message")] = UNSET
+
+    item_number: Annotated[
+        OptionalNullable[str], pydantic.Field(alias="ItemNumber")
+    ] = UNSET
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
         optional_fields = set(
-            ["TDID", "ErrorCode", "Message", "AdvertiserId", "DataProviderId"]
+            [
+                "AdvertiserId",
+                "DataProviderId",
+                "TDID",
+                "ErrorCode",
+                "Message",
+                "ItemNumber",
+            ]
         )
-        nullable_fields = set(["TDID", "Message", "AdvertiserId", "DataProviderId"])
+        nullable_fields = set(
+            ["AdvertiserId", "DataProviderId", "TDID", "Message", "ItemNumber"]
+        )
         serialized = handler(self)
         m = {}
 

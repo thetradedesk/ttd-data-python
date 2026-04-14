@@ -1,6 +1,6 @@
 [project]
 name = "ttd-data"
-version = "0.1.5"
+version = "0.1.6"
 description = "Python Client SDK for TTD Data API."
 authors = [{ name = "Speakeasy" },]
 readme = "README-PYPI.md"
@@ -41,7 +41,6 @@ pythonpath = ["src"]
 disable_error_code = "misc"
 explicit_package_bases = true
 mypy_path = "src"
-exclude = ["data-api-local"]
 
 [[tool.mypy.overrides]]
 module = "typing_inspect"
@@ -54,6 +53,5 @@ ignore_missing_imports = true
 [tool.pyright]
 venvPath = "."
 venv = ".venv"
-exclude = ["data-api-local", ".venv"]
 
 

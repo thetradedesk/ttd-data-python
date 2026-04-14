@@ -485,18 +485,27 @@ components:
           type: "string"
           format: "uuid"
           nullable: true
+        DataName:
+          type: "string"
+          nullable: true
         ErrorCode:
           $ref: "#/components/schemas/AdvertiserDataResponseErrorCode"
         Message:
           type: "string"
           nullable: true
-        DataName:
+        ItemNumber:
           type: "string"
           nullable: true
       additionalProperties: false
     AdvertiserDsrFailedLine:
       type: "object"
       properties:
+        AdvertiserId:
+          type: "string"
+          nullable: true
+        DataProviderId:
+          type: "string"
+          nullable: true
         TDID:
           type: "string"
           format: "uuid"
@@ -506,10 +515,7 @@ components:
         Message:
           type: "string"
           nullable: true
-        AdvertiserId:
-          type: "string"
-          nullable: true
-        DataProviderId:
+        ItemNumber:
           type: "string"
           nullable: true
       additionalProperties: false
@@ -550,6 +556,9 @@ components:
     MerchantDsrFailedLine:
       type: "object"
       properties:
+        MerchantId:
+          type: "string"
+          nullable: true
         TDID:
           type: "string"
           format: "uuid"
@@ -559,7 +568,7 @@ components:
         Message:
           type: "string"
           nullable: true
-        MerchantId:
+        ItemNumber:
           type: "string"
           nullable: true
       additionalProperties: false
@@ -997,18 +1006,24 @@ components:
           type: "string"
           format: "uuid"
           nullable: true
+        DataName:
+          type: "string"
+          nullable: true
         ErrorCode:
           $ref: "#/components/schemas/ThirdPartyDataResponseErrorCode"
         Message:
           type: "string"
           nullable: true
-        DataName:
+        ItemNumber:
           type: "string"
           nullable: true
       additionalProperties: false
     ThirdPartyDsrFailedLine:
       type: "object"
       properties:
+        DataProviderId:
+          type: "string"
+          nullable: true
         TDID:
           type: "string"
           format: "uuid"
@@ -1018,7 +1033,7 @@ components:
         Message:
           type: "string"
           nullable: true
-        DataProviderId:
+        ItemNumber:
           type: "string"
           nullable: true
       additionalProperties: false
