@@ -1,0 +1,31 @@
+name: Question
+description: Ask a question about SDK usage or behavior
+labels: ["question"]
+body:
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Before submitting a question, please ensure you have checked the following
+      options:
+        - label: I have read the [ttd-data SDK README](https://github.com/thetradedesk/ttd-data-python#readme)
+          required: true
+        - label: I have read the [TTD Data API Documentation](https://partner.thetradedesk.com/v3/portal/data/doc/DataApiReferenceIntegration)
+          required: true
+        - label: I have searched existing [issues](https://github.com/thetradedesk/ttd-data-python/issues)
+          required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      placeholder: Please provide a clear and concise description of the issue you are facing.
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      placeholder: SDK version, endpoint, code snippet, or anything else that helps us understand your question.
+    validations:
+      required: false
