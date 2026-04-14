@@ -10,13 +10,18 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 
 
 class MerchantDsrFailedLineTypedDict(TypedDict):
+    merchant_id: NotRequired[Nullable[str]]
     tdid: NotRequired[Nullable[str]]
     error_code: NotRequired[DsrErrorCode]
     message: NotRequired[Nullable[str]]
-    merchant_id: NotRequired[Nullable[str]]
+    item_number: NotRequired[Nullable[str]]
 
 
 class MerchantDsrFailedLine(BaseModel):
+    merchant_id: Annotated[
+        OptionalNullable[str], pydantic.Field(alias="MerchantId")
+    ] = UNSET
+
     tdid: Annotated[OptionalNullable[str], pydantic.Field(alias="TDID")] = UNSET
 
     error_code: Annotated[Optional[DsrErrorCode], pydantic.Field(alias="ErrorCode")] = (
@@ -25,14 +30,16 @@ class MerchantDsrFailedLine(BaseModel):
 
     message: Annotated[OptionalNullable[str], pydantic.Field(alias="Message")] = UNSET
 
-    merchant_id: Annotated[
-        OptionalNullable[str], pydantic.Field(alias="MerchantId")
+    item_number: Annotated[
+        OptionalNullable[str], pydantic.Field(alias="ItemNumber")
     ] = UNSET
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = set(["TDID", "ErrorCode", "Message", "MerchantId"])
-        nullable_fields = set(["TDID", "Message", "MerchantId"])
+        optional_fields = set(
+            ["MerchantId", "TDID", "ErrorCode", "Message", "ItemNumber"]
+        )
+        nullable_fields = set(["MerchantId", "TDID", "Message", "ItemNumber"])
         serialized = handler(self)
         m = {}
 

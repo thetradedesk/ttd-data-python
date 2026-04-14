@@ -12,9 +12,10 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 class ThirdPartyDataServerResponseLineTypedDict(TypedDict):
     data_provider_user_id: NotRequired[Nullable[str]]
     tdid: NotRequired[Nullable[str]]
+    data_name: NotRequired[Nullable[str]]
     error_code: NotRequired[ThirdPartyDataResponseErrorCode]
     message: NotRequired[Nullable[str]]
-    data_name: NotRequired[Nullable[str]]
+    item_number: NotRequired[Nullable[str]]
 
 
 class ThirdPartyDataServerResponseLine(BaseModel):
@@ -24,22 +25,35 @@ class ThirdPartyDataServerResponseLine(BaseModel):
 
     tdid: Annotated[OptionalNullable[str], pydantic.Field(alias="TDID")] = UNSET
 
+    data_name: Annotated[OptionalNullable[str], pydantic.Field(alias="DataName")] = (
+        UNSET
+    )
+
     error_code: Annotated[
         Optional[ThirdPartyDataResponseErrorCode], pydantic.Field(alias="ErrorCode")
     ] = None
 
     message: Annotated[OptionalNullable[str], pydantic.Field(alias="Message")] = UNSET
 
-    data_name: Annotated[OptionalNullable[str], pydantic.Field(alias="DataName")] = (
-        UNSET
-    )
+    item_number: Annotated[
+        OptionalNullable[str], pydantic.Field(alias="ItemNumber")
+    ] = UNSET
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
         optional_fields = set(
-            ["DataProviderUserId", "TDID", "ErrorCode", "Message", "DataName"]
+            [
+                "DataProviderUserId",
+                "TDID",
+                "DataName",
+                "ErrorCode",
+                "Message",
+                "ItemNumber",
+            ]
         )
-        nullable_fields = set(["DataProviderUserId", "TDID", "Message", "DataName"])
+        nullable_fields = set(
+            ["DataProviderUserId", "TDID", "DataName", "Message", "ItemNumber"]
+        )
         serialized = handler(self)
         m = {}
 
