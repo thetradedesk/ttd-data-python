@@ -3,7 +3,7 @@
 Developer-friendly & type-safe Python SDK specifically catered to leverage *ttd-data* API.
 
 [![Built by Speakeasy](https://img.shields.io/badge/Built_by-SPEAKEASY-374151?style=for-the-badge&labelColor=f3f4f6)](https://www.speakeasy.com/?utm_source=ttd-data&utm_campaign=python)
-[![License: MIT](https://img.shields.io/badge/LICENSE_//_MIT-3b5bdb?style=for-the-badge&labelColor=eff6ff)](https://mit-license.org/)
+[![License: Apache-2.0](https://img.shields.io/badge/LICENSE_//_Apache--2.0-3b5bdb?style=for-the-badge&labelColor=eff6ff)](https://www.apache.org/licenses/LICENSE-2.0)
 
 
 
