@@ -3,17 +3,17 @@ id: 1927f304-b110-462d-9e13-326cfa243f23
 management:
   docChecksum: fb006fd06e67532d16416cec0e274569
   docVersion: v0.1
-  speakeasyVersion: 1.761.4
+  speakeasyVersion: 1.761.5
   generationVersion: 2.879.13
-  releaseVersion: 0.1.6
-  configChecksum: 9dfba09a4dc593249773edf3c6965f56
+  releaseVersion: 0.1.7
+  configChecksum: 8ebdb49324f528793885a1c33d3f967e
   repoURL: https://github.com/thetradedesk/ttd-data-python.git
   installationURL: https://github.com/thetradedesk/ttd-data-python.git
   published: true
 persistentEdits:
-  generation_id: 25aa079a-b311-4f77-a857-1870814aa5ac
-  pristine_commit_hash: c4b2812f9d1433f1a97947389b52d38b72d76dc7
-  pristine_tree_hash: 4bdd2185038b09ed1ffadd2ce8a0fbc5fa8e1e15
+  generation_id: ac4ff5be-36ce-4408-83fc-93a897ae09da
+  pristine_commit_hash: 286e468c28765cacbb31638a378e2d9e39406ec0
+  pristine_tree_hash: 2160196b31e01c060e4aa5650df2b3110bd4ec93
 features:
   python:
     additionalDependencies: 1.0.0
@@ -296,8 +296,8 @@ trackedFiles:
     pristine_git_object: f456032107a9387ba6c98afd1c981df2f4b3d636
   pyproject.toml:
     id: 5d07e7d72637
-    last_write_checksum: sha1:2a5156efd2265ab93a7d255bac8467ecfbe42af7
-    pristine_git_object: 3c51f691eb392d49d5542f9f5cf061b21134c25a
+    last_write_checksum: sha1:fbdd2d81bb4dc3e0647a7ee235eb74dbffca1de6
+    pristine_git_object: 646963bccee0e22e07d256953138555a84a99c4c
   scripts/prepare_readme.py:
     id: e0c5957a6035
     last_write_checksum: sha1:a2b33b92e3f8fed0f4be1d661d68b6decdf9f525
@@ -324,8 +324,8 @@ trackedFiles:
     pristine_git_object: 232e51401d91ec209d9de0c41a959ffc37c2eadb
   src/ttd_data/_version.py:
     id: 7feb4586507e
-    last_write_checksum: sha1:cd04be5ea4984e255a28497ddf95104db029507f
-    pristine_git_object: 4eed34b720dadb5d716da268fc84daa8657d6e00
+    last_write_checksum: sha1:c1a0ddf11b192d3c15a98d695cf2243b77257205
+    pristine_git_object: 1cb357f02e24126fa9d7a9a05a00b69c7c3c3ee2
   src/ttd_data/advertiser.py:
     id: 392ead635b4f
     last_write_checksum: sha1:36d9b5902e62972e93e01502546c9b3b95fe6015
@@ -725,4 +725,3 @@ examples:
           application/json: {}
 examplesVersion: 1.0.2
 generatedTests: {}
-releaseNotes: "## Python SDK Changes:\n* `data_client.advertiser.ingest_advertiser_data()`: \n  *  `response.failed_lines[].item_number` **Added**\n  *  `error.failed_lines[].item_number` **Added**\n* `data_client.third_party.ingest_third_party_data()`: \n  *  `response.failed_lines[].item_number` **Added**\n  *  `error.failed_lines[].item_number` **Added**\n* `data_client.deletion_opt_out.data_subject_request_advertiser_data()`: \n  *  `response.failed_lines[].item_number` **Added**\n  *  `error.failed_lines[].item_number` **Added**\n* `data_client.deletion_opt_out.data_subject_request_merchant_data()`: \n  *  `response.failed_lines[].item_number` **Added**\n  *  `error.failed_lines[].item_number` **Added**\n* `data_client.deletion_opt_out.data_subject_request_third_party_data()`: \n  *  `response.failed_lines[].item_number` **Added**\n  *  `error.failed_lines[].item_number` **Added**\n"
