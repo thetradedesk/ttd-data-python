@@ -1,0 +1,55 @@
+name: Feature Request
+description: Suggest an enhancement or new capability
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        We appreciate feature suggestions! Please describe the problem you're facing and the feature request in detail.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      placeholder: What problem does this feature solve? What workflow is painful today?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      placeholder: Describe how you'd like this to work. Code snippets showing your ideal API are welcome.
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      placeholder: What workarounds or alternative approaches have you tried or considered?
+    validations:
+      required: false
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Affected Area
+      multiple: true
+      options:
+        - Client / Authentication
+        - Data Ingestion (advertiser, third-party, offline conversion)
+        - Deletion / Opt-Out
+        - Error Handling
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      placeholder: Any other context, screenshots, or references.
+    validations:
+      required: false

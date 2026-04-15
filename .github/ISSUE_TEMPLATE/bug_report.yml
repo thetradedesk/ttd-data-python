@@ -1,0 +1,96 @@
+name: Bug Report
+description: Report a bug in the ttd-data SDK
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please fill out the sections below so we can reproduce and fix the issue.
+
+  - type: input
+    id: sdk-version
+    attributes:
+      label: ttd-data Version
+      description: "Output of `pip show ttd-data`"
+      placeholder: "e.g. 0.1.7"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: endpoint
+    attributes:
+      label: TTD Endpoint
+      description: Which endpoint were you using?
+      options:
+        - /data/advertiser (First-Party Data)
+        - /data/thirdparty (Third-Party Data)
+        - /providerapi/offlineconversion (Offline Conversion)
+        - /data/deletion-optout/advertiser
+        - /data/deletion-optout/thirdparty
+        - /data/deletion-optout/merchant
+        - Not applicable
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Python version, OS, and any other relevant environment details
+      placeholder: |
+        - Python: 3.12
+        - OS: Ubuntu 22.04
+        - Install method: pip
+    validations:
+      required: true
+
+  - type: dropdown
+    id: regression
+    attributes:
+      label: Did this work before?
+      options:
+        - "Yes, it was previously working"
+        - "No, this never worked"
+        - "Not sure"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the Bug
+      placeholder: "A clear and concise description of what went wrong."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      placeholder: Minimal code snippet or steps to trigger the bug.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      placeholder: What you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      placeholder: What actually happened. Include the full traceback if applicable.
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      placeholder: Any other context — screenshots, logs, related issues, workarounds tried.
+    validations:
+      required: false

@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: TTD Data API Documentation
+    url: https://partner.thetradedesk.com/v3/portal/data/doc/DataApiReferenceIntegration
+    about: Official TTD Data API docs for endpoint reference and authentication.
