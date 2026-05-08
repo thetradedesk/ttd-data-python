@@ -2,8 +2,11 @@
 # @generated-id: 51f4e7be4154
 
 from __future__ import annotations
+from ._basethirdpartydataitem import (
+    BaseThirdPartyDataItem,
+    BaseThirdPartyDataItemTypedDict,
+)
 from .dataorigin import DataOrigin, DataOriginTypedDict
-from .thirdpartydataitem import ThirdPartyDataItem, ThirdPartyDataItemTypedDict
 import pydantic
 from pydantic import model_serializer
 from ttd_data.types import BaseModel, Nullable, OptionalNullable, UNSET, UNSET_SENTINEL
@@ -13,7 +16,7 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 
 class ThirdPartyDataRequestTypedDict(TypedDict):
     data_provider_id: str
-    items: NotRequired[Nullable[List[ThirdPartyDataItemTypedDict]]]
+    items: NotRequired[Nullable[List[BaseThirdPartyDataItemTypedDict]]]
     data_load_trace_id: NotRequired[Nullable[str]]
     is_user_id_already_hashed: NotRequired[bool]
     data_origins: NotRequired[Nullable[List[DataOriginTypedDict]]]
@@ -23,7 +26,7 @@ class ThirdPartyDataRequest(BaseModel):
     data_provider_id: Annotated[str, pydantic.Field(alias="DataProviderId")]
 
     items: Annotated[
-        OptionalNullable[List[ThirdPartyDataItem]], pydantic.Field(alias="Items")
+        OptionalNullable[List[BaseThirdPartyDataItem]], pydantic.Field(alias="Items")
     ] = UNSET
 
     data_load_trace_id: Annotated[

@@ -18,8 +18,8 @@ class DeletionOptOut(BaseSDK):
         data_provider_id: OptionalNullable[str] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.PartnerDsrDataItem],
-                List[models.PartnerDsrDataItemTypedDict],
+                List[models.BasePartnerDsrDataItem],
+                List[models.BasePartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
@@ -58,7 +58,7 @@ class DeletionOptOut(BaseSDK):
                 advertiser_id=advertiser_id,
                 data_provider_id=data_provider_id,
                 items=utils.get_pydantic_model(
-                    items, OptionalNullable[List[models.PartnerDsrDataItem]]
+                    items, OptionalNullable[List[models.BasePartnerDsrDataItem]]
                 ),
                 data_load_trace_id=data_load_trace_id,
                 request_type=request_type,
@@ -138,8 +138,8 @@ class DeletionOptOut(BaseSDK):
         data_provider_id: OptionalNullable[str] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.PartnerDsrDataItem],
-                List[models.PartnerDsrDataItemTypedDict],
+                List[models.BasePartnerDsrDataItem],
+                List[models.BasePartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
@@ -178,7 +178,7 @@ class DeletionOptOut(BaseSDK):
                 advertiser_id=advertiser_id,
                 data_provider_id=data_provider_id,
                 items=utils.get_pydantic_model(
-                    items, OptionalNullable[List[models.PartnerDsrDataItem]]
+                    items, OptionalNullable[List[models.BasePartnerDsrDataItem]]
                 ),
                 data_load_trace_id=data_load_trace_id,
                 request_type=request_type,
@@ -257,8 +257,8 @@ class DeletionOptOut(BaseSDK):
         merchant_id: OptionalNullable[int] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.PartnerDsrDataItem],
-                List[models.PartnerDsrDataItemTypedDict],
+                List[models.BasePartnerDsrDataItem],
+                List[models.BasePartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
@@ -295,7 +295,7 @@ class DeletionOptOut(BaseSDK):
             body=models.MerchantDsrRequest(
                 merchant_id=merchant_id,
                 items=utils.get_pydantic_model(
-                    items, OptionalNullable[List[models.PartnerDsrDataItem]]
+                    items, OptionalNullable[List[models.BasePartnerDsrDataItem]]
                 ),
                 data_load_trace_id=data_load_trace_id,
                 request_type=request_type,
@@ -374,8 +374,8 @@ class DeletionOptOut(BaseSDK):
         merchant_id: OptionalNullable[int] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.PartnerDsrDataItem],
-                List[models.PartnerDsrDataItemTypedDict],
+                List[models.BasePartnerDsrDataItem],
+                List[models.BasePartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
@@ -412,7 +412,7 @@ class DeletionOptOut(BaseSDK):
             body=models.MerchantDsrRequest(
                 merchant_id=merchant_id,
                 items=utils.get_pydantic_model(
-                    items, OptionalNullable[List[models.PartnerDsrDataItem]]
+                    items, OptionalNullable[List[models.BasePartnerDsrDataItem]]
                 ),
                 data_load_trace_id=data_load_trace_id,
                 request_type=request_type,
@@ -492,8 +492,8 @@ class DeletionOptOut(BaseSDK):
         brand_id: OptionalNullable[str] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.PartnerDsrDataItem],
-                List[models.PartnerDsrDataItemTypedDict],
+                List[models.BasePartnerDsrDataItem],
+                List[models.BasePartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
@@ -532,7 +532,7 @@ class DeletionOptOut(BaseSDK):
                 data_provider_id=data_provider_id,
                 brand_id=brand_id,
                 items=utils.get_pydantic_model(
-                    items, OptionalNullable[List[models.PartnerDsrDataItem]]
+                    items, OptionalNullable[List[models.BasePartnerDsrDataItem]]
                 ),
                 data_load_trace_id=data_load_trace_id,
                 request_type=request_type,
@@ -612,8 +612,8 @@ class DeletionOptOut(BaseSDK):
         brand_id: OptionalNullable[str] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.PartnerDsrDataItem],
-                List[models.PartnerDsrDataItemTypedDict],
+                List[models.BasePartnerDsrDataItem],
+                List[models.BasePartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
@@ -652,7 +652,7 @@ class DeletionOptOut(BaseSDK):
                 data_provider_id=data_provider_id,
                 brand_id=brand_id,
                 items=utils.get_pydantic_model(
-                    items, OptionalNullable[List[models.PartnerDsrDataItem]]
+                    items, OptionalNullable[List[models.BasePartnerDsrDataItem]]
                 ),
                 data_load_trace_id=data_load_trace_id,
                 request_type=request_type,

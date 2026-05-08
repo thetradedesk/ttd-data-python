@@ -17,8 +17,8 @@ class ThirdParty(BaseSDK):
         data_provider_id: str,
         items: OptionalNullable[
             Union[
-                List[models.ThirdPartyDataItem],
-                List[models.ThirdPartyDataItemTypedDict],
+                List[models.BaseThirdPartyDataItem],
+                List[models.BaseThirdPartyDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
@@ -59,7 +59,7 @@ class ThirdParty(BaseSDK):
             body=models.ThirdPartyDataRequest(
                 data_provider_id=data_provider_id,
                 items=utils.get_pydantic_model(
-                    items, OptionalNullable[List[models.ThirdPartyDataItem]]
+                    items, OptionalNullable[List[models.BaseThirdPartyDataItem]]
                 ),
                 data_load_trace_id=data_load_trace_id,
                 is_user_id_already_hashed=is_user_id_already_hashed,
@@ -141,8 +141,8 @@ class ThirdParty(BaseSDK):
         data_provider_id: str,
         items: OptionalNullable[
             Union[
-                List[models.ThirdPartyDataItem],
-                List[models.ThirdPartyDataItemTypedDict],
+                List[models.BaseThirdPartyDataItem],
+                List[models.BaseThirdPartyDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
@@ -183,7 +183,7 @@ class ThirdParty(BaseSDK):
             body=models.ThirdPartyDataRequest(
                 data_provider_id=data_provider_id,
                 items=utils.get_pydantic_model(
-                    items, OptionalNullable[List[models.ThirdPartyDataItem]]
+                    items, OptionalNullable[List[models.BaseThirdPartyDataItem]]
                 ),
                 data_load_trace_id=data_load_trace_id,
                 is_user_id_already_hashed=is_user_id_already_hashed,

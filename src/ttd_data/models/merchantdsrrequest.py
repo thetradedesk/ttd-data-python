@@ -2,7 +2,10 @@
 # @generated-id: 4f8f69a30b61
 
 from __future__ import annotations
-from .partnerdsrdataitem import PartnerDsrDataItem, PartnerDsrDataItemTypedDict
+from ._basepartnerdsrdataitem import (
+    BasePartnerDsrDataItem,
+    BasePartnerDsrDataItemTypedDict,
+)
 from .partnerdsrrequesttype import PartnerDsrRequestType
 import pydantic
 from pydantic import model_serializer
@@ -13,7 +16,7 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 
 class MerchantDsrRequestTypedDict(TypedDict):
     merchant_id: NotRequired[Nullable[int]]
-    items: NotRequired[Nullable[List[PartnerDsrDataItemTypedDict]]]
+    items: NotRequired[Nullable[List[BasePartnerDsrDataItemTypedDict]]]
     data_load_trace_id: NotRequired[Nullable[str]]
     request_type: NotRequired[PartnerDsrRequestType]
 
@@ -24,7 +27,7 @@ class MerchantDsrRequest(BaseModel):
     ] = UNSET
 
     items: Annotated[
-        OptionalNullable[List[PartnerDsrDataItem]], pydantic.Field(alias="Items")
+        OptionalNullable[List[BasePartnerDsrDataItem]], pydantic.Field(alias="Items")
     ] = UNSET
 
     data_load_trace_id: Annotated[

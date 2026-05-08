@@ -10,6 +10,14 @@ if TYPE_CHECKING:
         BaseAdvertiserDataItem,
         BaseAdvertiserDataItemTypedDict,
     )
+    from ._basepartnerdsrdataitem import (
+        BasePartnerDsrDataItem,
+        BasePartnerDsrDataItemTypedDict,
+    )
+    from ._basethirdpartydataitem import (
+        BaseThirdPartyDataItem,
+        BaseThirdPartyDataItemTypedDict,
+    )
     from .advertiserdata import AdvertiserData, AdvertiserDataTypedDict
     from .advertiserdatarequest import (
         AdvertiserDataRequest,
@@ -107,7 +115,6 @@ if TYPE_CHECKING:
         OfflineConversionDataServerResponseLine,
         OfflineConversionDataServerResponseLineTypedDict,
     )
-    from .partnerdsrdataitem import PartnerDsrDataItem, PartnerDsrDataItemTypedDict
     from .partnerdsrrequesttype import PartnerDsrRequestType
     from .realtimeconversioneventlineitem import (
         RealTimeConversionEventLineItem,
@@ -118,7 +125,6 @@ if TYPE_CHECKING:
         RealTimeConversionEventsPrivacySettingTypedDict,
     )
     from .thirdpartydata import ThirdPartyData, ThirdPartyDataTypedDict
-    from .thirdpartydataitem import ThirdPartyDataItem, ThirdPartyDataItemTypedDict
     from .thirdpartydatarequest import (
         ThirdPartyDataRequest,
         ThirdPartyDataRequestTypedDict,
@@ -163,6 +169,10 @@ __all__ = [
     "AdvertiserDsrResponseTypedDict",
     "BaseAdvertiserDataItem",
     "BaseAdvertiserDataItemTypedDict",
+    "BasePartnerDsrDataItem",
+    "BasePartnerDsrDataItemTypedDict",
+    "BaseThirdPartyDataItem",
+    "BaseThirdPartyDataItemTypedDict",
     "DATA_SUBJECT_REQUEST_ADVERTISER_DATA_OP_SERVERS",
     "DATA_SUBJECT_REQUEST_MERCHANT_DATA_OP_SERVERS",
     "DATA_SUBJECT_REQUEST_THIRD_PARTY_DATA_OP_SERVERS",
@@ -214,16 +224,12 @@ __all__ = [
     "OfflineConversionDataServerResponseLine",
     "OfflineConversionDataServerResponseLineTypedDict",
     "OfflineConversionDataServerResponseTypedDict",
-    "PartnerDsrDataItem",
-    "PartnerDsrDataItemTypedDict",
     "PartnerDsrRequestType",
     "RealTimeConversionEventLineItem",
     "RealTimeConversionEventLineItemTypedDict",
     "RealTimeConversionEventsPrivacySetting",
     "RealTimeConversionEventsPrivacySettingTypedDict",
     "ThirdPartyData",
-    "ThirdPartyDataItem",
-    "ThirdPartyDataItemTypedDict",
     "ThirdPartyDataRequest",
     "ThirdPartyDataRequestTypedDict",
     "ThirdPartyDataResponseErrorCode",
@@ -243,6 +249,10 @@ __all__ = [
 _dynamic_imports: dict[str, str] = {
     "BaseAdvertiserDataItem": "._baseadvertiserdataitem",
     "BaseAdvertiserDataItemTypedDict": "._baseadvertiserdataitem",
+    "BasePartnerDsrDataItem": "._basepartnerdsrdataitem",
+    "BasePartnerDsrDataItemTypedDict": "._basepartnerdsrdataitem",
+    "BaseThirdPartyDataItem": "._basethirdpartydataitem",
+    "BaseThirdPartyDataItemTypedDict": "._basethirdpartydataitem",
     "AdvertiserData": ".advertiserdata",
     "AdvertiserDataTypedDict": ".advertiserdata",
     "AdvertiserDataRequest": ".advertiserdatarequest",
@@ -309,8 +319,6 @@ _dynamic_imports: dict[str, str] = {
     "OfflineConversionDataServerResponseTypedDict": ".offlineconversiondataserverresponse",
     "OfflineConversionDataServerResponseLine": ".offlineconversiondataserverresponseline",
     "OfflineConversionDataServerResponseLineTypedDict": ".offlineconversiondataserverresponseline",
-    "PartnerDsrDataItem": ".partnerdsrdataitem",
-    "PartnerDsrDataItemTypedDict": ".partnerdsrdataitem",
     "PartnerDsrRequestType": ".partnerdsrrequesttype",
     "RealTimeConversionEventLineItem": ".realtimeconversioneventlineitem",
     "RealTimeConversionEventLineItemTypedDict": ".realtimeconversioneventlineitem",
@@ -318,8 +326,6 @@ _dynamic_imports: dict[str, str] = {
     "RealTimeConversionEventsPrivacySettingTypedDict": ".realtimeconversioneventsprivacysetting",
     "ThirdPartyData": ".thirdpartydata",
     "ThirdPartyDataTypedDict": ".thirdpartydata",
-    "ThirdPartyDataItem": ".thirdpartydataitem",
-    "ThirdPartyDataItemTypedDict": ".thirdpartydataitem",
     "ThirdPartyDataRequest": ".thirdpartydatarequest",
     "ThirdPartyDataRequestTypedDict": ".thirdpartydatarequest",
     "ThirdPartyDataResponseErrorCode": ".thirdpartydataresponseerrorcode",
