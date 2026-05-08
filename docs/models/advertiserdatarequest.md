@@ -1,0 +1,12 @@
+# AdvertiserDataRequest
+
+
+## Fields
+
+| Field                                                                      | Type                                                                       | Required                                                                   | Description                                                                |
+| -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `advertiser_id`                                                            | *str*                                                                      | :heavy_check_mark:                                                         | N/A                                                                        |
+| `data_provider_id`                                                         | *OptionalNullable[str]*                                                    | :heavy_minus_sign:                                                         | N/A                                                                        |
+| `items`                                                                    | List[[models.BaseAdvertiserDataItem](../models/baseadvertiserdataitem.md)] | :heavy_minus_sign:                                                         | N/A                                                                        |
+| `data_load_trace_id`                                                       | *OptionalNullable[str]*                                                    | :heavy_minus_sign:                                                         | N/A                                                                        |
+| `data_origins`                                                             | List[[models.DataOrigin](../models/dataorigin.md)]                         | :heavy_minus_sign:                                                         | N/A                                                                        |
