@@ -2,11 +2,11 @@
 # @generated-id: 7d81245ab1fc
 
 from __future__ import annotations
-from .dataorigin import DataOrigin, DataOriginTypedDict
-from .offlineconversiondataitem import (
-    OfflineConversionDataItem,
-    OfflineConversionDataItemTypedDict,
+from ._baseofflineconversiondataitem import (
+    BaseOfflineConversionDataItem,
+    BaseOfflineConversionDataItemTypedDict,
 )
+from .dataorigin import DataOrigin, DataOriginTypedDict
 import pydantic
 from pydantic import model_serializer
 from ttd_data.types import BaseModel, Nullable, OptionalNullable, UNSET, UNSET_SENTINEL
@@ -17,7 +17,7 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 class OfflineConversionDataRequestTypedDict(TypedDict):
     data_provider_id: str
     user_id_array_metadata_format: NotRequired[Nullable[List[str]]]
-    items: NotRequired[Nullable[List[OfflineConversionDataItemTypedDict]]]
+    items: NotRequired[Nullable[List[BaseOfflineConversionDataItemTypedDict]]]
     data_load_trace_id: NotRequired[Nullable[str]]
     data_origins: NotRequired[Nullable[List[DataOriginTypedDict]]]
 
@@ -30,7 +30,8 @@ class OfflineConversionDataRequest(BaseModel):
     ] = UNSET
 
     items: Annotated[
-        OptionalNullable[List[OfflineConversionDataItem]], pydantic.Field(alias="Items")
+        OptionalNullable[List[BaseOfflineConversionDataItem]],
+        pydantic.Field(alias="Items"),
     ] = UNSET
 
     data_load_trace_id: Annotated[

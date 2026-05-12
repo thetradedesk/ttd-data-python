@@ -18,8 +18,8 @@ class OfflineConversion(BaseSDK):
         user_id_array_metadata_format: OptionalNullable[List[str]] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.OfflineConversionDataItem],
-                List[models.OfflineConversionDataItemTypedDict],
+                List[models.BaseOfflineConversionDataItem],
+                List[models.BaseOfflineConversionDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
@@ -60,7 +60,7 @@ class OfflineConversion(BaseSDK):
                 data_provider_id=data_provider_id,
                 user_id_array_metadata_format=user_id_array_metadata_format,
                 items=utils.get_pydantic_model(
-                    items, OptionalNullable[List[models.OfflineConversionDataItem]]
+                    items, OptionalNullable[List[models.BaseOfflineConversionDataItem]]
                 ),
                 data_load_trace_id=data_load_trace_id,
                 data_origins=utils.get_pydantic_model(
@@ -144,8 +144,8 @@ class OfflineConversion(BaseSDK):
         user_id_array_metadata_format: OptionalNullable[List[str]] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.OfflineConversionDataItem],
-                List[models.OfflineConversionDataItemTypedDict],
+                List[models.BaseOfflineConversionDataItem],
+                List[models.BaseOfflineConversionDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
@@ -186,7 +186,7 @@ class OfflineConversion(BaseSDK):
                 data_provider_id=data_provider_id,
                 user_id_array_metadata_format=user_id_array_metadata_format,
                 items=utils.get_pydantic_model(
-                    items, OptionalNullable[List[models.OfflineConversionDataItem]]
+                    items, OptionalNullable[List[models.BaseOfflineConversionDataItem]]
                 ),
                 data_load_trace_id=data_load_trace_id,
                 data_origins=utils.get_pydantic_model(

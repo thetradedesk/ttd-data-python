@@ -10,6 +10,10 @@ if TYPE_CHECKING:
         BaseAdvertiserDataItem,
         BaseAdvertiserDataItemTypedDict,
     )
+    from ._baseofflineconversiondataitem import (
+        BaseOfflineConversionDataItem,
+        BaseOfflineConversionDataItemTypedDict,
+    )
     from ._basepartnerdsrdataitem import (
         BasePartnerDsrDataItem,
         BasePartnerDsrDataItemTypedDict,
@@ -96,10 +100,6 @@ if TYPE_CHECKING:
     )
     from .merchantdsrrequest import MerchantDsrRequest, MerchantDsrRequestTypedDict
     from .merchantdsrresponse import MerchantDsrResponse, MerchantDsrResponseTypedDict
-    from .offlineconversiondataitem import (
-        OfflineConversionDataItem,
-        OfflineConversionDataItemTypedDict,
-    )
     from .offlineconversiondatarequest import (
         OfflineConversionDataRequest,
         OfflineConversionDataRequestTypedDict,
@@ -169,6 +169,8 @@ __all__ = [
     "AdvertiserDsrResponseTypedDict",
     "BaseAdvertiserDataItem",
     "BaseAdvertiserDataItemTypedDict",
+    "BaseOfflineConversionDataItem",
+    "BaseOfflineConversionDataItemTypedDict",
     "BasePartnerDsrDataItem",
     "BasePartnerDsrDataItemTypedDict",
     "BaseThirdPartyDataItem",
@@ -215,8 +217,6 @@ __all__ = [
     "MerchantDsrRequestTypedDict",
     "MerchantDsrResponse",
     "MerchantDsrResponseTypedDict",
-    "OfflineConversionDataItem",
-    "OfflineConversionDataItemTypedDict",
     "OfflineConversionDataRequest",
     "OfflineConversionDataRequestTypedDict",
     "OfflineConversionDataResponseErrorCode",
@@ -249,6 +249,8 @@ __all__ = [
 _dynamic_imports: dict[str, str] = {
     "BaseAdvertiserDataItem": "._baseadvertiserdataitem",
     "BaseAdvertiserDataItemTypedDict": "._baseadvertiserdataitem",
+    "BaseOfflineConversionDataItem": "._baseofflineconversiondataitem",
+    "BaseOfflineConversionDataItemTypedDict": "._baseofflineconversiondataitem",
     "BasePartnerDsrDataItem": "._basepartnerdsrdataitem",
     "BasePartnerDsrDataItemTypedDict": "._basepartnerdsrdataitem",
     "BaseThirdPartyDataItem": "._basethirdpartydataitem",
@@ -310,8 +312,6 @@ _dynamic_imports: dict[str, str] = {
     "MerchantDsrRequestTypedDict": ".merchantdsrrequest",
     "MerchantDsrResponse": ".merchantdsrresponse",
     "MerchantDsrResponseTypedDict": ".merchantdsrresponse",
-    "OfflineConversionDataItem": ".offlineconversiondataitem",
-    "OfflineConversionDataItemTypedDict": ".offlineconversiondataitem",
     "OfflineConversionDataRequest": ".offlineconversiondatarequest",
     "OfflineConversionDataRequestTypedDict": ".offlineconversiondatarequest",
     "OfflineConversionDataResponseErrorCode": ".offlineconversiondataresponseerrorcode",
