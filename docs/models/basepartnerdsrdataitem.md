@@ -1,4 +1,4 @@
-# PartnerDsrDataItem
+# BasePartnerDsrDataItem
 
 
 ## Fields

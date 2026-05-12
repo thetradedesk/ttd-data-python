@@ -433,6 +433,7 @@ components:
           type: "string"
           nullable: true
       additionalProperties: false
+      x-speakeasy-name-override: BaseAdvertiserDataItem
     AdvertiserDataRequest:
       required:
         - "AdvertiserId"
@@ -718,6 +719,7 @@ components:
           type: "string"
           nullable: true
       additionalProperties: false
+      x-speakeasy-name-override: BaseOfflineConversionDataItem
     OfflineConversionDataRequest:
       required:
         - "DataProviderId"
@@ -836,6 +838,7 @@ components:
           type: "string"
           nullable: true
       additionalProperties: false
+      x-speakeasy-name-override: BasePartnerDsrDataItem
     PartnerDsrRequestType:
       enum:
         - "OptOut"
@@ -954,6 +957,7 @@ components:
           type: "string"
           nullable: true
       additionalProperties: false
+      x-speakeasy-name-override: BaseThirdPartyDataItem
     ThirdPartyDataRequest:
       required:
         - "DataProviderId"

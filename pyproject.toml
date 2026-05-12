@@ -1,6 +1,6 @@
 [project]
 name = "ttd-data"
-version = "0.1.7"
+version = "0.2.8"
 description = "Python Client SDK for TTD Data API."
 authors = [{ name = "Speakeasy" },]
 readme = "README-PYPI.md"
@@ -9,6 +9,7 @@ dependencies = [
     "httpcore >=1.0.9",
     "httpx >=0.28.1",
     "pydantic >=2.11.2",
+    "uid2-client >=2.9.0",
 ]
 urls.repository = "https://github.com/thetradedesk/ttd-data-python.git"
 license = { text = "map[name:Apache License 2.0 shortName:Apache-2.0 url:https://www.apache.org/licenses/LICENSE-2.0]" }
@@ -18,6 +19,8 @@ dev = [
     "mypy ==1.15.0",
     "pylint ==3.2.3",
     "pyright ==1.1.398",
+    "pytest >=8.0.0",
+    "pytest-asyncio >=0.23.0",
 ]
 
 [tool.setuptools.packages.find]

@@ -97,9 +97,9 @@ It's also possible to write a standalone Python script without needing to set up
 # ]
 # ///
 
-from ttd_data import DataClient
+from ttd_data import BaseDataClient
 
-sdk = DataClient(
+sdk = BaseDataClient(
   # SDK arguments
 )
 
@@ -300,13 +300,13 @@ Some of the endpoints in this SDK support retries. If you use the SDK without an
 
 To change the default retry strategy for a single API call, simply provide a `RetryConfig` object to the call:
 ```python
-from ttd_data import DataClient
+from ttd_data import BaseDataClient
 from ttd_data.utils import BackoffStrategy, RetryConfig
 
 
-with DataClient() as data_client:
+with BaseDataClient() as base_data_client:
 
-    res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>",
+    res = base_data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>",
         RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
 
     assert res.advertiser_data_server_response is not None
@@ -318,15 +318,15 @@ with DataClient() as data_client:
 
 If you'd like to override the default retry strategy for all operations that support retries, you can use the `retry_config` optional parameter when initializing the SDK:
 ```python
-from ttd_data import DataClient
+from ttd_data import BaseDataClient
 from ttd_data.utils import BackoffStrategy, RetryConfig
 
 
-with DataClient(
+with BaseDataClient(
     retry_config=RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False),
-) as data_client:
+) as base_data_client:
 
-    res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
+    res = base_data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
 
     assert res.advertiser_data_server_response is not None
 
@@ -352,14 +352,14 @@ with DataClient(
 
 ### Example
 ```python
-from ttd_data import DataClient, errors
+from ttd_data import BaseDataClient, errors
 
 
-with DataClient() as data_client:
+with BaseDataClient() as base_data_client:
     res = None
     try:
 
-        res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
+        res = base_data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
 
         assert res.advertiser_data_server_response is not None
 
@@ -418,16 +418,16 @@ This allows you to wrap the client with your own custom logic, such as adding cu
 
 For example, you could specify a header for every request that this sdk makes as follows:
 ```python
-from ttd_data import DataClient
+from ttd_data import BaseDataClient
 import httpx
 
 http_client = httpx.Client(headers={"x-custom-header": "someValue"})
-s = DataClient(client=http_client)
+s = BaseDataClient(client=http_client)
 ```
 
 or you could wrap the client with your own custom logic:
 ```python
-from ttd_data import DataClient
+from ttd_data import BaseDataClient
 from ttd_data.httpclient import AsyncHttpClient
 import httpx
 
@@ -486,29 +486,29 @@ class CustomClient(AsyncHttpClient):
             extensions=extensions,
         )
 
-s = DataClient(async_client=CustomClient(httpx.AsyncClient()))
+s = BaseDataClient(async_client=CustomClient(httpx.AsyncClient()))
 ```
 <!-- End Custom HTTP Client [http-client] -->
 
 <!-- Start Resource Management [resource-management] -->
 ## Resource Management
 
-The `DataClient` class implements the context manager protocol and registers a finalizer function to close the underlying sync and async HTTPX clients it uses under the hood. This will close HTTP connections, release memory and free up other resources held by the SDK. In short-lived Python programs and notebooks that make a few SDK method calls, resource management may not be a concern. However, in longer-lived programs, it is beneficial to create a single SDK instance via a [context manager][context-manager] and reuse it across the application.
+The `BaseDataClient` class implements the context manager protocol and registers a finalizer function to close the underlying sync and async HTTPX clients it uses under the hood. This will close HTTP connections, release memory and free up other resources held by the SDK. In short-lived Python programs and notebooks that make a few SDK method calls, resource management may not be a concern. However, in longer-lived programs, it is beneficial to create a single SDK instance via a [context manager][context-manager] and reuse it across the application.
 
 [context-manager]: https://docs.python.org/3/reference/datamodel.html#context-managers
 
 ```python
-from ttd_data import DataClient
+from ttd_data import BaseDataClient
 def main():
 
-    with DataClient() as data_client:
+    with BaseDataClient() as base_data_client:
         # Rest of application here...
 
 
 # Or when using async:
 async def amain():
 
-    async with DataClient() as data_client:
+    async with BaseDataClient() as base_data_client:
         # Rest of application here...
 ```
 <!-- End Resource Management [resource-management] -->
@@ -520,11 +520,11 @@ You can setup your SDK to emit debug logs for SDK requests and responses.
 
 You can pass your own logger class directly into your SDK.
 ```python
-from ttd_data import DataClient
+from ttd_data import BaseDataClient
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
-s = DataClient(server_url="https://example.com", debug_logger=logging.getLogger("ttd_data"))
+s = BaseDataClient(server_url="https://example.com", debug_logger=logging.getLogger("ttd_data"))
 ```
 
 You can also enable a default debug logger by setting an environment variable `TTD_DATA_DEBUG` to true.

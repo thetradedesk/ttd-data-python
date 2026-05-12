@@ -5,7 +5,7 @@ sources:
         inputs:
             - location: https://usw-data.adsrvr.org/swagger/v1/swagger.json
         overlays:
-            - location: ../.speakeasy/overlay.yaml
+            - location: .speakeasy/overlay.yaml
         registry:
             location: registry.speakeasyapi.dev/thetradedesk/data-api/data-api-local
 targets:
