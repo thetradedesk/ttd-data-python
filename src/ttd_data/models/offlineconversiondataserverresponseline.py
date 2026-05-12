@@ -2,7 +2,7 @@
 # @generated-id: 3f36747f69ac
 
 from __future__ import annotations
-from ._baseofflineconversiondataitem import (
+from .baseofflineconversiondataitem import (
     BaseOfflineConversionDataItem,
     BaseOfflineConversionDataItemTypedDict,
 )

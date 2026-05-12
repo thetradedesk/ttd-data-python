@@ -6,22 +6,6 @@ from typing import Any, TYPE_CHECKING
 from ttd_data.utils.dynamic_imports import lazy_getattr, lazy_dir
 
 if TYPE_CHECKING:
-    from ._baseadvertiserdataitem import (
-        BaseAdvertiserDataItem,
-        BaseAdvertiserDataItemTypedDict,
-    )
-    from ._baseofflineconversiondataitem import (
-        BaseOfflineConversionDataItem,
-        BaseOfflineConversionDataItemTypedDict,
-    )
-    from ._basepartnerdsrdataitem import (
-        BasePartnerDsrDataItem,
-        BasePartnerDsrDataItemTypedDict,
-    )
-    from ._basethirdpartydataitem import (
-        BaseThirdPartyDataItem,
-        BaseThirdPartyDataItemTypedDict,
-    )
     from .advertiserdata import AdvertiserData, AdvertiserDataTypedDict
     from .advertiserdatarequest import (
         AdvertiserDataRequest,
@@ -47,6 +31,22 @@ if TYPE_CHECKING:
     from .advertiserdsrresponse import (
         AdvertiserDsrResponse,
         AdvertiserDsrResponseTypedDict,
+    )
+    from .baseadvertiserdataitem import (
+        BaseAdvertiserDataItem,
+        BaseAdvertiserDataItemTypedDict,
+    )
+    from .baseofflineconversiondataitem import (
+        BaseOfflineConversionDataItem,
+        BaseOfflineConversionDataItemTypedDict,
+    )
+    from .basepartnerdsrdataitem import (
+        BasePartnerDsrDataItem,
+        BasePartnerDsrDataItemTypedDict,
+    )
+    from .basethirdpartydataitem import (
+        BaseThirdPartyDataItem,
+        BaseThirdPartyDataItemTypedDict,
     )
     from .dataorigin import DataOrigin, DataOriginTypedDict
     from .dataorigintype import DataOriginType
@@ -247,14 +247,6 @@ __all__ = [
 ]
 
 _dynamic_imports: dict[str, str] = {
-    "BaseAdvertiserDataItem": "._baseadvertiserdataitem",
-    "BaseAdvertiserDataItemTypedDict": "._baseadvertiserdataitem",
-    "BaseOfflineConversionDataItem": "._baseofflineconversiondataitem",
-    "BaseOfflineConversionDataItemTypedDict": "._baseofflineconversiondataitem",
-    "BasePartnerDsrDataItem": "._basepartnerdsrdataitem",
-    "BasePartnerDsrDataItemTypedDict": "._basepartnerdsrdataitem",
-    "BaseThirdPartyDataItem": "._basethirdpartydataitem",
-    "BaseThirdPartyDataItemTypedDict": "._basethirdpartydataitem",
     "AdvertiserData": ".advertiserdata",
     "AdvertiserDataTypedDict": ".advertiserdata",
     "AdvertiserDataRequest": ".advertiserdatarequest",
@@ -270,6 +262,14 @@ _dynamic_imports: dict[str, str] = {
     "AdvertiserDsrRequestTypedDict": ".advertiserdsrrequest",
     "AdvertiserDsrResponse": ".advertiserdsrresponse",
     "AdvertiserDsrResponseTypedDict": ".advertiserdsrresponse",
+    "BaseAdvertiserDataItem": ".baseadvertiserdataitem",
+    "BaseAdvertiserDataItemTypedDict": ".baseadvertiserdataitem",
+    "BaseOfflineConversionDataItem": ".baseofflineconversiondataitem",
+    "BaseOfflineConversionDataItemTypedDict": ".baseofflineconversiondataitem",
+    "BasePartnerDsrDataItem": ".basepartnerdsrdataitem",
+    "BasePartnerDsrDataItemTypedDict": ".basepartnerdsrdataitem",
+    "BaseThirdPartyDataItem": ".basethirdpartydataitem",
+    "BaseThirdPartyDataItemTypedDict": ".basethirdpartydataitem",
     "DataOrigin": ".dataorigin",
     "DataOriginTypedDict": ".dataorigin",
     "DataOriginType": ".dataorigintype",

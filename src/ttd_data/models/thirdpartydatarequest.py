@@ -2,7 +2,7 @@
 # @generated-id: 51f4e7be4154
 
 from __future__ import annotations
-from ._basethirdpartydataitem import (
+from .basethirdpartydataitem import (
     BaseThirdPartyDataItem,
     BaseThirdPartyDataItemTypedDict,
 )

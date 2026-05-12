@@ -2,7 +2,7 @@
 # @generated-id: 4f8f69a30b61
 
 from __future__ import annotations
-from ._basepartnerdsrdataitem import (
+from .basepartnerdsrdataitem import (
     BasePartnerDsrDataItem,
     BasePartnerDsrDataItemTypedDict,
 )

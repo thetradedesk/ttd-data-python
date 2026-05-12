@@ -2,7 +2,7 @@
 # @generated-id: 11df7e9988cc
 
 from __future__ import annotations
-from ._baseadvertiserdataitem import (
+from .baseadvertiserdataitem import (
     BaseAdvertiserDataItem,
     BaseAdvertiserDataItemTypedDict,
 )
