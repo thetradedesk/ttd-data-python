@@ -14,12 +14,12 @@ Upload third-party data for the specified data provider for use in audience targ
 
 <!-- UsageSnippet language="python" operationID="IngestThirdPartyData" method="post" path="/data/thirdparty" -->
 ```python
-from ttd_data import BaseDataClientv2
+from ttd_data import BaseDataClient
 
 
-with BaseDataClientv2() as base_data_clientv2:
+with BaseDataClient() as base_data_client:
 
-    res = base_data_clientv2.third_party.ingest_third_party_data(ttd_auth="<value>", data_provider_id="<id>", is_user_id_already_hashed=False)
+    res = base_data_client.third_party.ingest_third_party_data(ttd_auth="<value>", data_provider_id="<id>", is_user_id_already_hashed=False)
 
     assert res.third_party_data_server_response is not None
 

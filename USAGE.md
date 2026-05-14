@@ -1,12 +1,12 @@
 <!-- Start SDK Example Usage [usage] -->
 ```python
 # Synchronous Example
-from ttd_data import BaseDataClientv2
+from ttd_data import BaseDataClient
 
 
-with BaseDataClientv2() as base_data_clientv2:
+with BaseDataClient() as base_data_client:
 
-    res = base_data_clientv2.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
+    res = base_data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
 
     assert res.advertiser_data_server_response is not None
 
@@ -21,13 +21,13 @@ The same SDK client can also be used to make asynchronous requests by importing 
 ```python
 # Asynchronous Example
 import asyncio
-from ttd_data import BaseDataClientv2
+from ttd_data import BaseDataClient
 
 async def main():
 
-    async with BaseDataClientv2() as base_data_clientv2:
+    async with BaseDataClient() as base_data_client:
 
-        res = await base_data_clientv2.advertiser.ingest_advertiser_data_async(ttd_auth="<value>", advertiser_id="<id>")
+        res = await base_data_client.advertiser.ingest_advertiser_data_async(ttd_auth="<value>", advertiser_id="<id>")
 
         assert res.advertiser_data_server_response is not None
 

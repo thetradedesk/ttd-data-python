@@ -21,7 +21,7 @@ if TYPE_CHECKING:
     from ttd_data.thirdparty import ThirdParty
 
 
-class BaseDataClientv2(BaseSDK):
+class BaseDataClient(BaseSDK):
     r"""TTD Data API: Python SDK for The Trade Desk Data API. Provides operations for ingesting advertiser data,
     third-party data, and offline conversions, as well as handling data subject deletion and opt-out requests.
 
