@@ -14,12 +14,12 @@ Upload first-party data for the specified ID for use in audience targeting.
 
 <!-- UsageSnippet language="python" operationID="IngestAdvertiserData" method="post" path="/data/advertiser" -->
 ```python
-from ttd_data import BaseDataClient
+from ttd_data import BaseDataClientv2
 
 
-with BaseDataClient() as base_data_client:
+with BaseDataClientv2() as base_data_clientv2:
 
-    res = base_data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
+    res = base_data_clientv2.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
 
     assert res.advertiser_data_server_response is not None
 

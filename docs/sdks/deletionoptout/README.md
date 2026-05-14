@@ -16,12 +16,12 @@ Delete IDs shared with The Trade Desk for the specified advertiser ID.
 
 <!-- UsageSnippet language="python" operationID="DataSubjectRequestAdvertiserData" method="post" path="/data/deletion-optout/advertiser" -->
 ```python
-from ttd_data import BaseDataClient
+from ttd_data import BaseDataClientv2
 
 
-with BaseDataClient() as base_data_client:
+with BaseDataClientv2() as base_data_clientv2:
 
-    res = base_data_client.deletion_opt_out.data_subject_request_advertiser_data(ttd_auth="<value>")
+    res = base_data_clientv2.deletion_opt_out.data_subject_request_advertiser_data(ttd_auth="<value>")
 
     assert res.advertiser_dsr_response is not None
 
@@ -62,12 +62,12 @@ Delete IDs shared with The Trade Desk via a product catalog for the specified me
 
 <!-- UsageSnippet language="python" operationID="DataSubjectRequestMerchantData" method="post" path="/data/deletion-optout/merchant" -->
 ```python
-from ttd_data import BaseDataClient
+from ttd_data import BaseDataClientv2
 
 
-with BaseDataClient() as base_data_client:
+with BaseDataClientv2() as base_data_clientv2:
 
-    res = base_data_client.deletion_opt_out.data_subject_request_merchant_data(ttd_auth="<value>")
+    res = base_data_clientv2.deletion_opt_out.data_subject_request_merchant_data(ttd_auth="<value>")
 
     assert res.merchant_dsr_response is not None
 
@@ -107,12 +107,12 @@ Delete IDs shared with The Trade Desk for the specified data provider ID.
 
 <!-- UsageSnippet language="python" operationID="DataSubjectRequestThirdPartyData" method="post" path="/data/deletion-optout/thirdparty" -->
 ```python
-from ttd_data import BaseDataClient
+from ttd_data import BaseDataClientv2
 
 
-with BaseDataClient() as base_data_client:
+with BaseDataClientv2() as base_data_clientv2:
 
-    res = base_data_client.deletion_opt_out.data_subject_request_third_party_data(ttd_auth="<value>")
+    res = base_data_clientv2.deletion_opt_out.data_subject_request_third_party_data(ttd_auth="<value>")
 
     assert res.third_party_dsr_response is not None
 
