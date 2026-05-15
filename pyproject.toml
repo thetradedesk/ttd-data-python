@@ -9,7 +9,7 @@ dependencies = [
     "httpcore >=1.0.9",
     "httpx >=0.28.1",
     "pydantic >=2.11.2",
-    "uid2-client >=2.9.0",
+    "uid2-client >=2.9.0,<3.0.0",
 ]
 urls.repository = "https://github.com/thetradedesk/ttd-data-python.git"
 license = { text = "map[name:Apache License 2.0 shortName:Apache-2.0 url:https://www.apache.org/licenses/LICENSE-2.0]" }

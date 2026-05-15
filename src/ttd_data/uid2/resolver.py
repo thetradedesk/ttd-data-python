@@ -27,6 +27,7 @@ from ttd_data.models.baseofflineconversiondataitem import (
 )
 
 from .config import IdentityScope
+from ttd_data.errors import UID2ServiceError
 
 
 # Sentinel UID2/EUID written for items whose identifier could not be mapped.
@@ -43,9 +44,6 @@ _RETRY_BACKOFF_BASE_SECONDS = 0.2
 # Maximum raw ids per `IdentityMapV3Input` we send to UID2.
 _UID2_BATCH_SIZE = 5000
 
-
-class UID2ServiceError(Exception):
-    """Raised when the UID2 identity-map service fails in a way that prevents the entire batch from being processed."""
 
 
 @dataclass

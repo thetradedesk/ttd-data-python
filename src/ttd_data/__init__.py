@@ -10,7 +10,7 @@ from ._version import (
 )
 from .sdkconfiguration import *
 from .client import DataClient
-from .uid2 import IdentityScope, UID2Config
+from .uid2 import IdentityScope, UID2Config, UID2ServiceError, UserIdType
 
 
 VERSION: str = __version__

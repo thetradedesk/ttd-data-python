@@ -39,7 +39,7 @@ python:
   additionalDependencies:
     dev: {}
     main:
-      uid2-client: '>=2.9.0'
+      uid2-client: '>=2.9.0,<3.0.0'
   allowedRedefinedBuiltins:
     - id
     - object

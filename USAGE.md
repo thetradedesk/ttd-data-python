@@ -1,17 +1,52 @@
 <!-- Start SDK Example Usage [usage] -->
 ```python
-# Synchronous Example
-from ttd_data import BaseDataClient
+# Synchronous Example — pre-resolved identifier, no UID2 config needed
+from ttd_data import DataClient
+from ttd_data.models import AdvertiserData, AdvertiserDataItem
 
+with DataClient(server_url="<TTD_DATA_SERVER_URL>") as client:
+    response = client.advertiser.ingest_advertiser_data(
+        ttd_auth="<TTD_AUTH_TOKEN>",
+        advertiser_id="<ADVERTISER_ID>",
+        items=[
+            AdvertiserDataItem(
+                data=[AdvertiserData(name="loyalty_members")],
+                tdid="<TDID>",
+            )
+        ],
+    )
+    print(response.advertiser_data_server_response)
+```
 
-with BaseDataClient() as base_data_client:
+</br>
 
-    res = base_data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
+```python
+# Synchronous Example — with UID2 identity mapping (raw email resolved before ingest)
+from ttd_data import DataClient, IdentityScope, UID2Config, UID2ServiceError
+from ttd_data.models import AdvertiserData, AdvertiserDataItem
 
-    assert res.advertiser_data_server_response is not None
+uid2_config = UID2Config(
+    base_url="<UID2_BASE_URL>",
+    api_key="<UID2_API_KEY>",
+    client_secret="<UID2_CLIENT_SECRET>",
+    identity_scope=IdentityScope.UID2,
+)
 
-    # Handle response
-    print(res.advertiser_data_server_response)
+try:
+    with DataClient(uid2_config=uid2_config, server_url="<TTD_DATA_SERVER_URL>") as client:
+        response = client.advertiser.ingest_advertiser_data(
+            ttd_auth="<TTD_AUTH_TOKEN>",
+            advertiser_id="<ADVERTISER_ID>",
+            items=[
+                AdvertiserDataItem(
+                    data=[AdvertiserData(name="loyalty_members")],
+                    email="user@example.com",
+                )
+            ],
+        )
+        print(response.advertiser_data_server_response)
+except UID2ServiceError as e:
+    print(f"UID2 service error: {e}")
 ```
 
 </br>
@@ -19,20 +54,59 @@ with BaseDataClient() as base_data_client:
 The same SDK client can also be used to make asynchronous requests by importing asyncio.
 
 ```python
-# Asynchronous Example
+# Asynchronous Example — pre-resolved identifier, no UID2 config needed
 import asyncio
-from ttd_data import BaseDataClient
+from ttd_data import DataClient
+from ttd_data.models import AdvertiserData, AdvertiserDataItem
 
 async def main():
+    async with DataClient(server_url="<TTD_DATA_SERVER_URL>") as client:
+        response = await client.advertiser.ingest_advertiser_data_async(
+            ttd_auth="<TTD_AUTH_TOKEN>",
+            advertiser_id="<ADVERTISER_ID>",
+            items=[
+                AdvertiserDataItem(
+                    data=[AdvertiserData(name="loyalty_members")],
+                    tdid="<TDID>",
+                )
+            ],
+        )
+        print(response.advertiser_data_server_response)
 
-    async with BaseDataClient() as base_data_client:
+asyncio.run(main())
+```
 
-        res = await base_data_client.advertiser.ingest_advertiser_data_async(ttd_auth="<value>", advertiser_id="<id>")
+</br>
 
-        assert res.advertiser_data_server_response is not None
+```python
+# Asynchronous Example — with UID2 identity mapping (raw email resolved before ingest)
+import asyncio
+from ttd_data import DataClient, IdentityScope, UID2Config, UID2ServiceError
+from ttd_data.models import AdvertiserData, AdvertiserDataItem
 
-        # Handle response
-        print(res.advertiser_data_server_response)
+uid2_config = UID2Config(
+    base_url="<UID2_BASE_URL>",
+    api_key="<UID2_API_KEY>",
+    client_secret="<UID2_CLIENT_SECRET>",
+    identity_scope=IdentityScope.UID2,
+)
+
+async def main():
+    try:
+        async with DataClient(uid2_config=uid2_config, server_url="<TTD_DATA_SERVER_URL>") as client:
+            response = await client.advertiser.ingest_advertiser_data_async(
+                ttd_auth="<TTD_AUTH_TOKEN>",
+                advertiser_id="<ADVERTISER_ID>",
+                items=[
+                    AdvertiserDataItem(
+                        data=[AdvertiserData(name="loyalty_members")],
+                        email="user@example.com",
+                    )
+                ],
+            )
+            print(response.advertiser_data_server_response)
+    except UID2ServiceError as e:
+        print(f"UID2 service error: {e}")
 
 asyncio.run(main())
 ```

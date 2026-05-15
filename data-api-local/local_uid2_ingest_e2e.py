@@ -33,7 +33,7 @@ import httpx
 from ttd_data import errors
 from ttd_data._hooks.types import BeforeRequestContext, BeforeRequestHook
 from ttd_data.models import AdvertiserData, ThirdPartyData, PartnerDsrRequestType
-from ttd_data import DataClient, IdentityScope, UID2Config
+from ttd_data import DataClient, IdentityScope, UID2Config, UserIdType
 from ttd_data.uid2 import (
     AdvertiserDataItem,
     OfflineConversionDataItem,
@@ -150,6 +150,34 @@ def _run(name: str, action: Callable[[], None]) -> None:
             print(f"failed_lines: {data.failed_lines}")
 
 
+class _RequestBodyCapture(BeforeRequestHook):
+    """Captures the raw serialized request body for post-call assertions."""
+
+    def __init__(self) -> None:
+        self.bodies: list[str] = []
+
+    def before_request(
+        self, hook_ctx: BeforeRequestContext, request: httpx.Request
+    ) -> httpx.Request:
+        try:
+            self.bodies.append(request.content.decode("utf-8"))
+        except UnicodeDecodeError:
+            self.bodies.append(repr(request.content))
+        return request
+
+    def assert_absent(self, *strings: str) -> None:
+        leaked: list[str] = []
+        for body in self.bodies:
+            for s in strings:
+                if s in body:
+                    leaked.append(f"  {s!r} found in body: {body[:300]!r}")
+        if leaked:
+            raise AssertionError(
+                "PII strings found in outbound request body:\n" + "\n".join(leaked)
+            )
+        print(f"  PASS: {strings} absent from all {len(self.bodies)} captured request(s)")
+
+
 # ---------------------------------------------------------------------------
 # Endpoint exercises
 # ---------------------------------------------------------------------------
@@ -232,7 +260,7 @@ def exercise_offline_conversion_ingest(client: DataClient) -> None:
         OfflineConversionDataItem(
             tracking_tag_id=TRACKING_TAG_ID,
             timestamp_utc=now,
-            user_id_array=[["-1", HASHED_EMAIL], ["-3", RAW_EMAIL]],
+            user_id_array=[[UserIdType.HASHED_EMAIL, HASHED_EMAIL], [UserIdType.EMAIL, RAW_EMAIL]],
         ),
         OfflineConversionDataItem(
             tracking_tag_id=TRACKING_TAG_ID,
@@ -243,7 +271,7 @@ def exercise_offline_conversion_ingest(client: DataClient) -> None:
         OfflineConversionDataItem(
             tracking_tag_id=TRACKING_TAG_ID,
             timestamp_utc=now,
-            user_id_array=[["-3", OPTOUT_EMAIL]],
+            user_id_array=[[UserIdType.EMAIL, OPTOUT_EMAIL]],
         ),
     ]
     _print_items("Submitting items", items)
@@ -330,6 +358,89 @@ def exercise_dsr_third_party(client: DataClient) -> None:
 
 
 # ---------------------------------------------------------------------------
+# PII dropping checks
+# ---------------------------------------------------------------------------
+
+
+def _make_uid2_client() -> DataClient:
+    config = UID2Config(
+        base_url=UID2_BASE_URL,
+        api_key=UID2_API_KEY,
+        client_secret=UID2_CLIENT_SECRET,
+        identity_scope=IdentityScope.UID2,
+    )
+    return DataClient(config, server_url=TTD_DATA_SERVER_URL)
+
+
+def _register_capture(client: DataClient) -> _RequestBodyCapture:
+    capture = _RequestBodyCapture()
+    hooks = client.data_client.sdk_configuration.__dict__["_hooks"]
+    hooks.register_before_request_hook(capture)
+    return capture
+
+
+def verify_pii_not_in_request_with_uid2_config() -> None:
+    """After UID2 resolution the raw email / hashed_email must not appear in
+    the HTTP body sent to DataServer.
+
+    The resolver writes the resolved UID2 token onto each item and calls
+    _clear_extras to zero the raw identifier fields before the speakeasy
+    serializer touches the items.
+    """
+    client = _make_uid2_client()
+    capture = _register_capture(client)
+
+    items = [
+        AdvertiserDataItem(data=[AdvertiserData(name=ADVERTISER_SEGMENT)], email=RAW_EMAIL),
+        AdvertiserDataItem(data=[AdvertiserData(name=ADVERTISER_SEGMENT)], hashed_email=HASHED_EMAIL),
+        AdvertiserDataItem(data=[AdvertiserData(name=ADVERTISER_SEGMENT)], tdid=PASSTHROUGH_TDID),
+    ]
+    _print_items("Submitting items", items)
+    try:
+        response = client.advertiser.ingest_advertiser_data(
+            advertiser_id=ADVERTISER_ID,
+            ttd_auth=TTD_AUTH_TOKEN,
+            items=items,
+        )
+        _print_response("TTD response", response, "advertiser_data_server_response")
+    except Exception as exc:
+        print(f"  (server call: {exc.__class__.__name__}: {exc})")
+
+    capture.assert_absent(RAW_EMAIL, HASHED_EMAIL)
+
+
+def verify_pii_not_in_request_no_uid2_config() -> None:
+    """Even without a UID2Config, raw email / phone must not appear in the HTTP
+    body sent to DataServer.
+
+    No UID2 resolution runs, but the wrapper-to-base model_validate conversion
+    still drops Email / Phone / HashedEmail / HashedPhone because
+    BaseAdvertiserDataItem has no such fields — pydantic silently ignores them.
+    """
+    # No uid2_config — UID2 resolution is intentionally skipped.
+    client = DataClient(server_url=TTD_DATA_SERVER_URL)
+    capture = _register_capture(client)
+
+    items = [
+        AdvertiserDataItem(data=[AdvertiserData(name=ADVERTISER_SEGMENT)], email=RAW_EMAIL),
+        AdvertiserDataItem(data=[AdvertiserData(name=ADVERTISER_SEGMENT)], hashed_email=HASHED_EMAIL),
+        AdvertiserDataItem(data=[AdvertiserData(name=ADVERTISER_SEGMENT)], tdid=PASSTHROUGH_TDID),
+    ]
+    _print_items("Submitting items (no UID2 config)", items)
+    try:
+        response = client.advertiser.ingest_advertiser_data(
+            advertiser_id=ADVERTISER_ID,
+            ttd_auth=TTD_AUTH_TOKEN,
+            items=items,
+        )
+        _print_response("TTD response", response, "advertiser_data_server_response")
+    except Exception as exc:
+        print(f"  (server call: {exc.__class__.__name__}: {exc})")
+
+    capture.assert_absent(RAW_EMAIL, HASHED_EMAIL)
+
+
+# ---------------------------------------------------------------------------
 # Driver
 # ---------------------------------------------------------------------------
 
@@ -354,6 +465,8 @@ def main() -> None:
     _run("DSR — advertiser", lambda: exercise_dsr_advertiser(client))
     _run("DSR — merchant", lambda: exercise_dsr_merchant(client))
     _run("DSR — third-party", lambda: exercise_dsr_third_party(client))
+    _run("PII dropping checks — with UID2 config", verify_pii_not_in_request_with_uid2_config)
+    _run("PII dropping checks — no UID2 config", verify_pii_not_in_request_no_uid2_config)
 
 
 if __name__ == "__main__":

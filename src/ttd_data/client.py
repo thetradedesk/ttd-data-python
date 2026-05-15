@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-# `BaseDataClient` wrapper. Pass `uid2_config` to enable UID2 identity-map
-# resolution on ingestion / DSR endpoints; omit it for a thin pass-through.
+# DataClient wraps BaseDataClient and adds optional UID2 identity mapping.
+# Supply `uid2_config` to resolve PII (email/phone) to UID2 before ingest;
+# pre-resolved identifiers (TDID, UID2, DAID, etc.) work without it.
 # pylint: disable=protected-access
 
 import asyncio

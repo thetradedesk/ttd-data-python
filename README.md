@@ -97,9 +97,9 @@ It's also possible to write a standalone Python script without needing to set up
 # ]
 # ///
 
-from ttd_data import BaseDataClient
+from ttd_data import DataClient
 
-sdk = BaseDataClient(
+sdk = DataClient(
   # SDK arguments
 )
 
@@ -166,18 +166,29 @@ with DataClient() as client:
 ### 3. Offline Conversions Data (CAPI)
 
 ```python
-from ttd_data import DataClient, models
+from datetime import datetime, timezone
+from ttd_data import DataClient, UserIdType, models
 
 with DataClient() as client:
     response = client.offline_conversion.ingest_offline_conversion_data(
         ttd_auth=TTD_AUTH_TOKEN,
         data_provider_id=DATA_PROVIDER_ID,
         items=[
+            # Pre-resolved TDID
             models.OfflineConversionDataItem(
                 tracking_tag_id=TRACKING_TAG_ID,
                 timestamp_utc=datetime.now(timezone.utc),
                 tdid="<TDID>",
-            )
+            ),
+            # Multiple identifiers via UserIdArray
+            models.OfflineConversionDataItem(
+                tracking_tag_id=TRACKING_TAG_ID,
+                timestamp_utc=datetime.now(timezone.utc),
+                user_id_array=[
+                    [UserIdType.TDID, "<TDID>"],
+                    [UserIdType.UID2, "<UID2>"],
+                ],
+            ),
         ],
     )
 ```
@@ -234,7 +245,57 @@ with DataClient() as client:
 ```
 
 
-### 7. Async usage
+### 7. UID2 Identity Mapping
+
+Supply a `UID2Config` to resolve raw PII (email / phone) to UID2 before ingest. Per-item mapping failures (opted-out or unmapped identifiers) appear in `failed_lines` with `ErrorCode = "Uid2Error"`. A complete UID2 service failure raises `UID2ServiceError`.
+
+```python
+from ttd_data import DataClient, IdentityScope, UID2Config, UID2ServiceError
+from ttd_data.models import AdvertiserData, AdvertiserDataItem
+
+uid2_config = UID2Config(
+    base_url="<UID2_BASE_URL>",
+    api_key="<UID2_API_KEY>",
+    client_secret="<UID2_CLIENT_SECRET>",
+    identity_scope=IdentityScope.UID2,
+)
+
+try:
+    with DataClient(uid2_config=uid2_config, server_url="<TTD_DATA_SERVER_URL>") as client:
+        response = client.advertiser.ingest_advertiser_data(
+            ttd_auth=TTD_AUTH_TOKEN,
+            advertiser_id=ADVERTISER_ID,
+            items=[
+                # Raw email — resolved to UID2 before ingest
+                AdvertiserDataItem(
+                    data=[AdvertiserData(name="loyalty_members")],
+                    email="user@example.com",
+                ),
+                # Pre-hashed email
+                AdvertiserDataItem(
+                    data=[AdvertiserData(name="loyalty_members")],
+                    hashed_email="<SHA256_BASE64>",
+                ),
+                # Pre-resolved TDID — no UID2 work needed
+                AdvertiserDataItem(
+                    data=[AdvertiserData(name="loyalty_members")],
+                    tdid="<TDID>",
+                ),
+            ],
+        )
+
+        # Check for per-item mapping failures
+        server_response = response.advertiser_data_server_response
+        if server_response and server_response.failed_lines:
+            for line in server_response.failed_lines:
+                print(f"Item {line.item_number} failed: {line.error_code} — {line.message}")
+
+except UID2ServiceError as e:
+    # The UID2 identity-map service itself failed — no items were sent
+    print(f"UID2 service error: {e}")
+```
+
+### 8. Async usage
 
 The same SDK client can also be used to make asynchronous requests by importing asyncio.
 
@@ -246,7 +307,7 @@ from ttd_data import DataClient, models
 async def main():
 
     async with DataClient() as data_client:
-        response = client.advertiser.ingest_advertiser_data(
+        response = data_client.advertiser.ingest_advertiser_data(
             ttd_auth=TTD_AUTH_TOKEN,
             advertiser_id=ADVERTISER_ID,
             items=[
@@ -300,13 +361,13 @@ Some of the endpoints in this SDK support retries. If you use the SDK without an
 
 To change the default retry strategy for a single API call, simply provide a `RetryConfig` object to the call:
 ```python
-from ttd_data import BaseDataClient
+from ttd_data import DataClient
 from ttd_data.utils import BackoffStrategy, RetryConfig
 
 
-with BaseDataClient() as base_data_client:
+with DataClient() as data_client:
 
-    res = base_data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>",
+    res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>",
         RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
 
     assert res.advertiser_data_server_response is not None
@@ -318,15 +379,15 @@ with BaseDataClient() as base_data_client:
 
 If you'd like to override the default retry strategy for all operations that support retries, you can use the `retry_config` optional parameter when initializing the SDK:
 ```python
-from ttd_data import BaseDataClient
+from ttd_data import DataClient
 from ttd_data.utils import BackoffStrategy, RetryConfig
 
 
-with BaseDataClient(
+with DataClient(
     retry_config=RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False),
-) as base_data_client:
+) as data_client:
 
-    res = base_data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
+    res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
 
     assert res.advertiser_data_server_response is not None
 
@@ -352,14 +413,14 @@ with BaseDataClient(
 
 ### Example
 ```python
-from ttd_data import BaseDataClient, errors
+from ttd_data import DataClient, errors
 
 
-with BaseDataClient() as base_data_client:
+with DataClient() as data_client:
     res = None
     try:
 
-        res = base_data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
+        res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
 
         assert res.advertiser_data_server_response is not None
 
@@ -418,16 +479,16 @@ This allows you to wrap the client with your own custom logic, such as adding cu
 
 For example, you could specify a header for every request that this sdk makes as follows:
 ```python
-from ttd_data import BaseDataClient
+from ttd_data import DataClient
 import httpx
 
 http_client = httpx.Client(headers={"x-custom-header": "someValue"})
-s = BaseDataClient(client=http_client)
+s = DataClient(client=http_client)
 ```
 
 or you could wrap the client with your own custom logic:
 ```python
-from ttd_data import BaseDataClient
+from ttd_data import DataClient
 from ttd_data.httpclient import AsyncHttpClient
 import httpx
 
@@ -486,29 +547,29 @@ class CustomClient(AsyncHttpClient):
             extensions=extensions,
         )
 
-s = BaseDataClient(async_client=CustomClient(httpx.AsyncClient()))
+s = DataClient(async_client=CustomClient(httpx.AsyncClient()))
 ```
 <!-- End Custom HTTP Client [http-client] -->
 
 <!-- Start Resource Management [resource-management] -->
 ## Resource Management
 
-The `BaseDataClient` class implements the context manager protocol and registers a finalizer function to close the underlying sync and async HTTPX clients it uses under the hood. This will close HTTP connections, release memory and free up other resources held by the SDK. In short-lived Python programs and notebooks that make a few SDK method calls, resource management may not be a concern. However, in longer-lived programs, it is beneficial to create a single SDK instance via a [context manager][context-manager] and reuse it across the application.
+The `DataClient` class implements the context manager protocol and registers a finalizer function to close the underlying sync and async HTTPX clients it uses under the hood. This will close HTTP connections, release memory and free up other resources held by the SDK. In short-lived Python programs and notebooks that make a few SDK method calls, resource management may not be a concern. However, in longer-lived programs, it is beneficial to create a single SDK instance via a [context manager][context-manager] and reuse it across the application.
 
 [context-manager]: https://docs.python.org/3/reference/datamodel.html#context-managers
 
 ```python
-from ttd_data import BaseDataClient
+from ttd_data import DataClient
 def main():
 
-    with BaseDataClient() as base_data_client:
+    with DataClient() as data_client:
         # Rest of application here...
 
 
 # Or when using async:
 async def amain():
 
-    async with BaseDataClient() as base_data_client:
+    async with DataClient() as data_client:
         # Rest of application here...
 ```
 <!-- End Resource Management [resource-management] -->
@@ -520,11 +581,11 @@ You can setup your SDK to emit debug logs for SDK requests and responses.
 
 You can pass your own logger class directly into your SDK.
 ```python
-from ttd_data import BaseDataClient
+from ttd_data import DataClient
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
-s = BaseDataClient(server_url="https://example.com", debug_logger=logging.getLogger("ttd_data"))
+s = DataClient(server_url="https://example.com", debug_logger=logging.getLogger("ttd_data"))
 ```
 
 You can also enable a default debug logger by setting an environment variable `TTD_DATA_DEBUG` to true.

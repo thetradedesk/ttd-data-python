@@ -21,7 +21,7 @@ targets:
         sourceRevisionDigest: sha256:0daf241a54a03955ac31c7434f554ddab15bd58de0eba952e0b9ae6a34f2eac7
         sourceBlobDigest: sha256:c7806fbc0c6ce5c9db56204d8ad142e32949242388ae9b9f6cae3df05590ed30
         codeSamplesNamespace: data-api-python-code-samples
-        codeSamplesRevisionDigest: sha256:40a22ac3d51ca5c2f22d81838e074e119ffb6c80ec0e747468d9ef8f628499b1
+        codeSamplesRevisionDigest: sha256:c2a17b027521852c791afafef2f79012c56a27251789cfc4e9679856313755eb
     data-api-local:
         source: Data API Local
         sourceNamespace: data-api-local

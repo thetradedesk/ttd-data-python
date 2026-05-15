@@ -2,8 +2,8 @@ configVersion: 2.0.0
 generation:
   devContainers:
     enabled: true
-    schemaPath: .speakeasy/swagger.json
-  sdkClassName: _BaseDataClient
+    schemaPath: .speakeasy/out.openapi.yaml
+  sdkClassName: BaseDataClient
   maintainOpenAPIOrder: true
   usageSnippets:
     optionalPropertyRendering: withExample
@@ -28,7 +28,8 @@ generation:
     allOfMergeStrategy: shallowMerge
   requestBodyFieldName: body
   versioningStrategy: automatic
-  persistentEdits: {}
+  persistentEdits:
+    enabled: "true"
   tests:
     generateTests: true
     generateNewTests: false
@@ -37,7 +38,8 @@ python:
   version: 0.1.0
   additionalDependencies:
     dev: {}
-    main: {}
+    main:
+      uid2-client: '>=2.9.0,<3.0.0'
   allowedRedefinedBuiltins:
     - id
     - object
@@ -49,19 +51,19 @@ python:
   clientServerStatusCodesAsErrors: true
   constFieldCasing: normal
   defaultErrorName: APIError
-  description: Python Client SDK for TTD Data API (Local Testing).
+  description: Python Client SDK for TTD Data API.
   enableCustomCodeRegions: false
   enumFormat: enum
-  envVarPrefix: TTD_DATA_LOCAL
+  envVarPrefix: TTD_DATA
   fixFlags:
     asyncPaginationSep2025: true
-    conflictResistantModelImportsFeb2026: true
+    conflictResistantModelImportsFeb2026: false
     responseRequiredSep2024: true
   flattenGlobalSecurity: true
   flattenRequests: true
   flatteningOrder: parameters-first
   forwardCompatibleEnumsByDefault: false
-  forwardCompatibleUnionsByDefault: tagged-only
+  forwardCompatibleUnionsByDefault: "false"
   imports:
     option: openapi
     paths:
@@ -73,9 +75,9 @@ python:
   inferUnionDiscriminators: true
   inputModelSuffix: input
   license:
-    name: The MIT License (MIT)
-    shortName: MIT
-    url: https://mit-license.org/
+    name: Apache License 2.0
+    shortName: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
   maxMethodParams: 999
   methodArguments: infer-optional-args
   moduleName: ""
