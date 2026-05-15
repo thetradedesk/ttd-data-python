@@ -125,16 +125,21 @@ class DataClient:
         emails / phones / hashed phones and sets the appropriate value
         in the UID2 / EUID fields on the `base_cls` object.
 
-        When `uid2_config` is None, resolution is skipped entirely.
+        The wrapper_cls → base_cls conversion always runs; UID2 resolution
+        is skipped when uid2_config is None. 
         """
-        if not items or self.uid2_config is None:
+        if not items:
             return items, {}, {}
 
-        resolutions, failed_mappings = resolve_uid2_identifiers_in_place(
-            items,
-            self._identity_map_client,
-            self.uid2_config.identity_scope,
-        )
+        resolutions: Dict[str, UID2Resolution] = {}
+        failed_mappings: Dict[int, UID2FailedMapping] = {}
+
+        if self.uid2_config is not None:
+            resolutions, failed_mappings = resolve_uid2_identifiers_in_place(
+                items,
+                self._identity_map_client,
+                self.uid2_config.identity_scope,
+            )
 
         converted: List[Any] = [
             base_cls.model_validate(it.model_dump(by_alias=True))
@@ -152,11 +157,17 @@ class DataClient:
     ) -> Tuple[Any, Dict[str, UID2Resolution], Dict[int, UID2FailedMapping]]:
         """Async variant: runs the synchronous UID2 SDK call in a worker
         thread so the event loop stays free."""
-        if not items or self.uid2_config is None:
+        if not items:
             return items, {}, {}
-        resolutions, failed_mappings = await asyncio.to_thread(
-            self._resolve_items_sync, items
-        )
+
+        resolutions: Dict[str, UID2Resolution] = {}
+        failed_mappings: Dict[int, UID2FailedMapping] = {}
+
+        if self.uid2_config is not None:
+            resolutions, failed_mappings = await asyncio.to_thread(
+                self._resolve_items_sync, items
+            )
+
         converted: List[Any] = [
             base_cls.model_validate(it.model_dump(by_alias=True))
             if isinstance(it, wrapper_cls)

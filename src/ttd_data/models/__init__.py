@@ -7,6 +7,16 @@ from ttd_data.utils.dynamic_imports import lazy_getattr, lazy_dir
 
 if TYPE_CHECKING:
     from .advertiserdata import AdvertiserData, AdvertiserDataTypedDict
+    from ttd_data.uid2.models import (
+        AdvertiserDataItem,
+        AdvertiserDataItemTypedDict,
+        OfflineConversionDataItem,
+        OfflineConversionDataItemTypedDict,
+        PartnerDsrDataItem,
+        PartnerDsrDataItemTypedDict,
+        ThirdPartyDataItem,
+        ThirdPartyDataItemTypedDict,
+    )
     from .advertiserdatarequest import (
         AdvertiserDataRequest,
         AdvertiserDataRequestTypedDict,
@@ -153,6 +163,8 @@ if TYPE_CHECKING:
 
 __all__ = [
     "AdvertiserData",
+    "AdvertiserDataItem",
+    "AdvertiserDataItemTypedDict",
     "AdvertiserDataRequest",
     "AdvertiserDataRequestTypedDict",
     "AdvertiserDataResponseErrorCode",
@@ -217,6 +229,8 @@ __all__ = [
     "MerchantDsrRequestTypedDict",
     "MerchantDsrResponse",
     "MerchantDsrResponseTypedDict",
+    "OfflineConversionDataItem",
+    "OfflineConversionDataItemTypedDict",
     "OfflineConversionDataRequest",
     "OfflineConversionDataRequestTypedDict",
     "OfflineConversionDataResponseErrorCode",
@@ -224,12 +238,16 @@ __all__ = [
     "OfflineConversionDataServerResponseLine",
     "OfflineConversionDataServerResponseLineTypedDict",
     "OfflineConversionDataServerResponseTypedDict",
+    "PartnerDsrDataItem",
+    "PartnerDsrDataItemTypedDict",
     "PartnerDsrRequestType",
     "RealTimeConversionEventLineItem",
     "RealTimeConversionEventLineItemTypedDict",
     "RealTimeConversionEventsPrivacySetting",
     "RealTimeConversionEventsPrivacySettingTypedDict",
     "ThirdPartyData",
+    "ThirdPartyDataItem",
+    "ThirdPartyDataItemTypedDict",
     "ThirdPartyDataRequest",
     "ThirdPartyDataRequestTypedDict",
     "ThirdPartyDataResponseErrorCode",
@@ -249,6 +267,14 @@ __all__ = [
 _dynamic_imports: dict[str, str] = {
     "AdvertiserData": ".advertiserdata",
     "AdvertiserDataTypedDict": ".advertiserdata",
+    "AdvertiserDataItem": "ttd_data.uid2.models",
+    "AdvertiserDataItemTypedDict": "ttd_data.uid2.models",
+    "OfflineConversionDataItem": "ttd_data.uid2.models",
+    "OfflineConversionDataItemTypedDict": "ttd_data.uid2.models",
+    "PartnerDsrDataItem": "ttd_data.uid2.models",
+    "PartnerDsrDataItemTypedDict": "ttd_data.uid2.models",
+    "ThirdPartyDataItem": "ttd_data.uid2.models",
+    "ThirdPartyDataItemTypedDict": "ttd_data.uid2.models",
     "AdvertiserDataRequest": ".advertiserdatarequest",
     "AdvertiserDataRequestTypedDict": ".advertiserdatarequest",
     "AdvertiserDataResponseErrorCode": ".advertiserdataresponseerrorcode",
