@@ -14,3 +14,4 @@ class OfflineConversionDataResponseErrorCode(str, Enum):
     INVALID_TIMESTAMP = "InvalidTimestamp"
     INVALID_USER_ID_TYPE_OR_USER_ID = "InvalidUserIdTypeOrUserId"
     UNAUTHORIZED = "Unauthorized"
+    UID2_ERROR = "Uid2Error"
