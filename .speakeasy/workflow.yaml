@@ -13,6 +13,9 @@ targets:
     data-api:
         target: python
         source: Data API
+        publish:
+            pypi:
+                token: $pypi_token
         codeSamples:
             registry:
                 location: registry.speakeasyapi.dev/thetradedesk/data-api/data-api-python-code-samples
