@@ -62,3 +62,33 @@ actions:
         items:
           $ref: "#/components/schemas/DataOrigin"
         nullable: true
+
+  # Rename the generated schema classes so the public names are free for the
+  # hand-written wrappers in `ttd_data.uid2` that add raw email / phone /
+  # hashed_email / hashed_phone fields.
+  - target: "$.components.schemas.AdvertiserDataItem"
+    update:
+      x-speakeasy-name-override: BaseAdvertiserDataItem
+  - target: "$.components.schemas.ThirdPartyDataItem"
+    update:
+      x-speakeasy-name-override: BaseThirdPartyDataItem
+  - target: "$.components.schemas.PartnerDsrDataItem"
+    update:
+      x-speakeasy-name-override: BasePartnerDsrDataItem
+  - target: "$.components.schemas.OfflineConversionDataItem"
+    update:
+      x-speakeasy-name-override: BaseOfflineConversionDataItem
+
+  # Append "Uid2Error" to each error-code enum.
+  - target: "$.components.schemas.AdvertiserDataResponseErrorCode.enum"
+    update:
+      - "Uid2Error"
+  - target: "$.components.schemas.ThirdPartyDataResponseErrorCode.enum"
+    update:
+      - "Uid2Error"
+  - target: "$.components.schemas.OfflineConversionDataResponseErrorCode.enum"
+    update:
+      - "Uid2Error"
+  - target: "$.components.schemas.DsrErrorCode.enum"
+    update:
+      - "Uid2Error"

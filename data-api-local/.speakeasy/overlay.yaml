@@ -1,0 +1,80 @@
+overlay: 1.0.0
+info:
+  title: Add DataOrigins field
+  version: 1.0.0
+actions:
+  - target: "$.info"
+    update:
+      description: |
+        Python SDK for The Trade Desk Data API. Provides operations for ingesting advertiser data,
+        third-party data, and offline conversions, as well as handling data subject deletion and opt-out requests.
+
+        For more information, see the official API documentation:
+        - [Advertiser targeting data (1PD)](https://open.thetradedesk.com/advertiser/docsApp/GuidesAdvertiser/data/doc/post-data-advertiser-firstparty)
+        - [Third-party targeting data (3PD)](https://open.thetradedesk.com/provider/docsApp/GuidesProvider/audience/doc/post-data-thirdparty)
+        - [Offline conversions (CAPI)](https://open.thetradedesk.com/advertiser/docsApp/GuidesAdvertiser/data/doc/post-providerapi-offlineconversion)
+
+        Deletions and opt-outs:
+        - [Advertiser](https://open.thetradedesk.com/advertiser/docsApp/GuidesAdvertiser/data/doc/post-data-deletion-optout-advertiser)
+        - [Third party](https://open.thetradedesk.com/provider/docsApp/GuidesProvider/audience/doc/post-data-deletion-optout-thirdparty)
+        - [Merchant](https://open.thetradedesk.com/provider/docsApp/GuidesProvider/retail/doc/post-data-deletion-optout-merchant)
+  - target: "$.components.schemas"
+    update:
+      DataOriginType:
+        type: string
+        enum:
+          - "Advertiser"
+          - "DataProvider"
+          - "Integration"
+          - "Onboarder"
+      DataOrigin:
+        required:
+          - "Id"
+          - "Type"
+        type: object
+        properties:
+          Id:
+            type: string
+          Type:
+            $ref: "#/components/schemas/DataOriginType"
+        additionalProperties: false
+
+  - target: "$.components.schemas.AdvertiserDataRequest.properties"
+    update:
+      DataOrigins:
+        type: array
+        items:
+          $ref: "#/components/schemas/DataOrigin"
+        nullable: true
+
+  - target: "$.components.schemas.ThirdPartyDataRequest.properties"
+    update:
+      DataOrigins:
+        type: array
+        items:
+          $ref: "#/components/schemas/DataOrigin"
+        nullable: true
+
+  - target: "$.components.schemas.OfflineConversionDataRequest.properties"
+    update:
+      DataOrigins:
+        type: array
+        items:
+          $ref: "#/components/schemas/DataOrigin"
+        nullable: true
+
+  # Rename the generated schema classes so the public names are free for the
+  # hand-written wrappers in `ttd_data.uid2_ext` that add raw email / phone /
+  # hashed_email / hashed_phone fields.
+  - target: "$.components.schemas.AdvertiserDataItem"
+    update:
+      x-speakeasy-name-override: BaseAdvertiserDataItem
+  - target: "$.components.schemas.ThirdPartyDataItem"
+    update:
+      x-speakeasy-name-override: BaseThirdPartyDataItem
+  - target: "$.components.schemas.PartnerDsrDataItem"
+    update:
+      x-speakeasy-name-override: BasePartnerDsrDataItem
+  - target: "$.components.schemas.OfflineConversionDataItem"
+    update:
+      x-speakeasy-name-override: BaseOfflineConversionDataItem

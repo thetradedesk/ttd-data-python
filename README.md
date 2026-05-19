@@ -166,18 +166,29 @@ with DataClient() as client:
 ### 3. Offline Conversions Data (CAPI)
 
 ```python
-from ttd_data import DataClient, models
+from datetime import datetime, timezone
+from ttd_data import DataClient, UserIdType, models
 
 with DataClient() as client:
     response = client.offline_conversion.ingest_offline_conversion_data(
         ttd_auth=TTD_AUTH_TOKEN,
         data_provider_id=DATA_PROVIDER_ID,
         items=[
+            # Pre-resolved TDID
             models.OfflineConversionDataItem(
                 tracking_tag_id=TRACKING_TAG_ID,
                 timestamp_utc=datetime.now(timezone.utc),
                 tdid="<TDID>",
-            )
+            ),
+            # Multiple identifiers via UserIdArray
+            models.OfflineConversionDataItem(
+                tracking_tag_id=TRACKING_TAG_ID,
+                timestamp_utc=datetime.now(timezone.utc),
+                user_id_array=[
+                    [UserIdType.TDID, "<TDID>"],
+                    [UserIdType.UID2, "<UID2>"],
+                ],
+            ),
         ],
     )
 ```
@@ -234,7 +245,67 @@ with DataClient() as client:
 ```
 
 
-### 7. Async usage
+### 7. UID2 Identity Mapping
+
+Supply a `UID2Config` to resolve raw PII (email / phone) to UID2 before ingest. Per-item mapping failures (opted-out or unmapped identifiers) appear in `failed_lines` with `ErrorCode = "Uid2Error"`. A complete UID2 service failure raises `UID2ServiceError`.
+
+```python
+from ttd_data import DataClient, IdentityScope, UID2Config, UID2ServiceError
+from ttd_data.models import AdvertiserData, AdvertiserDataItem
+
+uid2_config = UID2Config(
+    base_url="<UID2_BASE_URL>",
+    api_key="<UID2_API_KEY>",
+    client_secret="<UID2_CLIENT_SECRET>",
+    identity_scope=IdentityScope.UID2,
+)
+
+try:
+    with DataClient(uid2_config=uid2_config, server_url="<TTD_DATA_SERVER_URL>") as client:
+        response = client.advertiser.ingest_advertiser_data(
+            ttd_auth=TTD_AUTH_TOKEN,
+            advertiser_id=ADVERTISER_ID,
+            items=[
+                # Raw email — resolved to UID2 before ingest
+                AdvertiserDataItem(
+                    data=[AdvertiserData(name="loyalty_members")],
+                    email="user@example.com",
+                ),
+                # Pre-hashed email (SHA-256, base64-encoded)
+                AdvertiserDataItem(
+                    data=[AdvertiserData(name="loyalty_members")],
+                    hashed_email="<SHA256_BASE64>",
+                ),
+                # Raw phone (E.164 format) — resolved to UID2 before ingest
+                AdvertiserDataItem(
+                    data=[AdvertiserData(name="loyalty_members")],
+                    phone="+15555550123",
+                ),
+                # Pre-hashed phone (SHA-256 of the normalized E.164 string, base64-encoded)
+                AdvertiserDataItem(
+                    data=[AdvertiserData(name="loyalty_members")],
+                    hashed_phone="<SHA256_BASE64>",
+                ),
+                # Pre-resolved TDID — no UID2 work needed
+                AdvertiserDataItem(
+                    data=[AdvertiserData(name="loyalty_members")],
+                    tdid="<TDID>",
+                ),
+            ],
+        )
+
+        # Check for per-item mapping failures
+        server_response = response.advertiser_data_server_response
+        if server_response and server_response.failed_lines:
+            for line in server_response.failed_lines:
+                print(f"Item {line.item_number} failed: {line.error_code} — {line.message}")
+
+except UID2ServiceError as e:
+    # The UID2 identity-map service itself failed — no items were sent
+    print(f"UID2 service error: {e}")
+```
+
+### 8. Async usage
 
 The same SDK client can also be used to make asynchronous requests by importing asyncio.
 
@@ -246,7 +317,7 @@ from ttd_data import DataClient, models
 async def main():
 
     async with DataClient() as data_client:
-        response = client.advertiser.ingest_advertiser_data(
+        response = data_client.advertiser.ingest_advertiser_data(
             ttd_auth=TTD_AUTH_TOKEN,
             advertiser_id=ADVERTISER_ID,
             items=[

@@ -1,9 +1,16 @@
-speakeasyVersion: 1.761.5
+speakeasyVersion: 1.763.2
 sources:
     Data API:
         sourceNamespace: data-api
-        sourceRevisionDigest: sha256:ddc22a3c5d0bbf4810aa9555cd193bfdf6bee2c5d0843e01e7d0006fc505730f
-        sourceBlobDigest: sha256:c86d70812b7b8fb35ad731b6755a72a8c5d8a1bd62af3f1e64883c81264cd1fe
+        sourceRevisionDigest: sha256:224da560ad25abd35a08acff4001f7e6a9390b462fc2a43f6ccf82372bb5c69d
+        sourceBlobDigest: sha256:bb7c7b2147b53e524767e6658d0562eaeebc93d5c393f44392e0f4d606b739da
+        tags:
+            - latest
+            - v0.1
+    Data API Local:
+        sourceNamespace: data-api-local
+        sourceRevisionDigest: sha256:4d928ad86686f71fb18f025908926675e9a4db92003d6db4b9261715295fe5bf
+        sourceBlobDigest: sha256:f937fae3db68ebe534207c942a10f8d6c2ba00b4da1097f0455f2dd3dabb3140
         tags:
             - latest
             - v0.1
@@ -11,10 +18,17 @@ targets:
     data-api:
         source: Data API
         sourceNamespace: data-api
-        sourceRevisionDigest: sha256:ddc22a3c5d0bbf4810aa9555cd193bfdf6bee2c5d0843e01e7d0006fc505730f
-        sourceBlobDigest: sha256:c86d70812b7b8fb35ad731b6755a72a8c5d8a1bd62af3f1e64883c81264cd1fe
+        sourceRevisionDigest: sha256:224da560ad25abd35a08acff4001f7e6a9390b462fc2a43f6ccf82372bb5c69d
+        sourceBlobDigest: sha256:bb7c7b2147b53e524767e6658d0562eaeebc93d5c393f44392e0f4d606b739da
         codeSamplesNamespace: data-api-python-code-samples
-        codeSamplesRevisionDigest: sha256:17559c1f3685fb8ada33a85032c16f1204816196020b860301f8852965c12233
+        codeSamplesRevisionDigest: sha256:7740237e677533c05caac11556459f24aa3c2aeed42d2e279b99389bc0cf64d8
+    data-api-local:
+        source: Data API Local
+        sourceNamespace: data-api-local
+        sourceRevisionDigest: sha256:4d928ad86686f71fb18f025908926675e9a4db92003d6db4b9261715295fe5bf
+        sourceBlobDigest: sha256:f937fae3db68ebe534207c942a10f8d6c2ba00b4da1097f0455f2dd3dabb3140
+        codeSamplesNamespace: data-api-local-python-code-samples
+        codeSamplesRevisionDigest: sha256:0698d00298b9de56934c0d07e1b3893b38a4b2a2a2525efd5f5df34fe264f765
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
@@ -31,9 +45,6 @@ workflow:
         data-api:
             target: python
             source: Data API
-            publish:
-                pypi:
-                    token: $pypi_token
             codeSamples:
                 registry:
                     location: registry.speakeasyapi.dev/thetradedesk/data-api/data-api-python-code-samples

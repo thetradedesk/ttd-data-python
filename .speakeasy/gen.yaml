@@ -3,7 +3,7 @@ generation:
   devContainers:
     enabled: true
     schemaPath: .speakeasy/out.openapi.yaml
-  sdkClassName: DataClient
+  sdkClassName: BaseDataClient
   maintainOpenAPIOrder: true
   usageSnippets:
     optionalPropertyRendering: withExample
@@ -17,7 +17,7 @@ generation:
     securityFeb2025: true
     sharedErrorComponentsApr2025: true
     sharedNestedComponentsJan2026: true
-    nameOverrideFeb2026: false
+    nameOverrideFeb2026: true
   auth:
     oAuth2ClientCredentialsEnabled: true
     oAuth2PasswordEnabled: true
@@ -28,16 +28,18 @@ generation:
     allOfMergeStrategy: shallowMerge
   requestBodyFieldName: body
   versioningStrategy: automatic
-  persistentEdits: {}
+  persistentEdits:
+    enabled: "true"
   tests:
     generateTests: true
     generateNewTests: false
     skipResponseBodyAssertions: false
 python:
-  version: 0.1.7
+  version: 0.2.8
   additionalDependencies:
     dev: {}
-    main: {}
+    main:
+      uid2-client: '>=2.9.0,<3.0.0'
   allowedRedefinedBuiltins:
     - id
     - object
