@@ -271,10 +271,20 @@ try:
                     data=[AdvertiserData(name="loyalty_members")],
                     email="user@example.com",
                 ),
-                # Pre-hashed email
+                # Pre-hashed email (SHA-256, base64-encoded)
                 AdvertiserDataItem(
                     data=[AdvertiserData(name="loyalty_members")],
                     hashed_email="<SHA256_BASE64>",
+                ),
+                # Raw phone (E.164 format) — resolved to UID2 before ingest
+                AdvertiserDataItem(
+                    data=[AdvertiserData(name="loyalty_members")],
+                    phone="+15555550123",
+                ),
+                # Pre-hashed phone (SHA-256 of the normalized E.164 string, base64-encoded)
+                AdvertiserDataItem(
+                    data=[AdvertiserData(name="loyalty_members")],
+                    hashed_phone="<SHA256_BASE64>",
                 ),
                 # Pre-resolved TDID — no UID2 work needed
                 AdvertiserDataItem(

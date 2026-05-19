@@ -234,7 +234,7 @@ def _add_raw_identifiers(
     `ValueError` from the UID2 SDK's normalization (`with_email` /
     `with_phone` reject malformed input), skip the raw id from the input
     and route it through `unmapped` so the write-back path applies the
-    same "*" sentinel + Uid2Error treatment used for optout / unmapped
+    same "*" sentinel + UID2_ERROR treatment used for optout / unmapped
     identifiers. `with_hashed_email` / `with_hashed_phone` do not validate,
     so this loop is a no-op cost on the hashed-input paths.
 
@@ -375,7 +375,7 @@ def resolve_uid2_identifiers_in_place(
         return resolutions, failed_mappings
 
     # Chunk into `_UID2_BATCH_SIZE` raw ids per SDK call, each independently retried.
-    # Transient-fail chunks fold into the unmapped dict (→ sentinel "*" + Uid2Error); catastrophic errors raise `UID2ServiceError` upstream.
+    # Transient-fail chunks fold into the unmapped dict (→ sentinel "*" + UID2_ERROR); catastrophic errors raise `UID2ServiceError` upstream.
     mapped_identities_by_raw_id: Dict[str, Any] = {}
     unmapped_identities_by_raw_id: Dict[str, Any] = {}
 

@@ -13,11 +13,21 @@ from uid2_client import IdentityMapV3Client, IdentityMapV3Input  # type: ignore[
 
 from ttd_data.sdk import BaseDataClient
 from ttd_data.types import BaseModel
+from ttd_data.models.advertiserdataresponseerrorcode import (
+    AdvertiserDataResponseErrorCode,
+)
 from ttd_data.models.baseadvertiserdataitem import BaseAdvertiserDataItem
 from ttd_data.models.basethirdpartydataitem import BaseThirdPartyDataItem
 from ttd_data.models.basepartnerdsrdataitem import BasePartnerDsrDataItem
 from ttd_data.models.baseofflineconversiondataitem import (
     BaseOfflineConversionDataItem,
+)
+from ttd_data.models.dsrerrorcode import DsrErrorCode
+from ttd_data.models.offlineconversiondataresponseerrorcode import (
+    OfflineConversionDataResponseErrorCode,
+)
+from ttd_data.models.thirdpartydataresponseerrorcode import (
+    ThirdPartyDataResponseErrorCode,
 )
 
 from .uid2.config import UID2Config
@@ -40,9 +50,6 @@ from .uid2.resolver import (
 )
 
 
-_UID2_ERROR_CODE = "Uid2Error"
-
-
 class DataClient:
     """DataClient for the ttd-data SDK — enables ingesting advertiser,
     third-party, offline-conversion, and deletion-opt-out data to the
@@ -50,7 +57,8 @@ class DataClient:
 
     When `uid2_config` is supplied, raw email/phone ids on each item are
     resolved to UID2 (or EUID) before the request leaves; per-item mapping
-    failures appear in `failed_lines` with `ErrorCode = "Uid2Error"`.
+    failures appear in `failed_lines` with `ErrorCode = UID2_ERROR` (the
+    endpoint-specific enum member, e.g. `AdvertiserDataResponseErrorCode.UID2_ERROR`).
     """
 
     def __init__(
@@ -194,10 +202,12 @@ class DataClient:
         response: Any,
         server_response_attr: str,
         failed_mappings: Dict[int, UID2FailedMapping],
+        error_code: Any,
     ) -> None:
         """For each `failed_lines` entry whose `ItemNumber` matches a UID2
-        mapping failure, set the UID2 reason and `"Uid2Error"` error code.
-        Mutates `response` in place.
+        mapping failure, set the UID2 reason and `error_code` (the
+        endpoint-specific `UID2_ERROR` enum member). Mutates `response`
+        in place.
         """
         if not failed_mappings:
             return
@@ -219,7 +229,7 @@ class DataClient:
             if failure is None:
                 continue
             line.message = failure.reason
-            line.error_code = _UID2_ERROR_CODE
+            line.error_code = error_code
 
     @staticmethod
     def _build_wrapped_response(
@@ -270,6 +280,7 @@ class DataClient:
 
 class _AdvertiserProxy:
     _SERVER_RESPONSE_ATTR = "advertiser_data_server_response"
+    _UID2_ERROR = AdvertiserDataResponseErrorCode.UID2_ERROR
 
     def __init__(self, outer: DataClient) -> None:
         self._client = outer
@@ -283,7 +294,7 @@ class _AdvertiserProxy:
         )
         response = self._sub_sdk.ingest_advertiser_data(items=items, **kwargs)
         self._client._merge_failures_into_response(
-            response, self._SERVER_RESPONSE_ATTR, failures
+            response, self._SERVER_RESPONSE_ATTR, failures, self._UID2_ERROR
         )
         return self._client._build_wrapped_response(
             response, IngestAdvertiserDataResponse, resolutions
@@ -299,7 +310,7 @@ class _AdvertiserProxy:
             items=items, **kwargs
         )
         self._client._merge_failures_into_response(
-            response, self._SERVER_RESPONSE_ATTR, failures
+            response, self._SERVER_RESPONSE_ATTR, failures, self._UID2_ERROR
         )
         return self._client._build_wrapped_response(
             response, IngestAdvertiserDataResponse, resolutions
@@ -311,6 +322,7 @@ class _AdvertiserProxy:
 
 class _ThirdPartyProxy:
     _SERVER_RESPONSE_ATTR = "third_party_data_server_response"
+    _UID2_ERROR = ThirdPartyDataResponseErrorCode.UID2_ERROR
 
     def __init__(self, outer: DataClient) -> None:
         self._client = outer
@@ -324,7 +336,7 @@ class _ThirdPartyProxy:
         )
         response = self._sub_sdk.ingest_third_party_data(items=items, **kwargs)
         self._client._merge_failures_into_response(
-            response, self._SERVER_RESPONSE_ATTR, failures
+            response, self._SERVER_RESPONSE_ATTR, failures, self._UID2_ERROR
         )
         return self._client._build_wrapped_response(
             response, IngestThirdPartyDataResponse, resolutions
@@ -340,7 +352,7 @@ class _ThirdPartyProxy:
             items=items, **kwargs
         )
         self._client._merge_failures_into_response(
-            response, self._SERVER_RESPONSE_ATTR, failures
+            response, self._SERVER_RESPONSE_ATTR, failures, self._UID2_ERROR
         )
         return self._client._build_wrapped_response(
             response, IngestThirdPartyDataResponse, resolutions
@@ -352,6 +364,7 @@ class _ThirdPartyProxy:
 
 class _OfflineConversionProxy:
     _SERVER_RESPONSE_ATTR = "offline_conversion_data_server_response"
+    _UID2_ERROR = OfflineConversionDataResponseErrorCode.UID2_ERROR
 
     def __init__(self, outer: DataClient) -> None:
         self._client = outer
@@ -365,7 +378,7 @@ class _OfflineConversionProxy:
         )
         response = self._sub_sdk.ingest_offline_conversion_data(items=items, **kwargs)
         self._client._merge_failures_into_response(
-            response, self._SERVER_RESPONSE_ATTR, failures
+            response, self._SERVER_RESPONSE_ATTR, failures, self._UID2_ERROR
         )
         return self._client._build_wrapped_response(
             response, IngestOfflineConversionDataResponse, resolutions
@@ -381,7 +394,7 @@ class _OfflineConversionProxy:
             items=items, **kwargs
         )
         self._client._merge_failures_into_response(
-            response, self._SERVER_RESPONSE_ATTR, failures
+            response, self._SERVER_RESPONSE_ATTR, failures, self._UID2_ERROR
         )
         return self._client._build_wrapped_response(
             response, IngestOfflineConversionDataResponse, resolutions
@@ -395,6 +408,7 @@ class _DeletionOptOutProxy:
     _ADVERTISER_DSR_ATTR = "advertiser_dsr_response"
     _MERCHANT_DSR_ATTR = "merchant_dsr_response"
     _THIRD_PARTY_DSR_ATTR = "third_party_dsr_response"
+    _UID2_ERROR = DsrErrorCode.UID2_ERROR
 
     def __init__(self, outer: DataClient) -> None:
         self._client = outer
@@ -410,7 +424,7 @@ class _DeletionOptOutProxy:
             items=items, **kwargs
         )
         self._client._merge_failures_into_response(
-            response, self._ADVERTISER_DSR_ATTR, failures
+            response, self._ADVERTISER_DSR_ATTR, failures, self._UID2_ERROR
         )
         return self._client._build_wrapped_response(
             response, DataSubjectRequestAdvertiserDataResponse, resolutions
@@ -426,7 +440,7 @@ class _DeletionOptOutProxy:
             items=items, **kwargs
         )
         self._client._merge_failures_into_response(
-            response, self._MERCHANT_DSR_ATTR, failures
+            response, self._MERCHANT_DSR_ATTR, failures, self._UID2_ERROR
         )
         return self._client._build_wrapped_response(
             response, DataSubjectRequestMerchantDataResponse, resolutions
@@ -442,7 +456,7 @@ class _DeletionOptOutProxy:
             items=items, **kwargs
         )
         self._client._merge_failures_into_response(
-            response, self._THIRD_PARTY_DSR_ATTR, failures
+            response, self._THIRD_PARTY_DSR_ATTR, failures, self._UID2_ERROR
         )
         return self._client._build_wrapped_response(
             response, DataSubjectRequestThirdPartyDataResponse, resolutions
@@ -458,7 +472,7 @@ class _DeletionOptOutProxy:
             items=items, **kwargs
         )
         self._client._merge_failures_into_response(
-            response, self._ADVERTISER_DSR_ATTR, failures
+            response, self._ADVERTISER_DSR_ATTR, failures, self._UID2_ERROR
         )
         return self._client._build_wrapped_response(
             response, DataSubjectRequestAdvertiserDataResponse, resolutions
@@ -474,7 +488,7 @@ class _DeletionOptOutProxy:
             items=items, **kwargs
         )
         self._client._merge_failures_into_response(
-            response, self._MERCHANT_DSR_ATTR, failures
+            response, self._MERCHANT_DSR_ATTR, failures, self._UID2_ERROR
         )
         return self._client._build_wrapped_response(
             response, DataSubjectRequestMerchantDataResponse, resolutions
@@ -490,7 +504,7 @@ class _DeletionOptOutProxy:
             items=items, **kwargs
         )
         self._client._merge_failures_into_response(
-            response, self._THIRD_PARTY_DSR_ATTR, failures
+            response, self._THIRD_PARTY_DSR_ATTR, failures, self._UID2_ERROR
         )
         return self._client._build_wrapped_response(
             response, DataSubjectRequestThirdPartyDataResponse, resolutions

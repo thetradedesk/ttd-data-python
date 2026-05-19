@@ -2,7 +2,9 @@
 # @generated-id: c4bbecf8701c
 
 from .dataerror import DataError
+# region: Manually edited code section
 from .uid2serviceerror import UID2ServiceError
+# endregion: Manually edited code section
 from typing import Any, TYPE_CHECKING
 
 from ttd_data.utils.dynamic_imports import lazy_getattr, lazy_dir
@@ -49,7 +51,7 @@ __all__ = [
     "OfflineConversionDataServerResponseError",
     "OfflineConversionDataServerResponseErrorData",
     "ResponseValidationError",
-    "UID2ServiceError",
+    "UID2ServiceError",  # Manually edited code section
     "ThirdPartyDataServerResponseError",
     "ThirdPartyDataServerResponseErrorData",
     "ThirdPartyDsrResponseError",

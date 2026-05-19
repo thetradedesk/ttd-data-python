@@ -15,3 +15,4 @@ value = DsrErrorCode.UNKNOWN
 | ----------------- | ----------------- |
 | `UNKNOWN`         | Unknown           |
 | `INVALID_USER_ID` | InvalidUserId     |
+| `UID2_ERROR`      | Uid2Error         |

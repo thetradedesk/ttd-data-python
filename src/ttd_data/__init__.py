@@ -9,8 +9,10 @@ from ._version import (
     __user_agent__,
 )
 from .sdkconfiguration import *
+# region: Manually edited code section
 from .client import DataClient
 from .uid2 import IdentityScope, UID2Config, UID2ServiceError, UserIdType
+# endregion: Manually edited code section
 
 
 VERSION: str = __version__

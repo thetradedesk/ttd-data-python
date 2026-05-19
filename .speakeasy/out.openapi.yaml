@@ -469,6 +469,7 @@ components:
         - "DataNameTooLong"
         - "InvalidTtlInMinutes"
         - "InvalidBaseBidCPM"
+        - "Uid2Error"
       type: "string"
     AdvertiserDataServerResponse:
       type: "object"
@@ -553,6 +554,7 @@ components:
       enum:
         - "Unknown"
         - "InvalidUserId"
+        - "Uid2Error"
       type: "string"
     MerchantDsrFailedLine:
       type: "object"
@@ -756,6 +758,7 @@ components:
         - "InvalidTimestamp"
         - "InvalidUserIdTypeOrUserId"
         - "Unauthorized"
+        - "Uid2Error"
       type: "string"
     OfflineConversionDataServerResponse:
       type: "object"
@@ -990,6 +993,7 @@ components:
         - "DataNameTooLong"
         - "UnauthorisedThirdPartyDataWithBaseBidCPM"
         - "InvalidTtlInMinutes"
+        - "Uid2Error"
       type: "string"
     ThirdPartyDataServerResponse:
       type: "object"

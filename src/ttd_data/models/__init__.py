@@ -7,6 +7,7 @@ from ttd_data.utils.dynamic_imports import lazy_getattr, lazy_dir
 
 if TYPE_CHECKING:
     from .advertiserdata import AdvertiserData, AdvertiserDataTypedDict
+    # region: Manually edited code section
     from ttd_data.uid2.models import (
         AdvertiserDataItem,
         AdvertiserDataItemTypedDict,
@@ -17,6 +18,7 @@ if TYPE_CHECKING:
         ThirdPartyDataItem,
         ThirdPartyDataItemTypedDict,
     )
+    # endregion: Manually edited code section
     from .advertiserdatarequest import (
         AdvertiserDataRequest,
         AdvertiserDataRequestTypedDict,
@@ -267,6 +269,7 @@ __all__ = [
 _dynamic_imports: dict[str, str] = {
     "AdvertiserData": ".advertiserdata",
     "AdvertiserDataTypedDict": ".advertiserdata",
+    # region: Manually edited code section
     "AdvertiserDataItem": "ttd_data.uid2.models",
     "AdvertiserDataItemTypedDict": "ttd_data.uid2.models",
     "OfflineConversionDataItem": "ttd_data.uid2.models",
@@ -275,6 +278,7 @@ _dynamic_imports: dict[str, str] = {
     "PartnerDsrDataItemTypedDict": "ttd_data.uid2.models",
     "ThirdPartyDataItem": "ttd_data.uid2.models",
     "ThirdPartyDataItemTypedDict": "ttd_data.uid2.models",
+    # endregion: Manually edited code section
     "AdvertiserDataRequest": ".advertiserdatarequest",
     "AdvertiserDataRequestTypedDict": ".advertiserdatarequest",
     "AdvertiserDataResponseErrorCode": ".advertiserdataresponseerrorcode",

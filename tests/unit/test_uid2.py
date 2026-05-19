@@ -251,3 +251,109 @@ def test_data_client_without_uid2_config_skips_resolution(monkeypatch):
 
     resolver_called.assert_not_called()
     base.advertiser.ingest_advertiser_data.assert_called_once()
+
+
+# ---------------------------------------------------------------------------
+# PII does not leak to the outbound request body
+# ---------------------------------------------------------------------------
+
+
+_PII_WIRE_KEYS = {"Email", "Phone", "HashedEmail", "HashedPhone"}
+
+
+def _pii_items_and_values():
+    """One advertiser item per raw-PII kind, plus the raw values to grep for."""
+    from ttd_data.models import AdvertiserData
+    from ttd_data.uid2 import AdvertiserDataItem
+
+    raw_values = {
+        "email": "alice@example.com",
+        "phone": "+15551234567",
+        "hashed_email": "hashed-email-value-not-an-actual-hash",
+        "hashed_phone": "hashed-phone-value-not-an-actual-hash",
+    }
+    items = [
+        AdvertiserDataItem(data=[AdvertiserData(name="seg")], **{kind: val})
+        for kind, val in raw_values.items()
+    ]
+    return items, set(raw_values.values())
+
+
+def _wire_form(item):
+    """Wire body the SDK would serialize for this item (dict + JSON)."""
+    return item.model_dump(by_alias=True), item.model_dump_json(by_alias=True)
+
+
+def test_no_pii_on_wire_without_uid2_config():
+    """Wrapper items carrying raw PII (email/phone/hashed_email/hashed_phone)
+    must have those fields stripped before the request leaves the SDK, even
+    when no UID2Config is supplied. The wrapper→base conversion in
+    `_prepare_items_for_request` drops them because the base item type does
+    not declare those fields."""
+    from ttd_data import DataClient
+    from ttd_data.models.ingestadvertiserdataop import (
+        IngestAdvertiserDataResponse as _BaseResponse,
+    )
+
+    items, pii_values = _pii_items_and_values()
+
+    base = MagicMock()
+    base.advertiser.ingest_advertiser_data.return_value = _BaseResponse.model_construct()
+    client = DataClient(data_client=base)
+    client.advertiser.ingest_advertiser_data(items=items)
+
+    forwarded_items = base.advertiser.ingest_advertiser_data.call_args.kwargs["items"]
+    assert len(forwarded_items) == len(items)
+    for item in forwarded_items:
+        wire_dict, wire_json = _wire_form(item)
+        leaked_keys = _PII_WIRE_KEYS & set(wire_dict.keys())
+        assert not leaked_keys, f"PII key on wire: {leaked_keys} in {wire_dict}"
+        leaked_values = {v for v in pii_values if v in wire_json}
+        assert not leaked_values, f"PII value on wire: {leaked_values} in {wire_json}"
+
+
+def test_no_pii_on_wire_with_uid2_config(monkeypatch):
+    """With a UID2Config, the resolver substitutes raw identifiers with the
+    resolved UID2 and clears the raw fields. The wire body must carry UID2
+    values, not the original email/phone/hashed_email/hashed_phone."""
+    from ttd_data import DataClient, IdentityScope, UID2Config
+    from ttd_data.models.ingestadvertiserdataop import (
+        IngestAdvertiserDataResponse as _BaseResponse,
+    )
+
+    items, pii_values = _pii_items_and_values()
+    pii_to_uid2 = {
+        raw: f"opaque-uid-{i}" for i, raw in enumerate(sorted(pii_values))
+    }
+    expected_uids = set(pii_to_uid2.values())
+    fake_identity_map = _make_identity_map_client(
+        mapped={raw: _mapped(uid) for raw, uid in pii_to_uid2.items()}
+    )
+    monkeypatch.setattr(
+        "ttd_data.client.IdentityMapV3Client", lambda *_a, **_k: fake_identity_map
+    )
+
+    base = MagicMock()
+    base.advertiser.ingest_advertiser_data.return_value = _BaseResponse.model_construct()
+    uid2_config = UID2Config(
+        base_url="https://uid2.example.com",
+        api_key="key",
+        client_secret="secret",
+        identity_scope=IdentityScope.UID2,
+    )
+    client = DataClient(uid2_config=uid2_config, data_client=base)
+    client.advertiser.ingest_advertiser_data(items=items)
+
+    forwarded_items = base.advertiser.ingest_advertiser_data.call_args.kwargs["items"]
+    assert len(forwarded_items) == len(items)
+    seen_uids = set()
+    for item in forwarded_items:
+        wire_dict, wire_json = _wire_form(item)
+        leaked_keys = _PII_WIRE_KEYS & set(wire_dict.keys())
+        assert not leaked_keys, f"PII key on wire: {leaked_keys} in {wire_dict}"
+        leaked_values = {v for v in pii_values if v in wire_json}
+        assert not leaked_values, f"PII value on wire: {leaked_values} in {wire_json}"
+        uid2 = wire_dict.get("UID2")
+        if uid2:
+            seen_uids.add(uid2)
+    assert seen_uids == expected_uids, f"expected {expected_uids}, got {seen_uids}"
