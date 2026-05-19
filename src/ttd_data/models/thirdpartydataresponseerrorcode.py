@@ -14,3 +14,4 @@ class ThirdPartyDataResponseErrorCode(str, Enum):
         "UnauthorisedThirdPartyDataWithBaseBidCPM"
     )
     INVALID_TTL_IN_MINUTES = "InvalidTtlInMinutes"
+    UID2_ERROR = "Uid2Error"

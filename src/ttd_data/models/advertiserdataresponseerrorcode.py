@@ -17,3 +17,4 @@ class AdvertiserDataResponseErrorCode(str, Enum):
     DATA_NAME_TOO_LONG = "DataNameTooLong"
     INVALID_TTL_IN_MINUTES = "InvalidTtlInMinutes"
     INVALID_BASE_BID_CPM = "InvalidBaseBidCPM"
+    UID2_ERROR = "Uid2Error"
