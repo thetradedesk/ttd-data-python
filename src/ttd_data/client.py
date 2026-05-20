@@ -46,6 +46,7 @@ from .uid2.models import (
 from .uid2.resolver import (
     UID2FailedMapping,
     UID2Resolution,
+    mark_raw_pii_failures_without_uid2,
     resolve_uid2_identifiers_in_place,
 )
 
@@ -134,8 +135,9 @@ class DataClient:
         emails / phones / hashed phones and sets the appropriate value
         in the UID2 / EUID fields on the `base_cls` object.
 
-        The wrapper_cls → base_cls conversion always runs; UID2 resolution
-        is skipped when uid2_config is None. 
+        The wrapper_cls → base_cls conversion always runs. When uid2_config
+        is None, items carrying raw identifiers are sentinel-substituted and
+        recorded as UID2_ERROR failures instead of going out as raw PII.
         """
         if not items:
             return items, {}, {}
@@ -149,6 +151,8 @@ class DataClient:
                 self._identity_map_client,
                 self.uid2_config.identity_scope,
             )
+        else:
+            resolutions, failed_mappings = mark_raw_pii_failures_without_uid2(items)
 
         converted: List[Any] = [
             base_cls.model_validate(it.model_dump(by_alias=True))
@@ -176,6 +180,8 @@ class DataClient:
             resolutions, failed_mappings = await asyncio.to_thread(
                 self._resolve_items_sync, items
             )
+        else:
+            resolutions, failed_mappings = mark_raw_pii_failures_without_uid2(items)
 
         converted: List[Any] = [
             base_cls.model_validate(it.model_dump(by_alias=True))

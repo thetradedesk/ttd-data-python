@@ -66,7 +66,6 @@ class UID2FailedMapping:
     item_index: int
     identifier_kind: str
     reason: str
-    array_index: Optional[int] = None
 
 
 # Raw identifier kinds the resolver maps, as (python attr, json/alias key).
@@ -101,6 +100,15 @@ _TARGET_FIELDS: Dict[IdentityScope, Tuple[str, str]] = {
     IdentityScope.UID2: ("uid2", "UID2"),
     IdentityScope.EUID: ("euid", "EUID"),
 }
+
+
+ItemLike = Union[
+    BaseAdvertiserDataItem,
+    BaseThirdPartyDataItem,
+    BasePartnerDsrDataItem,
+    BaseOfflineConversionDataItem,
+    Dict[str, Any],
+]
 
 
 class UserIdType(str, Enum):
@@ -168,12 +176,84 @@ def _clear_extras(item: Any) -> None:
                 setattr(item, attr, UNSET)
 
 
+def _raw_pii_kind_for_entry(entry: Any) -> Optional[str]:
+    """For a `user_id_array` entry [type, id], return the raw-PII kind name
+    (Email/Phone/HashedEmail/HashedPhone) if the type is a placeholder, else None."""
+    if not entry or len(entry) < 2:
+        return None
+    id_type_field = entry[0]
+    type_code = (
+        id_type_field.value
+        if isinstance(id_type_field, Enum)
+        else str(id_type_field)
+    )
+    return _USER_ID_ARRAY_RESOLVABLE_CODES.get(type_code)
+
+
+def mark_raw_pii_failures_without_uid2(
+    items: Sequence[ItemLike],
+) -> Tuple[Dict[str, UID2Resolution], Dict[int, UID2FailedMapping]]:
+    """Sentinel-substitute raw PII and record per-item failures when no
+    `uid2_config` is wired."""
+    resolutions: Dict[str, UID2Resolution] = {}
+    failed_mappings: Dict[int, UID2FailedMapping] = {}
+    if not items:
+        return resolutions, failed_mappings
+
+    # Default to UID2 scope when no `uid2_config` exists. The sentinel is
+    # rejected either way; this just selects which target field is touched.
+    target_py_attr, target_json_key = _TARGET_FIELDS[IdentityScope.UID2]
+    target_user_id_array_code = _USER_ID_ARRAY_TARGET_CODE[IdentityScope.UID2]
+
+    raw_pii_reason = (
+        "Email, HashedEmail, Phone, HashedPhone cannot be passed "
+        "without setting uid2_config"
+    )
+
+    for item_idx, item in enumerate(items):
+        recorded_for_item = False
+
+        # ---- Top-level wrapper fields ----
+        for py_attr, json_key in _IDENTIFIER_KINDS:
+            if _read_field(item, py_attr, json_key):
+                _set_target(item, _UID2_SENTINEL, target_py_attr, target_json_key)
+                if not recorded_for_item:
+                    _record_failure(
+                        failed_mappings,
+                        item_idx,
+                        json_key,
+                        raw_pii_reason,
+                    )
+                    recorded_for_item = True
+
+        # ---- user_id_array entries ----
+        arr = _read_user_id_array(item)
+        if arr:
+            for arr_idx, entry in enumerate(arr):
+                kind = _raw_pii_kind_for_entry(entry)
+                if kind is None:
+                    continue
+                arr[arr_idx] = [target_user_id_array_code, _UID2_SENTINEL]  # type: ignore[index]
+                if not recorded_for_item:
+                    _record_failure(
+                        failed_mappings,
+                        item_idx,
+                        kind,
+                        raw_pii_reason,
+                    )
+                    recorded_for_item = True
+
+        # Drop the raw top-level identifier fields so they cannot reach the wire.
+        _clear_extras(item)
+
+    return resolutions, failed_mappings
+
+
 def _record_failure(
     failed_mappings: Dict[int, UID2FailedMapping],
     item_idx: int,
     identifier_kind: str,
     reason: str,
-    array_index: Optional[int] = None,
 ) -> None:
     """Record the first failure per item — callers see one error per row
     even if multiple identifiers on the same item failed."""
@@ -183,7 +263,6 @@ def _record_failure(
         item_index=item_idx,
         identifier_kind=identifier_kind,
         reason=reason,
-        array_index=array_index,
     )
 
 
@@ -280,15 +359,6 @@ def _chunk_uid2_inputs(
         yield chunk_emails, chunk_hashed_emails, chunk_phones, chunk_hashed_phones
 
 
-ItemLike = Union[
-    BaseAdvertiserDataItem,
-    BaseThirdPartyDataItem,
-    BasePartnerDsrDataItem,
-    BaseOfflineConversionDataItem,
-    Dict[str, Any],
-]
-
-
 def resolve_uid2_identifiers_in_place(
     items: Sequence[ItemLike],
     identity_map_client: Any,
@@ -340,15 +410,7 @@ def resolve_uid2_identifiers_in_place(
         if not arr:
             continue
         for arr_idx, entry in enumerate(arr):
-            if not entry or len(entry) < 2:
-                continue
-            id_type_field = entry[0]
-            type_code = (
-                id_type_field.value
-                if isinstance(id_type_field, Enum)
-                else str(id_type_field)
-            )
-            resolvable_key = _USER_ID_ARRAY_RESOLVABLE_CODES.get(type_code)
+            resolvable_key = _raw_pii_kind_for_entry(entry)
             if resolvable_key is None:
                 continue
             raw_id = entry[1]
@@ -458,7 +520,7 @@ def resolve_uid2_identifiers_in_place(
                 arr[arr_idx] = [target_user_id_array_code, _UID2_SENTINEL]  # type: ignore[index]
                 resolutions[raw] = UID2Resolution(unmapped_reason=reason)
                 _record_failure(
-                    failed_mappings, item_idx, json_key, reason, array_index=arr_idx
+                    failed_mappings, item_idx, json_key, reason
                 )
 
     for item in items:

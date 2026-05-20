@@ -4,6 +4,7 @@ is mocked."""
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from types import SimpleNamespace
 from typing import Any, Dict
 from unittest.mock import MagicMock
@@ -284,32 +285,120 @@ def _wire_form(item):
     return item.model_dump(by_alias=True), item.model_dump_json(by_alias=True)
 
 
-def test_no_pii_on_wire_without_uid2_config():
-    """Wrapper items carrying raw PII (email/phone/hashed_email/hashed_phone)
-    must have those fields stripped before the request leaves the SDK, even
-    when no UID2Config is supplied. The wrapper→base conversion in
-    `_prepare_items_for_request` drops them because the base item type does
-    not declare those fields."""
+def test_top_level_pii_marks_failure_without_uid2_config():
+    """When uid2_config is None and an item carries a top-level raw PII
+    identifier, the SDK must substitute the "*" sentinel into the uid2 field,
+    UNSET the raw field, and record a failed_mapping — but still send the
+    request to the API. Mirrors the existing opt-out/unmapped path: partial
+    failure semantics instead of a whole-request rejection."""
+    from ttd_data.models import AdvertiserData
+    from ttd_data.uid2 import AdvertiserDataItem
+    from ttd_data.uid2.resolver import mark_raw_pii_failures_without_uid2
+
+    raw_kinds = ["email", "phone", "hashed_email", "hashed_phone"]
+    for kind in raw_kinds:
+        item = AdvertiserDataItem(data=[AdvertiserData(name="seg")], **{kind: "raw_pii_value"})
+        _resolutions, failed = mark_raw_pii_failures_without_uid2([item])
+
+        # Sentinel substituted into uid2 field
+        assert item.uid2 == "*", f"expected uid2='*' after marking, got {item.uid2!r}"
+        # Raw field UNSET so it cannot reach the wire
+        assert not getattr(item, kind), f"expected {kind} cleared, got {getattr(item, kind)!r}"
+        # Failure recorded for this item
+        assert failed.keys() == {0}, f"expected failure keyed by index 0, got {failed.keys()}"
+        assert "uid2_config" in failed[0].reason.lower()
+
+
+def test_user_id_array_pii_marks_failure_without_uid2_config():
+    """`user_id_array` entries with raw-PII type codes (-1..-4) must be rewritten
+    in place to [UserIdType.UID2, '*'] and a per-item failure recorded — same
+    sentinel + failed_mapping pattern as the resolver uses for unmapped ids."""
+    from ttd_data.models import OfflineConversionDataItem
+    from ttd_data.uid2 import UserIdType
+    from ttd_data.uid2.resolver import mark_raw_pii_failures_without_uid2
+
+    item = OfflineConversionDataItem(
+        tracking_tag_id="tag",
+        timestamp_utc=datetime(2025, 1, 1, tzinfo=timezone.utc),
+        user_id_array=[
+            [UserIdType.TDID,  "df2df528-e032-4851-b7c6-99287c7d6bcd"],  # untouched
+            [UserIdType.EMAIL, "alice@example.com"],                     # rewritten
+        ],
+    )
+    _resolutions, failed = mark_raw_pii_failures_without_uid2([item])
+
+    # TDID entry untouched (first-valid-wins fallback still works)
+    assert item.user_id_array[0] == [UserIdType.TDID, "df2df528-e032-4851-b7c6-99287c7d6bcd"]
+    # Email entry rewritten to [UID2, "*"]
+    assert item.user_id_array[1] == [UserIdType.UID2.value, "*"]
+    # Failure recorded for this item
+    assert failed.keys() == {0}
+    assert "uid2_config" in failed[0].reason.lower()
+
+
+def test_request_still_goes_out_with_partial_failure_when_no_uid2_config():
+    """End-to-end (mocked base SDK): one PII item + one pre-resolved item.
+    The base SDK must be called with BOTH items (the PII one carrying the
+    sentinel), and the proxy returns failed_mappings keyed only by the PII
+    item's index."""
     from ttd_data import DataClient
+    from ttd_data.models import AdvertiserData
+    from ttd_data.uid2 import AdvertiserDataItem
     from ttd_data.models.ingestadvertiserdataop import (
         IngestAdvertiserDataResponse as _BaseResponse,
     )
 
-    items, pii_values = _pii_items_and_values()
+    items = [
+        AdvertiserDataItem(data=[AdvertiserData(name="seg")], email="alice@example.com"),
+        AdvertiserDataItem(data=[AdvertiserData(name="seg")], tdid="df2df528-e032-4851-b7c6-99287c7d6bcd"),
+    ]
 
     base = MagicMock()
     base.advertiser.ingest_advertiser_data.return_value = _BaseResponse.model_construct()
     client = DataClient(data_client=base)
     client.advertiser.ingest_advertiser_data(items=items)
 
+    # Both items forwarded — partial failure, not whole-request rejection.
+    base.advertiser.ingest_advertiser_data.assert_called_once()
     forwarded_items = base.advertiser.ingest_advertiser_data.call_args.kwargs["items"]
-    assert len(forwarded_items) == len(items)
-    for item in forwarded_items:
-        wire_dict, wire_json = _wire_form(item)
-        leaked_keys = _PII_WIRE_KEYS & set(wire_dict.keys())
-        assert not leaked_keys, f"PII key on wire: {leaked_keys} in {wire_dict}"
-        leaked_values = {v for v in pii_values if v in wire_json}
-        assert not leaked_values, f"PII value on wire: {leaked_values} in {wire_json}"
+    assert len(forwarded_items) == 2
+
+    # PII item now carries the sentinel and no raw email anywhere on the wire.
+    forwarded_dict = forwarded_items[0].model_dump(by_alias=True)
+    forwarded_json = forwarded_items[0].model_dump_json(by_alias=True)
+    assert forwarded_dict.get("UID2") == "*"
+    assert "alice@example.com" not in forwarded_json
+    assert "Email" not in forwarded_dict
+    # Pre-resolved item untouched.
+    assert forwarded_items[1].model_dump(by_alias=True).get("TDID") == "df2df528-e032-4851-b7c6-99287c7d6bcd"
+
+
+def test_non_pii_items_pass_through_without_uid2_config():
+    """Regression check on the strict PII guard: items that don't carry raw
+    PII (pre-resolved TDID/UID2/RampID etc.) must still flow through with
+    no UID2Config, the same as before the guard was introduced."""
+    from ttd_data import DataClient
+    from ttd_data.models import OfflineConversionDataItem
+    from ttd_data.models.ingestofflineconversiondataop import (
+        IngestOfflineConversionDataResponse as _BaseResponse,
+    )
+    from ttd_data.uid2 import UserIdType
+
+    item = OfflineConversionDataItem(
+        tracking_tag_id="tag",
+        timestamp_utc=datetime(2025, 1, 1, tzinfo=timezone.utc),
+        user_id_array=[
+            [UserIdType.TDID, "df2df528-e032-4851-b7c6-99287c7d6bcd"],
+            [UserIdType.UID2, "48MjlfIUZpOKNAm9nod7/jCLAXUYsnE1tpVHQSDS0uo="],
+        ],
+    )
+    base = MagicMock()
+    base.offline_conversion.ingest_offline_conversion_data.return_value = (
+        _BaseResponse.model_construct()
+    )
+    client = DataClient(data_client=base)
+    client.offline_conversion.ingest_offline_conversion_data(items=[item])
+    base.offline_conversion.ingest_offline_conversion_data.assert_called_once()
 
 
 def test_no_pii_on_wire_with_uid2_config(monkeypatch):
