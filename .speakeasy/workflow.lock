@@ -1,9 +1,9 @@
-speakeasyVersion: 1.763.2
+speakeasyVersion: 1.763.6
 sources:
     Data API:
         sourceNamespace: data-api
-        sourceRevisionDigest: sha256:224da560ad25abd35a08acff4001f7e6a9390b462fc2a43f6ccf82372bb5c69d
-        sourceBlobDigest: sha256:bb7c7b2147b53e524767e6658d0562eaeebc93d5c393f44392e0f4d606b739da
+        sourceRevisionDigest: sha256:3acbeeefe2df3e50403ffb7c86d25c41bf5b4b708ddc92955b3790c4854a31eb
+        sourceBlobDigest: sha256:c80a8c10a6f845369cf3312c9fa2cdd8e3f62e58606f6ee8e4591cd376b59ce9
         tags:
             - latest
             - v0.1
@@ -18,10 +18,10 @@ targets:
     data-api:
         source: Data API
         sourceNamespace: data-api
-        sourceRevisionDigest: sha256:224da560ad25abd35a08acff4001f7e6a9390b462fc2a43f6ccf82372bb5c69d
-        sourceBlobDigest: sha256:bb7c7b2147b53e524767e6658d0562eaeebc93d5c393f44392e0f4d606b739da
+        sourceRevisionDigest: sha256:3acbeeefe2df3e50403ffb7c86d25c41bf5b4b708ddc92955b3790c4854a31eb
+        sourceBlobDigest: sha256:c80a8c10a6f845369cf3312c9fa2cdd8e3f62e58606f6ee8e4591cd376b59ce9
         codeSamplesNamespace: data-api-python-code-samples
-        codeSamplesRevisionDigest: sha256:7740237e677533c05caac11556459f24aa3c2aeed42d2e279b99389bc0cf64d8
+        codeSamplesRevisionDigest: sha256:5def25ba52a3138e0cee53a40dfe9c5e223dc36a314e2452c4ea2b4ed806d888
     data-api-local:
         source: Data API Local
         sourceNamespace: data-api-local
@@ -45,6 +45,9 @@ workflow:
         data-api:
             target: python
             source: Data API
+            publish:
+                pypi:
+                    token: $pypi_token
             codeSamples:
                 registry:
                     location: registry.speakeasyapi.dev/thetradedesk/data-api/data-api-python-code-samples
