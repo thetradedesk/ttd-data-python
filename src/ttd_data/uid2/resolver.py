@@ -27,7 +27,7 @@ from ttd_data.models.baseofflineconversiondataitem import (
 )
 
 from .config import IdentityScope
-from ttd_data.errors import UID2ServiceError
+from ttd_data.errors.uid2serviceerror import UID2ServiceError
 
 
 # Sentinel UID2/EUID written for items whose identifier could not be mapped.
