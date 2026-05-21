@@ -5,15 +5,15 @@ management:
   docVersion: v0.1
   speakeasyVersion: 1.763.6
   generationVersion: 2.884.13
-  releaseVersion: 0.2.8
-  configChecksum: 2f50fb6942e086b5454f88bd94cdcfac
+  releaseVersion: 0.2.0
+  configChecksum: 370e501ce0a8ccf61a51ef344c933bfb
   repoURL: https://github.com/thetradedesk/ttd-data-python.git
   installationURL: https://github.com/thetradedesk/ttd-data-python.git
   published: true
 persistentEdits:
-  generation_id: a078ac52-180b-4cdc-83ba-68b7085649aa
-  pristine_commit_hash: f03a65bb9e71278408a282b6adafba0262e5565a
-  pristine_tree_hash: a52b94fe99ea647455f5f993e7e73fa2858ea2aa
+  generation_id: ad7c3056-f6af-47a7-8e89-118aaffd359a
+  pristine_commit_hash: 33232499a9150129bba18aac5d05070a7ab3eb84
+  pristine_tree_hash: 32ac452fe03907e94203f37b96cf4be2bda0fc45
 features:
   python:
     additionalDependencies: 1.0.0
@@ -51,6 +51,7 @@ trackedFiles:
     id: 89aa447020cd
     last_write_checksum: sha1:f84632c81029fcdda8c3b0c768d02b836fc80526
     pristine_git_object: 8d79f0abb72526f1fb34a4c03e5bba612c6ba2ae
+    deleted: true
   USAGE.md:
     id: 3aed33ce6e6f
     last_write_checksum: sha1:a00281d1a5789209e12b9ca30653cf208599b71a
@@ -277,8 +278,8 @@ trackedFiles:
     pristine_git_object: f456032107a9387ba6c98afd1c981df2f4b3d636
   pyproject.toml:
     id: 5d07e7d72637
-    last_write_checksum: sha1:c627b22665992c4f95c317194eea33e6db886360
-    pristine_git_object: f52969281aa18576743e9e143b1a823320086560
+    last_write_checksum: sha1:ded82c028f56d2ae72ebbbf49ea22530a45df038
+    pristine_git_object: e988b06f4086696b1821f20d8838a5ec1caad419
   scripts/prepare_readme.py:
     id: e0c5957a6035
     last_write_checksum: sha1:5a79be5a1346a05f9099f1177f4b3605849c3b6b
@@ -305,8 +306,8 @@ trackedFiles:
     pristine_git_object: 4056118bd6df7bb0989a9734404c082cfca19e09
   src/ttd_data/_version.py:
     id: 7feb4586507e
-    last_write_checksum: sha1:ce9a5f2e5a368c32d6a9bcc31b1757c0fe8d76d8
-    pristine_git_object: 6e8fc448974add77669e1dd4c0e4fb75a8a2ee18
+    last_write_checksum: sha1:73fb6e4b70f464eeac108f1a327f8a84722e0a87
+    pristine_git_object: dfbd3f90d85bfcd937b0b6353591d8e954d58026
   src/ttd_data/advertiser.py:
     id: 392ead635b4f
     last_write_checksum: sha1:3069a1cb2d2393436adbc5e22cb1aa9961aafdd8

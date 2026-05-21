@@ -317,7 +317,7 @@ from ttd_data import DataClient, models
 async def main():
 
     async with DataClient() as data_client:
-        response = client.advertiser.ingest_advertiser_data(
+        response = data_client.advertiser.ingest_advertiser_data(
             ttd_auth=TTD_AUTH_TOKEN,
             advertiser_id=ADVERTISER_ID,
             items=[
