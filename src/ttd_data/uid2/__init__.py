@@ -1,5 +1,5 @@
 from .config import IdentityScope, UID2Config
-from ttd_data.errors import UID2ServiceError
+from ttd_data.errors.uid2serviceerror import UID2ServiceError
 from .resolver import (
     UID2FailedMapping,
     UID2Resolution,
