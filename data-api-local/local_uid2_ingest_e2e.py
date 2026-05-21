@@ -67,6 +67,8 @@ THIRD_PARTY_SEGMENT = "uid2_resolver_smoke_test"
 RAW_EMAIL = "test129863@example.com"
 HASHED_EMAIL = "tMmiiTI7IaAcPpQPFQ65uMVCWH8av9jw4cwf/F5HVRQ="  # sha256(b"test@example.com").b64
 OPTOUT_EMAIL = "optout123@unifiedid.com"
+RAW_PHONE = "+15551234567"
+HASHED_PHONE = "F0snlcSt7L9QYTm3l1Q3p+sjBWUyOj9MnSDvSiTrPyU="  # sha256(b"+15551234567").b64
 PASSTHROUGH_TDID = "00000000-0000-0000-0000-000000000001"
 
 
@@ -440,6 +442,96 @@ def verify_pii_not_in_request_no_uid2_config() -> None:
     capture.assert_absent(RAW_EMAIL, HASHED_EMAIL)
 
 
+def verify_user_id_array_pii_not_in_request_no_uid2_config() -> None:
+    """Without a UID2Config, raw PII inside `user_id_array` entries must not
+    appear in the HTTP body sent to DataServer. The resolver-free path
+    (`mark_raw_pii_failures_without_uid2`) substitutes the UID2 sentinel `*`
+    into each offending slot before serialization.
+    """
+    client = DataClient(server_url=TTD_DATA_SERVER_URL)
+    capture = _register_capture(client)
+
+    now = datetime.now(timezone.utc)
+    items = [
+        OfflineConversionDataItem(
+            tracking_tag_id=TRACKING_TAG_ID,
+            timestamp_utc=now,
+            user_id_array=[
+                [UserIdType.EMAIL, RAW_EMAIL],
+                [UserIdType.HASHED_EMAIL, HASHED_EMAIL],
+                [UserIdType.PHONE, RAW_PHONE],
+                [UserIdType.HASHED_PHONE, HASHED_PHONE],
+            ],
+        ),
+        OfflineConversionDataItem(
+            tracking_tag_id=TRACKING_TAG_ID,
+            timestamp_utc=now,
+            user_id_array=[[UserIdType.TDID, PASSTHROUGH_TDID]],
+        ),
+    ]
+    _print_items("Input items (no UID2 config, user_id_array)", items)
+    try:
+        response = client.offline_conversion.ingest_offline_conversion_data(
+            ttd_auth=TTD_AUTH_TOKEN,
+            data_provider_id=DATA_PROVIDER_ID,
+            items=items,
+            user_id_array_metadata_format=["type", "id"],
+        )
+        _print_items("Items sent to TTD Data API (post-resolution)", items)
+        _print_response(
+            "TTD response", response, "offline_conversion_data_server_response"
+        )
+    except Exception as exc:
+        print(f"  (server call: {exc.__class__.__name__}: {exc})")
+
+    capture.assert_absent(RAW_EMAIL, HASHED_EMAIL, RAW_PHONE, HASHED_PHONE)
+
+
+def verify_user_id_array_pii_not_in_request_with_uid2_config() -> None:
+    """With a UID2Config, raw PII inside `user_id_array` entries gets resolved
+    by `POST /identity/map` and the slot is rewritten to `[UID2, <token>]`
+    (or `[UID2, "*"]` for unmapped/optout). The raw values must not appear
+    on the outbound wire.
+    """
+    client = _make_uid2_client()
+    capture = _register_capture(client)
+
+    now = datetime.now(timezone.utc)
+    items = [
+        OfflineConversionDataItem(
+            tracking_tag_id=TRACKING_TAG_ID,
+            timestamp_utc=now,
+            user_id_array=[
+                [UserIdType.EMAIL, RAW_EMAIL],
+                [UserIdType.HASHED_EMAIL, HASHED_EMAIL],
+                [UserIdType.PHONE, RAW_PHONE],
+                [UserIdType.HASHED_PHONE, HASHED_PHONE],
+            ],
+        ),
+        OfflineConversionDataItem(
+            tracking_tag_id=TRACKING_TAG_ID,
+            timestamp_utc=now,
+            user_id_array=[[UserIdType.TDID, PASSTHROUGH_TDID]],
+        ),
+    ]
+    _print_items("Input items (with UID2 config, user_id_array)", items)
+    try:
+        response = client.offline_conversion.ingest_offline_conversion_data(
+            ttd_auth=TTD_AUTH_TOKEN,
+            data_provider_id=DATA_PROVIDER_ID,
+            items=items,
+            user_id_array_metadata_format=["type", "id"],
+        )
+        _print_items("Items sent to TTD Data API (post-resolution)", items)
+        _print_response(
+            "TTD response", response, "offline_conversion_data_server_response"
+        )
+    except Exception as exc:
+        print(f"  (server call: {exc.__class__.__name__}: {exc})")
+
+    capture.assert_absent(RAW_EMAIL, HASHED_EMAIL, RAW_PHONE, HASHED_PHONE)
+
+
 # ---------------------------------------------------------------------------
 # Driver
 # ---------------------------------------------------------------------------
@@ -467,6 +559,14 @@ def main() -> None:
     _run("DSR — third-party", lambda: exercise_dsr_third_party(client))
     _run("PII dropping checks — with UID2 config", verify_pii_not_in_request_with_uid2_config)
     _run("PII dropping checks — no UID2 config", verify_pii_not_in_request_no_uid2_config)
+    _run(
+        "PII dropping checks — user_id_array present without UID2 config",
+        verify_user_id_array_pii_not_in_request_no_uid2_config,
+    )
+    _run(
+        "PII dropping checks — user_id_array present with UID2 config",
+        verify_user_id_array_pii_not_in_request_with_uid2_config,
+    )
 
 
 if __name__ == "__main__":
