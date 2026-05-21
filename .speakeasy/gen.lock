@@ -3,26 +3,26 @@ id: 1927f304-b110-462d-9e13-326cfa243f23
 management:
   docChecksum: 8cc00c1a6ff825f183f9a1686eeeebac
   docVersion: v0.1
-  speakeasyVersion: 1.763.2
-  generationVersion: 2.884.4
+  speakeasyVersion: 1.763.6
+  generationVersion: 2.884.13
   releaseVersion: 0.2.8
   configChecksum: 2f50fb6942e086b5454f88bd94cdcfac
   repoURL: https://github.com/thetradedesk/ttd-data-python.git
   installationURL: https://github.com/thetradedesk/ttd-data-python.git
   published: true
 persistentEdits:
-  generation_id: 13c338b7-74dd-4266-aea5-3547d6f04a8d
-  pristine_commit_hash: ae1aa7dd9f34ecc1a17a72049fa7a3ca673edbbd
-  pristine_tree_hash: d653f4d345b227bcc2280428f5aacaffab50d380
+  generation_id: a078ac52-180b-4cdc-83ba-68b7085649aa
+  pristine_commit_hash: f03a65bb9e71278408a282b6adafba0262e5565a
+  pristine_tree_hash: a52b94fe99ea647455f5f993e7e73fa2858ea2aa
 features:
   python:
     additionalDependencies: 1.0.0
     constsAndDefaults: 1.0.7
-    core: 6.0.21
+    core: 6.0.22
     defaultEnabledRetries: 0.2.0
     devContainers: 3.0.0
     enumUnions: 0.1.1
-    envVarSecurityUsage: 0.3.2
+    envVarSecurityUsage: 0.3.3
     flatRequests: 1.0.1
     flattening: 3.1.1
     globalSecurityCallbacks: 1.0.0
@@ -35,10 +35,6 @@ features:
     retries: 3.0.5
     sdkHooks: 1.2.1
 trackedFiles:
-  .devcontainer/README.md:
-    id: b170c0f184ac
-    last_write_checksum: sha1:7ecbc698fad67cd662e4aba72f75447f1441a6cd
-    pristine_git_object: 2cb6b43ea4dfebd6845e51a448a9f8d7be24c1bb
   .devcontainer/devcontainer.json:
     id: b34062a34eb1
     last_write_checksum: sha1:94309e8c8eab5ab063986bf625f513a59825e947
@@ -271,22 +267,6 @@ trackedFiles:
     id: 4343ac43161c
     last_write_checksum: sha1:562c0f21e308ad10c27f85f75704c15592c6929d
     pristine_git_object: 69dd549ec7f5f885101d08dd502e25748183aebf
-  docs/sdks/advertiser/README.md:
-    id: 099f9b8a0a2d
-    last_write_checksum: sha1:9d95190b7e3382151be56f08f4de93fd7007df78
-    pristine_git_object: d5cc8e44df0abec4d05b1455040db5d429013ebb
-  docs/sdks/deletionoptout/README.md:
-    id: 61acd35826cb
-    last_write_checksum: sha1:beeb8405200cf8393b779b9e1d9509d5ce08f658
-    pristine_git_object: 6d6d74e5b9dc5bad0f5a36e5bc42e9deb26fa9c8
-  docs/sdks/offlineconversion/README.md:
-    id: 3b6eaeea93ac
-    last_write_checksum: sha1:2886aea5236252fd87cbb7166172eb1cad92397d
-    pristine_git_object: 1ba0e98627a163480d17ff80f25b2321eba06c37
-  docs/sdks/thirdparty/README.md:
-    id: 2ea7384a00fc
-    last_write_checksum: sha1:28d5375aab7f830c3605685388726aaf3a63dd8a
-    pristine_git_object: 040b31dc743465011719a81355a6df997ca08632
   py.typed:
     id: 258c3ed47ae4
     last_write_checksum: sha1:8efc425ffe830805ffcc0f3055871bdcdc542c60
@@ -325,8 +305,8 @@ trackedFiles:
     pristine_git_object: 4056118bd6df7bb0989a9734404c082cfca19e09
   src/ttd_data/_version.py:
     id: 7feb4586507e
-    last_write_checksum: sha1:b41399f67dec99585c15c0911e7fd9218ab3dfc1
-    pristine_git_object: 6937f57f8da31c23a7642eeb87b7ca4940c70adf
+    last_write_checksum: sha1:ce9a5f2e5a368c32d6a9bcc31b1757c0fe8d76d8
+    pristine_git_object: 6e8fc448974add77669e1dd4c0e4fb75a8a2ee18
   src/ttd_data/advertiser.py:
     id: 392ead635b4f
     last_write_checksum: sha1:3069a1cb2d2393436adbc5e22cb1aa9961aafdd8
