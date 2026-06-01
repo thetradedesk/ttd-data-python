@@ -10,8 +10,14 @@ from ._version import (
 )
 from .sdkconfiguration import *
 # region: Manually edited code section
-from .client import DataClient
-from .uid2 import IdentityScope, UID2Config, UID2ServiceError, UserIdType
+# pylint: disable=useless-import-alias
+from .client import DataClient as DataClient
+from .uid2 import (
+    IdentityScope as IdentityScope,
+    UID2Config as UID2Config,
+    UID2ServiceError as UID2ServiceError,
+    UserIdType as UserIdType,
+)
 # endregion: Manually edited code section
 
 
