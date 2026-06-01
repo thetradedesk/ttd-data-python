@@ -1,6 +1,6 @@
 [project]
 name = "ttd-data"
-version = "0.2.1"
+version = "0.3.0"
 description = "Python Client SDK for TTD Data API."
 authors = [{ name = "Speakeasy" },]
 readme = "README-PYPI.md"
