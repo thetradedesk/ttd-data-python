@@ -3,22 +3,22 @@ id: 1927f304-b110-462d-9e13-326cfa243f23
 management:
   docChecksum: 1704b660dc7442e84b53d8042f384977
   docVersion: v0.1
-  speakeasyVersion: 1.768.2
-  generationVersion: 2.889.1
-  releaseVersion: 0.2.1
-  configChecksum: 2eb5ed9d66d4f399d90c2c237161b213
+  speakeasyVersion: 1.769.2
+  generationVersion: 2.892.5
+  releaseVersion: 0.2.2
+  configChecksum: df1e23ce8ae29e8cafd9aaa9507a0a3f
   repoURL: https://github.com/thetradedesk/ttd-data-python.git
   installationURL: https://github.com/thetradedesk/ttd-data-python.git
   published: true
 persistentEdits:
-  generation_id: 6078c389-4762-4984-bac9-9b3e450dea5a
-  pristine_commit_hash: ff317010ce478c05707dc9e1bd25643d435e0843
-  pristine_tree_hash: 36c0325385a72c05e23028d1f042c8fa08fe472f
+  generation_id: e0f70291-a137-4e04-9d3f-5a22dc8ce132
+  pristine_commit_hash: 758652983c99cf5b221a913984ff0479e1023471
+  pristine_tree_hash: b8486ab95078f8a1dfaea0d0ec448366930ac0fd
 features:
   python:
-    additionalDependencies: 1.0.0
+    additionalDependencies: 1.1.0
     constsAndDefaults: 1.0.7
-    core: 6.0.23
+    core: 6.0.24
     defaultEnabledRetries: 0.2.0
     devContainers: 3.0.0
     enumUnions: 0.1.1
@@ -27,7 +27,7 @@ features:
     flattening: 3.1.1
     globalSecurityCallbacks: 1.0.0
     globalServerURLs: 3.2.1
-    methodArguments: 1.0.2
+    methodArguments: 1.1.0
     methodServerURLs: 3.1.2
     nameOverrides: 3.0.3
     nullables: 1.0.2
@@ -278,8 +278,8 @@ trackedFiles:
     pristine_git_object: f456032107a9387ba6c98afd1c981df2f4b3d636
   pyproject.toml:
     id: 5d07e7d72637
-    last_write_checksum: sha1:b97f2f290b476728f7cc668db11c386eeb957d06
-    pristine_git_object: fc3b0cc76e65db13b473917bb96c546feb37eeff
+    last_write_checksum: sha1:10545d30b83db420604ef560afa20ae110bdf033
+    pristine_git_object: e0bb74f29173a8a0beee6760481bb7add97973be
   scripts/prepare_readme.py:
     id: e0c5957a6035
     last_write_checksum: sha1:5a79be5a1346a05f9099f1177f4b3605849c3b6b
@@ -290,7 +290,7 @@ trackedFiles:
     pristine_git_object: c35748f360329c2bc370e9b189f49b1a360b2c48
   src/ttd_data/__init__.py:
     id: 48aae23daf2a
-    last_write_checksum: sha1:713ccd0cd51609b2bc28eb8559e14f32b324804f
+    last_write_checksum: sha1:bdaec05d829f095cda6706de6aab05488e3f2f49
     pristine_git_object: 25fb88f91c4f26fb66b46e8daaa1d5d718fdab49
   src/ttd_data/_hooks/__init__.py:
     id: e02546b7a6fe
@@ -306,8 +306,8 @@ trackedFiles:
     pristine_git_object: 4056118bd6df7bb0989a9734404c082cfca19e09
   src/ttd_data/_version.py:
     id: 7feb4586507e
-    last_write_checksum: sha1:228fc6a0436f6bbcf6c282db691783aded745982
-    pristine_git_object: d502f491530fd56224afbb8aa311e6bd4cf9ddcd
+    last_write_checksum: sha1:03542071cc0231f1af341d110caf7d38c647f6f2
+    pristine_git_object: 74f8faae55b5c8c22b61b56c7b1f8327a244d92f
   src/ttd_data/advertiser.py:
     id: 392ead635b4f
     last_write_checksum: sha1:3069a1cb2d2393436adbc5e22cb1aa9961aafdd8
@@ -610,8 +610,8 @@ trackedFiles:
     pristine_git_object: f18930d011cf31d6fd0bbbaae377c70dc39274e9
   src/ttd_data/utils/requestbodies.py:
     id: 0924f0dfaef1
-    last_write_checksum: sha1:afa5daada8db1e90d8c96a5ad7488c4cac3887d3
-    pristine_git_object: 80c8a957c3bd48cde726d292560ca0ad220f58d1
+    last_write_checksum: sha1:8b0325e5f209c24ac29f9052900228756d692037
+    pristine_git_object: 5bc70856007fcb6807f1799f8a7900ae7a58aa1a
   src/ttd_data/utils/retries.py:
     id: 04accebbe68a
     last_write_checksum: sha1:19e8a7c769ed8aa3d050f91667eba9b811e85a4b
@@ -711,4 +711,3 @@ examples:
           application/json: {}
 examplesVersion: 1.0.2
 generatedTests: {}
-releaseNotes: "## Python SDK Changes:\n* `base_data_client.advertiser.ingest_advertiser_data()`: \n  *  `response.failed_lines[].error_code` **Changed** (Breaking ⚠️)\n  *  `error.failed_lines[].error_code` **Changed** (Breaking ⚠️)\n* `base_data_client.third_party.ingest_third_party_data()`: \n  *  `response.failed_lines[].error_code` **Changed** (Breaking ⚠️)\n  *  `error.failed_lines[].error_code` **Changed** (Breaking ⚠️)\n* `base_data_client.offline_conversion.ingest_offline_conversion_data()`: \n  *  `response.failed_lines[].error_code.enum(item_deserialization_error)` **Added** (Breaking ⚠️)\n  *  `error.failed_lines[].error_code.enum(item_deserialization_error)` **Added** (Breaking ⚠️)\n"

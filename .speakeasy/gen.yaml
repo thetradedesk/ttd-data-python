@@ -35,7 +35,7 @@ generation:
     generateNewTests: false
     skipResponseBodyAssertions: false
 python:
-  version: 0.2.1
+  version: 0.2.2
   additionalDependencies:
     dev: {}
     main:
@@ -48,6 +48,7 @@ python:
   authors:
     - Speakeasy
   baseErrorName: DataError
+  bodyVariantOverloads: false
   clientServerStatusCodesAsErrors: true
   constFieldCasing: normal
   defaultErrorName: APIError
@@ -80,8 +81,11 @@ python:
     url: https://www.apache.org/licenses/LICENSE-2.0
   maxMethodParams: 999
   methodArguments: infer-optional-args
+  methodTimeoutArgument: timeout-ms
+  methodTimeoutUnits: milliseconds
   moduleName: ""
   multipartArrayFormat: standard
+  optionalDependencies: {}
   outputModelSuffix: output
   packageManager: uv
   packageName: ttd-data
