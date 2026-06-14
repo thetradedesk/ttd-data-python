@@ -6,7 +6,7 @@ from ttd_data import errors, models, utils
 from ttd_data._hooks import HookContext
 from ttd_data.types import OptionalNullable, UNSET
 from ttd_data.utils.unmarshal_json_response import unmarshal_json_response
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class Advertiser(BaseSDK):
@@ -18,13 +18,13 @@ class Advertiser(BaseSDK):
         data_provider_id: OptionalNullable[str] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.BaseAdvertiserDataItem],
-                List[models.BaseAdvertiserDataItemTypedDict],
+                Iterable[models.BaseAdvertiserDataItem],
+                Iterable[models.BaseAdvertiserDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
         data_origins: OptionalNullable[
-            Union[List[models.DataOrigin], List[models.DataOriginTypedDict]]
+            Union[Iterable[models.DataOrigin], Iterable[models.DataOriginTypedDict]]
         ] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -142,13 +142,13 @@ class Advertiser(BaseSDK):
         data_provider_id: OptionalNullable[str] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.BaseAdvertiserDataItem],
-                List[models.BaseAdvertiserDataItemTypedDict],
+                Iterable[models.BaseAdvertiserDataItem],
+                Iterable[models.BaseAdvertiserDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
         data_origins: OptionalNullable[
-            Union[List[models.DataOrigin], List[models.DataOriginTypedDict]]
+            Union[Iterable[models.DataOrigin], Iterable[models.DataOriginTypedDict]]
         ] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
