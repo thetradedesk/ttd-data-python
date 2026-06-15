@@ -6,7 +6,7 @@ from ttd_data import errors, models, utils
 from ttd_data._hooks import HookContext
 from ttd_data.types import OptionalNullable, UNSET
 from ttd_data.utils.unmarshal_json_response import unmarshal_json_response
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class DeletionOptOut(BaseSDK):
@@ -18,8 +18,8 @@ class DeletionOptOut(BaseSDK):
         data_provider_id: OptionalNullable[str] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.BasePartnerDsrDataItem],
-                List[models.BasePartnerDsrDataItemTypedDict],
+                Iterable[models.BasePartnerDsrDataItem],
+                Iterable[models.BasePartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
@@ -138,8 +138,8 @@ class DeletionOptOut(BaseSDK):
         data_provider_id: OptionalNullable[str] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.BasePartnerDsrDataItem],
-                List[models.BasePartnerDsrDataItemTypedDict],
+                Iterable[models.BasePartnerDsrDataItem],
+                Iterable[models.BasePartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
@@ -257,8 +257,8 @@ class DeletionOptOut(BaseSDK):
         merchant_id: OptionalNullable[int] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.BasePartnerDsrDataItem],
-                List[models.BasePartnerDsrDataItemTypedDict],
+                Iterable[models.BasePartnerDsrDataItem],
+                Iterable[models.BasePartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
@@ -374,8 +374,8 @@ class DeletionOptOut(BaseSDK):
         merchant_id: OptionalNullable[int] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.BasePartnerDsrDataItem],
-                List[models.BasePartnerDsrDataItemTypedDict],
+                Iterable[models.BasePartnerDsrDataItem],
+                Iterable[models.BasePartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
@@ -492,8 +492,8 @@ class DeletionOptOut(BaseSDK):
         brand_id: OptionalNullable[str] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.BasePartnerDsrDataItem],
-                List[models.BasePartnerDsrDataItemTypedDict],
+                Iterable[models.BasePartnerDsrDataItem],
+                Iterable[models.BasePartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
@@ -612,8 +612,8 @@ class DeletionOptOut(BaseSDK):
         brand_id: OptionalNullable[str] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.BasePartnerDsrDataItem],
-                List[models.BasePartnerDsrDataItemTypedDict],
+                Iterable[models.BasePartnerDsrDataItem],
+                Iterable[models.BasePartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
