@@ -24,6 +24,7 @@ class BaseThirdPartyDataItemTypedDict(TypedDict):
     id5: NotRequired[Nullable[str]]
     net_id: NotRequired[Nullable[str]]
     first_id: NotRequired[Nullable[str]]
+    utiq_id: NotRequired[Nullable[str]]
     merkury_id: NotRequired[Nullable[str]]
     iqvia_ppid: NotRequired[Nullable[str]]
     cookie_mapping_partner_id: NotRequired[Nullable[str]]
@@ -62,6 +63,8 @@ class BaseThirdPartyDataItem(BaseModel):
 
     first_id: Annotated[OptionalNullable[str], pydantic.Field(alias="FirstID")] = UNSET
 
+    utiq_id: Annotated[OptionalNullable[str], pydantic.Field(alias="UtiqID")] = UNSET
+
     merkury_id: Annotated[OptionalNullable[str], pydantic.Field(alias="MerkuryID")] = (
         UNSET
     )
@@ -90,6 +93,7 @@ class BaseThirdPartyDataItem(BaseModel):
                 "ID5",
                 "NetID",
                 "FirstID",
+                "UtiqID",
                 "MerkuryID",
                 "IqviaPPID",
                 "CookieMappingPartnerId",
@@ -109,6 +113,7 @@ class BaseThirdPartyDataItem(BaseModel):
                 "ID5",
                 "NetID",
                 "FirstID",
+                "UtiqID",
                 "MerkuryID",
                 "IqviaPPID",
                 "CookieMappingPartnerId",
