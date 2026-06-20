@@ -6,7 +6,7 @@ from ttd_data import errors, models, utils
 from ttd_data._hooks import HookContext
 from ttd_data.types import OptionalNullable, UNSET
 from ttd_data.utils.unmarshal_json_response import unmarshal_json_response
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class ThirdParty(BaseSDK):
@@ -17,14 +17,14 @@ class ThirdParty(BaseSDK):
         data_provider_id: str,
         items: OptionalNullable[
             Union[
-                List[models.BaseThirdPartyDataItem],
-                List[models.BaseThirdPartyDataItemTypedDict],
+                Iterable[models.BaseThirdPartyDataItem],
+                Iterable[models.BaseThirdPartyDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
         is_user_id_already_hashed: Optional[bool] = False,
         data_origins: OptionalNullable[
-            Union[List[models.DataOrigin], List[models.DataOriginTypedDict]]
+            Union[Iterable[models.DataOrigin], Iterable[models.DataOriginTypedDict]]
         ] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -141,14 +141,14 @@ class ThirdParty(BaseSDK):
         data_provider_id: str,
         items: OptionalNullable[
             Union[
-                List[models.BaseThirdPartyDataItem],
-                List[models.BaseThirdPartyDataItemTypedDict],
+                Iterable[models.BaseThirdPartyDataItem],
+                Iterable[models.BaseThirdPartyDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
         is_user_id_already_hashed: Optional[bool] = False,
         data_origins: OptionalNullable[
-            Union[List[models.DataOrigin], List[models.DataOriginTypedDict]]
+            Union[Iterable[models.DataOrigin], Iterable[models.DataOriginTypedDict]]
         ] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
