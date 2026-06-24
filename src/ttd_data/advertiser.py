@@ -6,7 +6,7 @@ from ttd_data import errors, models, utils
 from ttd_data._hooks import HookContext
 from ttd_data.types import OptionalNullable, UNSET
 from ttd_data.utils.unmarshal_json_response import unmarshal_json_response
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class Advertiser(BaseSDK):
@@ -18,13 +18,13 @@ class Advertiser(BaseSDK):
         data_provider_id: OptionalNullable[str] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.BaseAdvertiserDataItem],
-                List[models.BaseAdvertiserDataItemTypedDict],
+                Iterable[models.BaseAdvertiserDataItem],
+                Iterable[models.BaseAdvertiserDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
         data_origins: OptionalNullable[
-            Union[List[models.DataOrigin], List[models.DataOriginTypedDict]]
+            Union[Iterable[models.DataOrigin], Iterable[models.DataOriginTypedDict]]
         ] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -125,7 +125,7 @@ class Advertiser(BaseSDK):
                 request=req, response=http_res
             )
             raise errors.AdvertiserDataServerResponseError(response_data, http_res)
-        if utils.match_response(http_res, ["403", "413", "4XX"], "*"):
+        if utils.match_response(http_res, ["401", "403", "413", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise errors.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, ["500", "503", "5XX"], "*"):
@@ -142,13 +142,13 @@ class Advertiser(BaseSDK):
         data_provider_id: OptionalNullable[str] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.BaseAdvertiserDataItem],
-                List[models.BaseAdvertiserDataItemTypedDict],
+                Iterable[models.BaseAdvertiserDataItem],
+                Iterable[models.BaseAdvertiserDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
         data_origins: OptionalNullable[
-            Union[List[models.DataOrigin], List[models.DataOriginTypedDict]]
+            Union[Iterable[models.DataOrigin], Iterable[models.DataOriginTypedDict]]
         ] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -249,7 +249,7 @@ class Advertiser(BaseSDK):
                 request=req, response=http_res
             )
             raise errors.AdvertiserDataServerResponseError(response_data, http_res)
-        if utils.match_response(http_res, ["403", "413", "4XX"], "*"):
+        if utils.match_response(http_res, ["401", "403", "413", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise errors.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, ["500", "503", "5XX"], "*"):
