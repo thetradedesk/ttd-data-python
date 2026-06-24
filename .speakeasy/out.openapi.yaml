@@ -48,6 +48,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AdvertiserDataServerResponse"
+        "401":
+          description: "Unauthorized - Invalid or missing authentication token"
+          content:
+            application/json:
+              schema:
+                type: "string"
         "403":
           description: "Forbidden - Cannot create new targeting data for this advertiser"
           content:
@@ -104,6 +110,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ThirdPartyDataServerResponse"
+        "401":
+          description: "Unauthorized - Invalid or missing authentication token"
+          content:
+            application/json:
+              schema:
+                type: "string"
         "403":
           description: "Forbidden - Cannot create new targeting data for this data provider"
           content:
@@ -160,6 +172,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/OfflineConversionDataServerResponse"
+        "401":
+          description: "Unauthorized - Invalid or missing authentication token"
+          content:
+            application/json:
+              schema:
+                type: "string"
         "403":
           description: "Forbidden - Cannot create offline conversion data for this data provider"
           content:
@@ -216,6 +234,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AdvertiserDsrResponse"
+        "401":
+          description: "Unauthorized - Invalid or missing authentication token"
+          content:
+            application/json:
+              schema:
+                type: "string"
         "403":
           description: "Forbidden - Cannot process data subject request for this advertiser"
           content:
@@ -272,6 +296,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MerchantDsrResponse"
+        "401":
+          description: "Unauthorized - Invalid or missing authentication token"
+          content:
+            application/json:
+              schema:
+                type: "string"
         "403":
           description: "Forbidden - Cannot process data subject request for this merchant"
           content:
@@ -328,6 +358,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ThirdPartyDsrResponse"
+        "401":
+          description: "Unauthorized - Invalid or missing authentication token"
+          content:
+            application/json:
+              schema:
+                type: "string"
         "403":
           description: "Forbidden - Cannot process data subject request for this data provider"
           content:
@@ -417,6 +453,9 @@ components:
           type: "string"
           nullable: true
         FirstID:
+          type: "string"
+          nullable: true
+        UtiqID:
           type: "string"
           nullable: true
         MerkuryID:
@@ -842,6 +881,9 @@ components:
         FirstID:
           type: "string"
           nullable: true
+        UtiqID:
+          type: "string"
+          nullable: true
         MerkuryID:
           type: "string"
           nullable: true
@@ -952,6 +994,9 @@ components:
           type: "string"
           nullable: true
         FirstID:
+          type: "string"
+          nullable: true
+        UtiqID:
           type: "string"
           nullable: true
         MerkuryID:

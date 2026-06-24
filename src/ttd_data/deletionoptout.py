@@ -6,7 +6,7 @@ from ttd_data import errors, models, utils
 from ttd_data._hooks import HookContext
 from ttd_data.types import OptionalNullable, UNSET
 from ttd_data.utils.unmarshal_json_response import unmarshal_json_response
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class DeletionOptOut(BaseSDK):
@@ -18,8 +18,8 @@ class DeletionOptOut(BaseSDK):
         data_provider_id: OptionalNullable[str] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.BasePartnerDsrDataItem],
-                List[models.BasePartnerDsrDataItemTypedDict],
+                Iterable[models.BasePartnerDsrDataItem],
+                Iterable[models.BasePartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
@@ -121,7 +121,7 @@ class DeletionOptOut(BaseSDK):
                 request=req, response=http_res
             )
             raise errors.AdvertiserDsrResponseError(response_data, http_res)
-        if utils.match_response(http_res, ["403", "413", "4XX"], "*"):
+        if utils.match_response(http_res, ["401", "403", "413", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise errors.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, ["500", "503", "5XX"], "*"):
@@ -138,8 +138,8 @@ class DeletionOptOut(BaseSDK):
         data_provider_id: OptionalNullable[str] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.BasePartnerDsrDataItem],
-                List[models.BasePartnerDsrDataItemTypedDict],
+                Iterable[models.BasePartnerDsrDataItem],
+                Iterable[models.BasePartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
@@ -241,7 +241,7 @@ class DeletionOptOut(BaseSDK):
                 request=req, response=http_res
             )
             raise errors.AdvertiserDsrResponseError(response_data, http_res)
-        if utils.match_response(http_res, ["403", "413", "4XX"], "*"):
+        if utils.match_response(http_res, ["401", "403", "413", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise errors.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, ["500", "503", "5XX"], "*"):
@@ -257,8 +257,8 @@ class DeletionOptOut(BaseSDK):
         merchant_id: OptionalNullable[int] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.BasePartnerDsrDataItem],
-                List[models.BasePartnerDsrDataItemTypedDict],
+                Iterable[models.BasePartnerDsrDataItem],
+                Iterable[models.BasePartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
@@ -358,7 +358,7 @@ class DeletionOptOut(BaseSDK):
                 request=req, response=http_res
             )
             raise errors.MerchantDsrResponseError(response_data, http_res)
-        if utils.match_response(http_res, ["403", "413", "4XX"], "*"):
+        if utils.match_response(http_res, ["401", "403", "413", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise errors.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, ["500", "503", "5XX"], "*"):
@@ -374,8 +374,8 @@ class DeletionOptOut(BaseSDK):
         merchant_id: OptionalNullable[int] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.BasePartnerDsrDataItem],
-                List[models.BasePartnerDsrDataItemTypedDict],
+                Iterable[models.BasePartnerDsrDataItem],
+                Iterable[models.BasePartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
@@ -475,7 +475,7 @@ class DeletionOptOut(BaseSDK):
                 request=req, response=http_res
             )
             raise errors.MerchantDsrResponseError(response_data, http_res)
-        if utils.match_response(http_res, ["403", "413", "4XX"], "*"):
+        if utils.match_response(http_res, ["401", "403", "413", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise errors.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, ["500", "503", "5XX"], "*"):
@@ -492,8 +492,8 @@ class DeletionOptOut(BaseSDK):
         brand_id: OptionalNullable[str] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.BasePartnerDsrDataItem],
-                List[models.BasePartnerDsrDataItemTypedDict],
+                Iterable[models.BasePartnerDsrDataItem],
+                Iterable[models.BasePartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
@@ -595,7 +595,7 @@ class DeletionOptOut(BaseSDK):
                 request=req, response=http_res
             )
             raise errors.ThirdPartyDsrResponseError(response_data, http_res)
-        if utils.match_response(http_res, ["403", "413", "4XX"], "*"):
+        if utils.match_response(http_res, ["401", "403", "413", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise errors.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, ["500", "503", "5XX"], "*"):
@@ -612,8 +612,8 @@ class DeletionOptOut(BaseSDK):
         brand_id: OptionalNullable[str] = UNSET,
         items: OptionalNullable[
             Union[
-                List[models.BasePartnerDsrDataItem],
-                List[models.BasePartnerDsrDataItemTypedDict],
+                Iterable[models.BasePartnerDsrDataItem],
+                Iterable[models.BasePartnerDsrDataItemTypedDict],
             ]
         ] = UNSET,
         data_load_trace_id: OptionalNullable[str] = UNSET,
@@ -715,7 +715,7 @@ class DeletionOptOut(BaseSDK):
                 request=req, response=http_res
             )
             raise errors.ThirdPartyDsrResponseError(response_data, http_res)
-        if utils.match_response(http_res, ["403", "413", "4XX"], "*"):
+        if utils.match_response(http_res, ["401", "403", "413", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise errors.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, ["500", "503", "5XX"], "*"):
