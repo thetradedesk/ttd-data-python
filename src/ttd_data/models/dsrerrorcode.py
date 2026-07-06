@@ -8,4 +8,5 @@ from enum import Enum
 class DsrErrorCode(str, Enum):
     UNKNOWN = "Unknown"
     INVALID_USER_ID = "InvalidUserId"
+    ITEM_DESERIALIZATION_ERROR = "ItemDeserializationError"
     UID2_ERROR = "Uid2Error"
