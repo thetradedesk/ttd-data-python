@@ -16,6 +16,7 @@ class ThirdPartyDsrFailedLineTypedDict(TypedDict):
     error_code: NotRequired[DsrErrorCode]
     message: NotRequired[Nullable[str]]
     item_number: NotRequired[Nullable[str]]
+    data_number: NotRequired[Nullable[str]]
 
 
 class ThirdPartyDsrFailedLine(BaseModel):
@@ -35,12 +36,25 @@ class ThirdPartyDsrFailedLine(BaseModel):
         OptionalNullable[str], pydantic.Field(alias="ItemNumber")
     ] = UNSET
 
+    data_number: Annotated[
+        OptionalNullable[str], pydantic.Field(alias="DataNumber")
+    ] = UNSET
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
         optional_fields = set(
-            ["DataProviderId", "TDID", "ErrorCode", "Message", "ItemNumber"]
+            [
+                "DataProviderId",
+                "TDID",
+                "ErrorCode",
+                "Message",
+                "ItemNumber",
+                "DataNumber",
+            ]
         )
-        nullable_fields = set(["DataProviderId", "TDID", "Message", "ItemNumber"])
+        nullable_fields = set(
+            ["DataProviderId", "TDID", "Message", "ItemNumber", "DataNumber"]
+        )
         serialized = handler(self)
         m = {}
 
