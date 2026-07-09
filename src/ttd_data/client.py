@@ -6,13 +6,15 @@ from __future__ import annotations
 # pylint: disable=protected-access
 
 import asyncio
+from dataclasses import dataclass
 from functools import cached_property
 from typing import Any, Dict, Iterable, List, Optional, Tuple, Type
 
 from uid2_client import IdentityMapV3Client, IdentityMapV3Input  # type: ignore[import-not-found,import-untyped]
 
 from ttd_data.sdk import BaseDataClient
-from ttd_data.types import BaseModel
+from ttd_data.types import BaseModel, OptionalNullable
+from ttd_data.utils import RetryConfig
 from ttd_data.models.advertiserdataresponseerrorcode import (
     AdvertiserDataResponseErrorCode,
 )
@@ -51,6 +53,14 @@ from .uid2.resolver import (
 )
 
 
+@dataclass(frozen=True)
+class ClientConfig:
+    server_url: Optional[str]
+    retry_config: OptionalNullable[RetryConfig]
+    timeout_ms: Optional[int]
+    uid2_config: Optional[UID2Config]
+
+
 class DataClient:
     """DataClient for the ttd-data SDK — enables ingesting advertiser,
     third-party, offline-conversion, and deletion-opt-out data to the
@@ -70,6 +80,18 @@ class DataClient:
     ) -> None:
         self.uid2_config = uid2_config
         self.data_client = data_client or BaseDataClient(**data_client_kwargs)
+
+    @property
+    def config(self) -> ClientConfig:
+        """Read-only view of this client's settings, exposed immutably to
+        prevent callers from mutating live client state."""
+        sdk_config = self.data_client.sdk_configuration
+        return ClientConfig(
+            server_url=sdk_config.server_url,
+            retry_config=sdk_config.retry_config,
+            timeout_ms=sdk_config.timeout_ms,
+            uid2_config=self.uid2_config,
+        )
 
     # ----- UID2 identity-map wiring (internal) -----
 

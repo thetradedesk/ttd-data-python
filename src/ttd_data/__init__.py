@@ -11,6 +11,7 @@ from ._version import (
 from .sdkconfiguration import *
 # region: Manually edited code section
 # pylint: disable=useless-import-alias
+from .client import ClientConfig as ClientConfig
 from .client import DataClient as DataClient
 from .uid2 import (
     IdentityScope as IdentityScope,

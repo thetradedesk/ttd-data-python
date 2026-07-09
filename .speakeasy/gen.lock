@@ -5,7 +5,7 @@ management:
   docVersion: v0.1
   speakeasyVersion: 1.789.0
   generationVersion: 2.916.2
-  releaseVersion: 0.2.4
+  releaseVersion: 0.2.5
   configChecksum: 9e28e463d3a7f0343364cf8763edd73d
   repoURL: https://github.com/thetradedesk/ttd-data-python.git
   installationURL: https://github.com/thetradedesk/ttd-data-python.git
