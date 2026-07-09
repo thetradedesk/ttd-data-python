@@ -35,7 +35,7 @@ generation:
     generateNewTests: false
     skipResponseBodyAssertions: false
 python:
-  version: 0.2.3
+  version: 0.2.4
   additionalDependencies:
     dev: {}
     main:
@@ -53,6 +53,7 @@ python:
   constFieldCasing: normal
   defaultErrorName: APIError
   description: Python Client SDK for TTD Data API.
+  durationFormat: false
   enableCustomCodeRegions: false
   enumFormat: enum
   envVarPrefix: TTD_DATA
@@ -103,3 +104,4 @@ python:
   sseFlatResponse: false
   templateVersion: v2
   useAsyncHooks: false
+  uuidFormat: false
