@@ -544,6 +544,9 @@ components:
         ItemNumber:
           type: "string"
           nullable: true
+        DataNumber:
+          type: "string"
+          nullable: true
       additionalProperties: false
     AdvertiserDsrFailedLine:
       type: "object"
@@ -564,6 +567,9 @@ components:
           type: "string"
           nullable: true
         ItemNumber:
+          type: "string"
+          nullable: true
+        DataNumber:
           type: "string"
           nullable: true
       additionalProperties: false
@@ -600,6 +606,7 @@ components:
       enum:
         - "Unknown"
         - "InvalidUserId"
+        - "ItemDeserializationError"
         - "Uid2Error"
       type: "string"
     MerchantDsrFailedLine:
@@ -618,6 +625,9 @@ components:
           type: "string"
           nullable: true
         ItemNumber:
+          type: "string"
+          nullable: true
+        DataNumber:
           type: "string"
           nullable: true
       additionalProperties: false
@@ -1085,6 +1095,9 @@ components:
         ItemNumber:
           type: "string"
           nullable: true
+        DataNumber:
+          type: "string"
+          nullable: true
       additionalProperties: false
     ThirdPartyDsrFailedLine:
       type: "object"
@@ -1102,6 +1115,9 @@ components:
           type: "string"
           nullable: true
         ItemNumber:
+          type: "string"
+          nullable: true
+        DataNumber:
           type: "string"
           nullable: true
       additionalProperties: false
