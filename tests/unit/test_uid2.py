@@ -58,7 +58,7 @@ def _advertiser_item(**kwargs: Any):
 
 def test_public_imports_resolve():
     """Top-level imports a caller is expected to use."""
-    from ttd_data import DataClient, IdentityScope, UID2Config  # noqa: F401
+    from ttd_data import ClientConfig, DataClient, IdentityScope, UID2Config  # noqa: F401
     from ttd_data.uid2 import (  # noqa: F401
         AdvertiserDataItem,
         OfflineConversionDataItem,
@@ -66,6 +66,48 @@ def test_public_imports_resolve():
         ThirdPartyDataItem,
         UID2ServiceError,
     )
+
+
+def test_config_property_reconstructs_an_equivalent_client():
+    from ttd_data import ClientConfig, DataClient, UID2Config
+    from ttd_data.uid2 import IdentityScope
+
+    uid2_config = UID2Config(
+        base_url="https://uid2.example.com",
+        api_key="key",
+        client_secret="secret",
+        identity_scope=IdentityScope.UID2,
+    )
+    client = DataClient(
+        uid2_config=uid2_config, server_url="https://example.com", timeout_ms=5000
+    )
+
+    config = client.config
+    assert isinstance(config, ClientConfig)
+
+    rebuilt = DataClient(**config.__dict__)
+    assert rebuilt.config == config
+
+
+def test_client_config_tracks_base_data_client_constructor_params():
+    """Fails if a new `BaseDataClient` constructor param is added without
+    updating `ClientConfig`."""
+    import dataclasses
+    import inspect
+
+    from ttd_data.client import ClientConfig
+    from ttd_data.sdk import BaseDataClient
+
+    # Exclude live resources from ClientConfig
+    not_reconstructable = {"client", "async_client", "debug_logger"}
+
+    base_params = set(inspect.signature(BaseDataClient.__init__).parameters) - {
+        "self",
+        *not_reconstructable,
+    }
+    config_fields = {f.name for f in dataclasses.fields(ClientConfig)} - {"uid2_config"}
+
+    assert base_params == config_fields
 
 
 def test_base_data_client_hidden_from_package_root():
