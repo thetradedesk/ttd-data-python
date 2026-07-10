@@ -9,7 +9,7 @@ management:
   configChecksum: 9e28e463d3a7f0343364cf8763edd73d
   repoURL: https://github.com/thetradedesk/ttd-data-python.git
   installationURL: https://github.com/thetradedesk/ttd-data-python.git
-  published: true
+  published: false
 persistentEdits:
   generation_id: da42d403-da66-4a8a-ae9f-802787ae4304
   pristine_commit_hash: 7459f1debd822fb1ac0b3f199cf7dfe042e2db19
