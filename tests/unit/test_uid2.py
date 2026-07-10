@@ -68,7 +68,7 @@ def test_public_imports_resolve():
     )
 
 
-def test_config_property_reconstructs_an_equivalent_client():
+def test_from_config_reconstructs_an_equivalent_client():
     from ttd_data import ClientConfig, DataClient, UID2Config
     from ttd_data.uid2 import IdentityScope
 
@@ -85,8 +85,8 @@ def test_config_property_reconstructs_an_equivalent_client():
     config = client.config
     assert isinstance(config, ClientConfig)
 
-    rebuilt = DataClient(**config.__dict__)
-    assert rebuilt.config == config
+    rebuilt_data_client = DataClient.from_config(config)
+    assert rebuilt_data_client.config == config
 
 
 def test_client_config_tracks_base_data_client_constructor_params():
