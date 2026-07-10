@@ -6,7 +6,7 @@ from __future__ import annotations
 # pylint: disable=protected-access
 
 import asyncio
-from dataclasses import dataclass
+from dataclasses import dataclass, fields
 from functools import cached_property
 from typing import Any, Dict, Iterable, List, Optional, Tuple, Type
 
@@ -92,6 +92,11 @@ class DataClient:
             timeout_ms=sdk_config.timeout_ms,
             uid2_config=self.uid2_config,
         )
+
+    @classmethod
+    def from_config(cls, config: ClientConfig) -> "DataClient":
+        """Build a new client from a ClientConfig object."""
+        return cls(**{f.name: getattr(config, f.name) for f in fields(config)})
 
     # ----- UID2 identity-map wiring (internal) -----
 
