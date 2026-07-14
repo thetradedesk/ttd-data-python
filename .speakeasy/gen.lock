@@ -3,17 +3,17 @@ id: 1927f304-b110-462d-9e13-326cfa243f23
 management:
   docChecksum: 13b36b6f6adb751f98b0f73c5bc881bb
   docVersion: v0.1
-  speakeasyVersion: 1.789.0
-  generationVersion: 2.916.2
-  releaseVersion: 0.2.5
-  configChecksum: 9e28e463d3a7f0343364cf8763edd73d
+  speakeasyVersion: 1.790.1
+  generationVersion: 2.918.1
+  releaseVersion: 0.2.6
+  configChecksum: 72a062f1e8dc32155e3174ceff18b607
   repoURL: https://github.com/thetradedesk/ttd-data-python.git
   installationURL: https://github.com/thetradedesk/ttd-data-python.git
   published: true
 persistentEdits:
-  generation_id: da42d403-da66-4a8a-ae9f-802787ae4304
-  pristine_commit_hash: 7459f1debd822fb1ac0b3f199cf7dfe042e2db19
-  pristine_tree_hash: 735d4722d9a22942f282065779487def1608578c
+  generation_id: 33b20a74-4b9c-4d4e-80fd-16aa079e706e
+  pristine_commit_hash: 0b45e260d245bb15011181b0d9afacd5ce6dd861
+  pristine_tree_hash: cd7c26ab16aed342f86c7b269ddc060cfe056169
 features:
   python:
     additionalDependencies: 1.1.0
@@ -51,7 +51,6 @@ trackedFiles:
     id: 89aa447020cd
     last_write_checksum: sha1:f84632c81029fcdda8c3b0c768d02b836fc80526
     pristine_git_object: 8d79f0abb72526f1fb34a4c03e5bba612c6ba2ae
-    deleted: true
   USAGE.md:
     id: 3aed33ce6e6f
     last_write_checksum: sha1:a00281d1a5789209e12b9ca30653cf208599b71a
@@ -278,8 +277,8 @@ trackedFiles:
     pristine_git_object: f456032107a9387ba6c98afd1c981df2f4b3d636
   pyproject.toml:
     id: 5d07e7d72637
-    last_write_checksum: sha1:40326ccb78b4f6f9bbdb134a2f894893ef1f5396
-    pristine_git_object: 72c9a2cc76d7ede8a41b8d6ea41372fc88d7dcd5
+    last_write_checksum: sha1:487de192240c122d50831af4826d6b6fdaae1a0a
+    pristine_git_object: 85156945e2bc4418da1769e315fc2be26f6fc724
   scripts/prepare_readme.py:
     id: e0c5957a6035
     last_write_checksum: sha1:5a79be5a1346a05f9099f1177f4b3605849c3b6b
@@ -290,7 +289,7 @@ trackedFiles:
     pristine_git_object: c35748f360329c2bc370e9b189f49b1a360b2c48
   src/ttd_data/__init__.py:
     id: 48aae23daf2a
-    last_write_checksum: sha1:bdaec05d829f095cda6706de6aab05488e3f2f49
+    last_write_checksum: sha1:c73d3d42fb7611ccef9a7feea2cc242fa036f27f
     pristine_git_object: 25fb88f91c4f26fb66b46e8daaa1d5d718fdab49
   src/ttd_data/_hooks/__init__.py:
     id: e02546b7a6fe
@@ -306,8 +305,8 @@ trackedFiles:
     pristine_git_object: 4d1beeaa986919cd72ba7191f1b01a5670b3f38c
   src/ttd_data/_version.py:
     id: 7feb4586507e
-    last_write_checksum: sha1:cf16282148b43c5ca7a3c49750672289cd0e1a9c
-    pristine_git_object: d4198ff5cc12488f1ba2bbd934e52b8a0772d8c8
+    last_write_checksum: sha1:6bc7c6a8c766d2646b44df02807da9d087c9f582
+    pristine_git_object: f4b7aacfc31c68bd81971522475224d48f961263
   src/ttd_data/advertiser.py:
     id: 392ead635b4f
     last_write_checksum: sha1:db4154de6127aac2fc36c05a5561f49e349fbe84
@@ -711,4 +710,3 @@ examples:
           application/json: {}
 examplesVersion: 1.0.2
 generatedTests: {}
-releaseNotes: "## Python SDK Changes:\n* `base_data_client.deletion_opt_out.data_subject_request_advertiser_data()`: \n  *  `response.failed_lines[]` **Changed** (Breaking ⚠️)\n  *  `error.failed_lines[]` **Changed** (Breaking ⚠️)\n* `base_data_client.deletion_opt_out.data_subject_request_merchant_data()`: \n  *  `response.failed_lines[]` **Changed** (Breaking ⚠️)\n  *  `error.failed_lines[]` **Changed** (Breaking ⚠️)\n* `base_data_client.deletion_opt_out.data_subject_request_third_party_data()`: \n  *  `response.failed_lines[]` **Changed** (Breaking ⚠️)\n  *  `error.failed_lines[]` **Changed** (Breaking ⚠️)\n* `base_data_client.advertiser.ingest_advertiser_data()`: \n  *  `response.failed_lines[].data_number` **Added**\n  *  `error.failed_lines[].data_number` **Added**\n* `base_data_client.third_party.ingest_third_party_data()`: \n  *  `response.failed_lines[].data_number` **Added**\n  *  `error.failed_lines[].data_number` **Added**\n"
