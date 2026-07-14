@@ -6,8 +6,8 @@ import importlib.metadata
 __title__: str = "ttd-data"
 __version__: str = "0.2.6"
 __openapi_doc_version__: str = "v0.1"
-__gen_version__: str = "2.916.2"
-__user_agent__: str = "speakeasy-sdk/python 0.2.6 2.916.2 v0.1 ttd-data"
+__gen_version__: str = "2.918.1"
+__user_agent__: str = "speakeasy-sdk/python 0.2.6 2.918.1 v0.1 ttd-data"
 
 try:
     if __package__ is not None:

@@ -34,6 +34,32 @@ jobs:
       - name: pylint
         run: uv run python -m pylint -j=0 src/ttd_data
 
+  version-sync-check:
+    name: Version Sync Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for package Version Drift
+        run: |
+          PYPROJECT_VERSION=$(grep -m1 '^version = ' pyproject.toml | cut -d'"' -f2)
+          GEN_YAML_VERSION=$(grep -m1 'version:' .speakeasy/gen.yaml | awk '{print $2}')
+          SDK_VERSION=$(grep -m1 '^__version__' src/ttd_data/_version.py | cut -d'"' -f2)
+          LOCK_VERSION=$(grep -m1 'releaseVersion:' .speakeasy/gen.lock | awk '{print $2}')
+          CONFIG_CHECKSUM=$(md5sum .speakeasy/gen.yaml | awk '{print $1}')
+          LOCK_CHECKSUM=$(grep -m1 'configChecksum:' .speakeasy/gen.lock | awk '{print $2}')
+          echo "pyproject.toml=$PYPROJECT_VERSION gen.yaml=$GEN_YAML_VERSION _version.py=$SDK_VERSION gen.lock=$LOCK_VERSION"
+          echo "gen.yaml=$CONFIG_CHECKSUM gen.lock=$LOCK_CHECKSUM"
+          if [ "$PYPROJECT_VERSION" != "$LOCK_VERSION" ] || [ "$GEN_YAML_VERSION" != "$LOCK_VERSION" ] || [ "$SDK_VERSION" != "$LOCK_VERSION" ]; then
+            echo "::error::Version mismatch: the version across pyproject.toml, gen.yaml, _version.py, and gen.lock should be the same. Run 'speakeasy run' to regenerate gen.lock, or revert the manual version bump."
+            exit 1
+          fi
+          if [ "$CONFIG_CHECKSUM" != "$LOCK_CHECKSUM" ]; then
+            echo "::error::.speakeasy/gen.yaml was edited without regenerating .speakeasy/gen.lock (configChecksum mismatch: gen.yaml=$CONFIG_CHECKSUM, gen.lock=$LOCK_CHECKSUM). Run 'speakeasy run' to regenerate, or revert the manual gen.yaml edit."
+            exit 1
+          fi
+
   tests:
     name: Unit tests
     runs-on: ubuntu-latest

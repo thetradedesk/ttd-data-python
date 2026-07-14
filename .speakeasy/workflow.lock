@@ -1,4 +1,4 @@
-speakeasyVersion: 1.789.0
+speakeasyVersion: 1.790.1
 sources:
     Data API:
         sourceNamespace: data-api
@@ -21,7 +21,7 @@ targets:
         sourceRevisionDigest: sha256:f574768825bea432e794b95e0fe14447713d1960a335d1966a3cebfa05dd13b3
         sourceBlobDigest: sha256:28914e0e0c55910969c80591fd249ed97ae6e37afac07d19dfab7e1417d83c68
         codeSamplesNamespace: data-api-python-code-samples
-        codeSamplesRevisionDigest: sha256:d5bc27984baea675d7f52a3796c86135dce6befb5a41a33299107ff82e24263e
+        codeSamplesRevisionDigest: sha256:62575cfb4f4df1475b39f62db58cd96dc27e9822da9e357eaf09f7f8c8a064b2
     data-api-local:
         source: Data API Local
         sourceNamespace: data-api-local
