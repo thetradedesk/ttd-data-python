@@ -25,6 +25,7 @@ class BaseAdvertiserDataItemTypedDict(TypedDict):
     first_id: NotRequired[Nullable[str]]
     utiq_id: NotRequired[Nullable[str]]
     merkury_id: NotRequired[Nullable[str]]
+    real_id: NotRequired[Nullable[str]]
     iqvia_ppid: NotRequired[Nullable[str]]
     cookie_mapping_partner_id: NotRequired[Nullable[str]]
 
@@ -64,6 +65,8 @@ class BaseAdvertiserDataItem(BaseModel):
         UNSET
     )
 
+    real_id: Annotated[OptionalNullable[str], pydantic.Field(alias="RealID")] = UNSET
+
     iqvia_ppid: Annotated[OptionalNullable[str], pydantic.Field(alias="IqviaPPID")] = (
         UNSET
     )
@@ -89,6 +92,7 @@ class BaseAdvertiserDataItem(BaseModel):
                 "FirstID",
                 "UtiqID",
                 "MerkuryID",
+                "RealID",
                 "IqviaPPID",
                 "CookieMappingPartnerId",
             ]
@@ -108,6 +112,7 @@ class BaseAdvertiserDataItem(BaseModel):
                 "FirstID",
                 "UtiqID",
                 "MerkuryID",
+                "RealID",
                 "IqviaPPID",
                 "CookieMappingPartnerId",
             ]
