@@ -22,6 +22,7 @@ class BasePartnerDsrDataItemTypedDict(TypedDict):
     first_id: NotRequired[Nullable[str]]
     utiq_id: NotRequired[Nullable[str]]
     merkury_id: NotRequired[Nullable[str]]
+    real_id: NotRequired[Nullable[str]]
     iqvia_ppid: NotRequired[Nullable[str]]
 
 
@@ -58,6 +59,8 @@ class BasePartnerDsrDataItem(BaseModel):
         UNSET
     )
 
+    real_id: Annotated[OptionalNullable[str], pydantic.Field(alias="RealID")] = UNSET
+
     iqvia_ppid: Annotated[OptionalNullable[str], pydantic.Field(alias="IqviaPPID")] = (
         UNSET
     )
@@ -79,6 +82,7 @@ class BasePartnerDsrDataItem(BaseModel):
                 "FirstID",
                 "UtiqID",
                 "MerkuryID",
+                "RealID",
                 "IqviaPPID",
             ]
         )
@@ -97,6 +101,7 @@ class BasePartnerDsrDataItem(BaseModel):
                 "FirstID",
                 "UtiqID",
                 "MerkuryID",
+                "RealID",
                 "IqviaPPID",
             ]
         )

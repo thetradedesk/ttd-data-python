@@ -18,4 +18,5 @@
 | `first_id`              | *OptionalNullable[str]* | :heavy_minus_sign:      | N/A                     |
 | `utiq_id`               | *OptionalNullable[str]* | :heavy_minus_sign:      | N/A                     |
 | `merkury_id`            | *OptionalNullable[str]* | :heavy_minus_sign:      | N/A                     |
+| `real_id`               | *OptionalNullable[str]* | :heavy_minus_sign:      | N/A                     |
 | `iqvia_ppid`            | *OptionalNullable[str]* | :heavy_minus_sign:      | N/A                     |
