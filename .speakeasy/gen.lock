@@ -1,19 +1,19 @@
 lockVersion: 2.0.0
 id: 1927f304-b110-462d-9e13-326cfa243f23
 management:
-  docChecksum: 13b36b6f6adb751f98b0f73c5bc881bb
+  docChecksum: c11bc553211de17ed20610d39cf72067
   docVersion: v0.1
-  speakeasyVersion: 1.790.1
-  generationVersion: 2.918.1
-  releaseVersion: 0.2.6
-  configChecksum: 72a062f1e8dc32155e3174ceff18b607
+  speakeasyVersion: 1.790.2
+  generationVersion: 2.918.3
+  releaseVersion: 0.2.7
+  configChecksum: 3e005f2c6958dc23cad0cb65b91d35e1
   repoURL: https://github.com/thetradedesk/ttd-data-python.git
   installationURL: https://github.com/thetradedesk/ttd-data-python.git
   published: true
 persistentEdits:
-  generation_id: 33b20a74-4b9c-4d4e-80fd-16aa079e706e
-  pristine_commit_hash: 0b45e260d245bb15011181b0d9afacd5ce6dd861
-  pristine_tree_hash: cd7c26ab16aed342f86c7b269ddc060cfe056169
+  generation_id: b1cce69c-ae88-4215-b273-fad4d8d02d2b
+  pristine_commit_hash: b9a3d86b5cc2ebf1dc4d294c3ff0ead7c72bc8a3
+  pristine_tree_hash: f291ca387117d7d668f3eb1a42d9344afa6a27ab
 features:
   python:
     additionalDependencies: 1.1.0
@@ -51,6 +51,7 @@ trackedFiles:
     id: 89aa447020cd
     last_write_checksum: sha1:f84632c81029fcdda8c3b0c768d02b836fc80526
     pristine_git_object: 8d79f0abb72526f1fb34a4c03e5bba612c6ba2ae
+    deleted: true
   USAGE.md:
     id: 3aed33ce6e6f
     last_write_checksum: sha1:a00281d1a5789209e12b9ca30653cf208599b71a
@@ -113,20 +114,20 @@ trackedFiles:
     pristine_git_object: 3b1d22daa091ac98e81dcebc9ce395c927a30462
   docs/models/baseadvertiserdataitem.md:
     id: 97e86ecee3d8
-    last_write_checksum: sha1:bddc51b8fefdfea1493af92b654cdef531c879d7
-    pristine_git_object: 6211c9500c87a6cdf6d93d2e430834e20c569949
+    last_write_checksum: sha1:76305b7e5000cedb33f7d24f1fd8ac6484b6afc4
+    pristine_git_object: 4119d398bea794e4a36e73eafdebb93775a13b03
   docs/models/baseofflineconversiondataitem.md:
     id: 13bfd96ba4aa
     last_write_checksum: sha1:3a236a50f5d08f4751b96863c110a00f0c800b79
     pristine_git_object: 69e0b5abce0893419f0aec3b3360397825a3b3f8
   docs/models/basepartnerdsrdataitem.md:
     id: bb2738e1cf3b
-    last_write_checksum: sha1:e2b7d2d5356b04909fdd6d333882a9c90fc87cf8
-    pristine_git_object: 79e25e2d75b010f64c15c7b83ef62acc20f8101b
+    last_write_checksum: sha1:44b1df97b21fcd2b3cc8a0c155feb645b505d71a
+    pristine_git_object: ec04eac70f8bb3b7d46598ebb4d491e1d64b274a
   docs/models/basethirdpartydataitem.md:
     id: 20f1f84d4720
-    last_write_checksum: sha1:b43f7c8eca189920c8e1e50614db72357bbe9038
-    pristine_git_object: 654c8c84d79f2775a1371ca7824d382d6a94ea4f
+    last_write_checksum: sha1:67954d2cf13c91de1af70340ee44ea31feaaa331
+    pristine_git_object: f13ee86156d4990b743bcc26994f27e46ae40c0a
   docs/models/dataorigin.md:
     id: 1d98f1297ba8
     last_write_checksum: sha1:4c6d538b85d82101a460bf10664af23f61453d83
@@ -277,8 +278,8 @@ trackedFiles:
     pristine_git_object: f456032107a9387ba6c98afd1c981df2f4b3d636
   pyproject.toml:
     id: 5d07e7d72637
-    last_write_checksum: sha1:487de192240c122d50831af4826d6b6fdaae1a0a
-    pristine_git_object: 85156945e2bc4418da1769e315fc2be26f6fc724
+    last_write_checksum: sha1:8c09560ee7f95124957e67b92c4702462de38ccf
+    pristine_git_object: 15e00a65d0685defe4d45894be00f3b0c42796cb
   scripts/prepare_readme.py:
     id: e0c5957a6035
     last_write_checksum: sha1:5a79be5a1346a05f9099f1177f4b3605849c3b6b
@@ -305,8 +306,8 @@ trackedFiles:
     pristine_git_object: 4d1beeaa986919cd72ba7191f1b01a5670b3f38c
   src/ttd_data/_version.py:
     id: 7feb4586507e
-    last_write_checksum: sha1:6bc7c6a8c766d2646b44df02807da9d087c9f582
-    pristine_git_object: f4b7aacfc31c68bd81971522475224d48f961263
+    last_write_checksum: sha1:f70443c1b61fb9e02ab18e352842ec511267dd73
+    pristine_git_object: 56826e8a1dfc55f5b993b5a16a913ddb7bd3e09d
   src/ttd_data/advertiser.py:
     id: 392ead635b4f
     last_write_checksum: sha1:db4154de6127aac2fc36c05a5561f49e349fbe84
@@ -405,20 +406,20 @@ trackedFiles:
     pristine_git_object: 14345dfe926d07f815a6d10d80a2a1265b8f08a5
   src/ttd_data/models/baseadvertiserdataitem.py:
     id: df8b7792ffe1
-    last_write_checksum: sha1:37c312fcb2214accd42332ca46e4dcb3e2bb405b
-    pristine_git_object: 03672bc702f8d9cde3394707c92b96ec398e6c1e
+    last_write_checksum: sha1:0efe8438cf4c887ea87f448a5e6df4f6fa4b5b26
+    pristine_git_object: 3a422ec2479f0b8567d9aec393b4a05ac11d8ba3
   src/ttd_data/models/baseofflineconversiondataitem.py:
     id: 7922701d5b7f
     last_write_checksum: sha1:852315b9cd570acf13a0b126c68a2f839b2fcc62
     pristine_git_object: 11c67b6ccde738b33b453add063aea927fad54ad
   src/ttd_data/models/basepartnerdsrdataitem.py:
     id: 4be97bf202da
-    last_write_checksum: sha1:010e54fa4fbbff708f43af2ec50d5576a1f1abcf
-    pristine_git_object: 2cf8831ed688fe557d9a538c5b9a42396d466630
+    last_write_checksum: sha1:350533548aaea1ab14eabb22a325b5ef6b33d770
+    pristine_git_object: 1d9876b252ae752027a585cf966074889ac7cfb8
   src/ttd_data/models/basethirdpartydataitem.py:
     id: 38edda88d345
-    last_write_checksum: sha1:e3b85439f7a149c40387e975393fadefc54fd4eb
-    pristine_git_object: 88ef7d095b0116d5553d612653d4c14799c3bd1e
+    last_write_checksum: sha1:c3571943cb4ba08a9a0270d2f3bc68c5533aeac3
+    pristine_git_object: 7b0aeafca2de6e226cfb90f75fa01ebb934fef27
   src/ttd_data/models/dataorigin.py:
     id: 01488b30ef74
     last_write_checksum: sha1:b1ac1ca17a73abdc3fa8f946f35d77e02a37e9a2
@@ -710,3 +711,4 @@ examples:
           application/json: {}
 examplesVersion: 1.0.2
 generatedTests: {}
+releaseNotes: "## Python SDK Changes:\n* `base_data_client.advertiser.ingest_advertiser_data()`: \n  *  `request.items[].real_id` **Added**\n* `base_data_client.third_party.ingest_third_party_data()`: \n  *  `request.items[].real_id` **Added**\n* `base_data_client.deletion_opt_out.data_subject_request_advertiser_data()`: \n  *  `request.items[].real_id` **Added**\n* `base_data_client.deletion_opt_out.data_subject_request_merchant_data()`: \n  *  `request.items[].real_id` **Added**\n* `base_data_client.deletion_opt_out.data_subject_request_third_party_data()`: \n  *  `request.items[].real_id` **Added**\n"

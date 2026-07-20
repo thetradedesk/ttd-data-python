@@ -461,6 +461,9 @@ components:
         MerkuryID:
           type: "string"
           nullable: true
+        RealID:
+          type: "string"
+          nullable: true
         IqviaPPID:
           type: "string"
           nullable: true
@@ -897,6 +900,9 @@ components:
         MerkuryID:
           type: "string"
           nullable: true
+        RealID:
+          type: "string"
+          nullable: true
         IqviaPPID:
           type: "string"
           nullable: true
@@ -1010,6 +1016,9 @@ components:
           type: "string"
           nullable: true
         MerkuryID:
+          type: "string"
+          nullable: true
+        RealID:
           type: "string"
           nullable: true
         IqviaPPID:
