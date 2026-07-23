@@ -1,0 +1,14 @@
+# IPAddressData
+
+
+## Fields
+
+| Field                                                                | Type                                                                 | Required                                                             | Description                                                          |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `name`                                                               | *str*                                                                | :heavy_check_mark:                                                   | N/A                                                                  |
+| `timestamp_utc`                                                      | [date](https://docs.python.org/3/library/datetime.html#date-objects) | :heavy_minus_sign:                                                   | N/A                                                                  |
+| `ttl_in_minutes`                                                     | *OptionalNullable[int]*                                              | :heavy_minus_sign:                                                   | N/A                                                                  |
+| `targeting_data_metadata_id`                                         | *OptionalNullable[int]*                                              | :heavy_minus_sign:                                                   | N/A                                                                  |
+| `ip_addresses`                                                       | List[*str*]                                                          | :heavy_minus_sign:                                                   | N/A                                                                  |
+| `ip_address_ranges`                                                  | List[*str*]                                                          | :heavy_minus_sign:                                                   | N/A                                                                  |
+| `expanded_ip_addresses`                                              | List[[models.ExpandedIPAddress](../models/expandedipaddress.md)]     | :heavy_minus_sign:                                                   | N/A                                                                  |
