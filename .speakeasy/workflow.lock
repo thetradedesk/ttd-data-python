@@ -1,9 +1,9 @@
-speakeasyVersion: 1.790.1
+speakeasyVersion: 1.790.3
 sources:
     Data API:
         sourceNamespace: data-api
-        sourceRevisionDigest: sha256:f574768825bea432e794b95e0fe14447713d1960a335d1966a3cebfa05dd13b3
-        sourceBlobDigest: sha256:28914e0e0c55910969c80591fd249ed97ae6e37afac07d19dfab7e1417d83c68
+        sourceRevisionDigest: sha256:c3853f233352223392fd1936aa89274767fa404b4cfcf730b2c1bf6b14e6bdd0
+        sourceBlobDigest: sha256:bacb5bab3c306ab125fc18801edfd0dcb025c0ea7f2000245711d24f91e5809c
         tags:
             - latest
             - v0.1
@@ -18,10 +18,10 @@ targets:
     data-api:
         source: Data API
         sourceNamespace: data-api
-        sourceRevisionDigest: sha256:f574768825bea432e794b95e0fe14447713d1960a335d1966a3cebfa05dd13b3
-        sourceBlobDigest: sha256:28914e0e0c55910969c80591fd249ed97ae6e37afac07d19dfab7e1417d83c68
+        sourceRevisionDigest: sha256:c3853f233352223392fd1936aa89274767fa404b4cfcf730b2c1bf6b14e6bdd0
+        sourceBlobDigest: sha256:bacb5bab3c306ab125fc18801edfd0dcb025c0ea7f2000245711d24f91e5809c
         codeSamplesNamespace: data-api-python-code-samples
-        codeSamplesRevisionDigest: sha256:62575cfb4f4df1475b39f62db58cd96dc27e9822da9e357eaf09f7f8c8a064b2
+        codeSamplesRevisionDigest: sha256:cee102bdae52db657cbcb3c1ef5c51fed24f5d3e4cf3c22906d1083a41198cdb
     data-api-local:
         source: Data API Local
         sourceNamespace: data-api-local
