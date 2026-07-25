@@ -72,6 +72,7 @@ if TYPE_CHECKING:
         DataSubjectRequestThirdPartyDataResponseTypedDict,
     )
     from .dsrerrorcode import DsrErrorCode
+    from .expandedipaddress import ExpandedIPAddress, ExpandedIPAddressTypedDict
     from .httpmetadata import HTTPMetadata, HTTPMetadataTypedDict
     from .ingestadvertiserdataop import (
         INGEST_ADVERTISER_DATA_OP_SERVERS,
@@ -79,6 +80,13 @@ if TYPE_CHECKING:
         IngestAdvertiserDataRequestTypedDict,
         IngestAdvertiserDataResponse,
         IngestAdvertiserDataResponseTypedDict,
+    )
+    from .ingestfirstpartyipaddressdataop import (
+        INGEST_FIRST_PARTY_IP_ADDRESS_DATA_OP_SERVERS,
+        IngestFirstPartyIPAddressDataRequest,
+        IngestFirstPartyIPAddressDataRequestTypedDict,
+        IngestFirstPartyIPAddressDataResponse,
+        IngestFirstPartyIPAddressDataResponseTypedDict,
     )
     from .ingestofflineconversiondataop import (
         INGEST_OFFLINE_CONVERSION_DATA_OP_SERVERS,
@@ -93,6 +101,28 @@ if TYPE_CHECKING:
         IngestThirdPartyDataRequestTypedDict,
         IngestThirdPartyDataResponse,
         IngestThirdPartyDataResponseTypedDict,
+    )
+    from .ingestthirdpartyipaddressdataop import (
+        INGEST_THIRD_PARTY_IP_ADDRESS_DATA_OP_SERVERS,
+        IngestThirdPartyIPAddressDataRequest,
+        IngestThirdPartyIPAddressDataRequestTypedDict,
+        IngestThirdPartyIPAddressDataResponse,
+        IngestThirdPartyIPAddressDataResponseTypedDict,
+    )
+    from .ipaddressdata import IPAddressData, IPAddressDataTypedDict
+    from .ipaddressdataitem import IPAddressDataItem, IPAddressDataItemTypedDict
+    from .ipaddressdatarequest import (
+        IPAddressDataRequest,
+        IPAddressDataRequestTypedDict,
+    )
+    from .ipaddressdataresponseerrorcode import IPAddressDataResponseErrorCode
+    from .ipaddressdataserverresponse import (
+        IPAddressDataServerResponse,
+        IPAddressDataServerResponseTypedDict,
+    )
+    from .ipaddressdataserverresponseline import (
+        IPAddressDataServerResponseLine,
+        IPAddressDataServerResponseLineTypedDict,
     )
     from .merchantdsrfailedline import (
         MerchantDsrFailedLine,
@@ -194,15 +224,34 @@ __all__ = [
     "DataSubjectRequestThirdPartyDataResponse",
     "DataSubjectRequestThirdPartyDataResponseTypedDict",
     "DsrErrorCode",
+    "ExpandedIPAddress",
+    "ExpandedIPAddressTypedDict",
     "HTTPMetadata",
     "HTTPMetadataTypedDict",
     "INGEST_ADVERTISER_DATA_OP_SERVERS",
+    "INGEST_FIRST_PARTY_IP_ADDRESS_DATA_OP_SERVERS",
     "INGEST_OFFLINE_CONVERSION_DATA_OP_SERVERS",
     "INGEST_THIRD_PARTY_DATA_OP_SERVERS",
+    "INGEST_THIRD_PARTY_IP_ADDRESS_DATA_OP_SERVERS",
+    "IPAddressData",
+    "IPAddressDataItem",
+    "IPAddressDataItemTypedDict",
+    "IPAddressDataRequest",
+    "IPAddressDataRequestTypedDict",
+    "IPAddressDataResponseErrorCode",
+    "IPAddressDataServerResponse",
+    "IPAddressDataServerResponseLine",
+    "IPAddressDataServerResponseLineTypedDict",
+    "IPAddressDataServerResponseTypedDict",
+    "IPAddressDataTypedDict",
     "IngestAdvertiserDataRequest",
     "IngestAdvertiserDataRequestTypedDict",
     "IngestAdvertiserDataResponse",
     "IngestAdvertiserDataResponseTypedDict",
+    "IngestFirstPartyIPAddressDataRequest",
+    "IngestFirstPartyIPAddressDataRequestTypedDict",
+    "IngestFirstPartyIPAddressDataResponse",
+    "IngestFirstPartyIPAddressDataResponseTypedDict",
     "IngestOfflineConversionDataRequest",
     "IngestOfflineConversionDataRequestTypedDict",
     "IngestOfflineConversionDataResponse",
@@ -211,6 +260,10 @@ __all__ = [
     "IngestThirdPartyDataRequestTypedDict",
     "IngestThirdPartyDataResponse",
     "IngestThirdPartyDataResponseTypedDict",
+    "IngestThirdPartyIPAddressDataRequest",
+    "IngestThirdPartyIPAddressDataRequestTypedDict",
+    "IngestThirdPartyIPAddressDataResponse",
+    "IngestThirdPartyIPAddressDataResponseTypedDict",
     "MerchantDsrFailedLine",
     "MerchantDsrFailedLineTypedDict",
     "MerchantDsrRequest",
@@ -289,6 +342,8 @@ _dynamic_imports: dict[str, str] = {
     "DataSubjectRequestThirdPartyDataResponse": ".datasubjectrequestthirdpartydataop",
     "DataSubjectRequestThirdPartyDataResponseTypedDict": ".datasubjectrequestthirdpartydataop",
     "DsrErrorCode": ".dsrerrorcode",
+    "ExpandedIPAddress": ".expandedipaddress",
+    "ExpandedIPAddressTypedDict": ".expandedipaddress",
     "HTTPMetadata": ".httpmetadata",
     "HTTPMetadataTypedDict": ".httpmetadata",
     "INGEST_ADVERTISER_DATA_OP_SERVERS": ".ingestadvertiserdataop",
@@ -296,6 +351,11 @@ _dynamic_imports: dict[str, str] = {
     "IngestAdvertiserDataRequestTypedDict": ".ingestadvertiserdataop",
     "IngestAdvertiserDataResponse": ".ingestadvertiserdataop",
     "IngestAdvertiserDataResponseTypedDict": ".ingestadvertiserdataop",
+    "INGEST_FIRST_PARTY_IP_ADDRESS_DATA_OP_SERVERS": ".ingestfirstpartyipaddressdataop",
+    "IngestFirstPartyIPAddressDataRequest": ".ingestfirstpartyipaddressdataop",
+    "IngestFirstPartyIPAddressDataRequestTypedDict": ".ingestfirstpartyipaddressdataop",
+    "IngestFirstPartyIPAddressDataResponse": ".ingestfirstpartyipaddressdataop",
+    "IngestFirstPartyIPAddressDataResponseTypedDict": ".ingestfirstpartyipaddressdataop",
     "INGEST_OFFLINE_CONVERSION_DATA_OP_SERVERS": ".ingestofflineconversiondataop",
     "IngestOfflineConversionDataRequest": ".ingestofflineconversiondataop",
     "IngestOfflineConversionDataRequestTypedDict": ".ingestofflineconversiondataop",
@@ -306,6 +366,22 @@ _dynamic_imports: dict[str, str] = {
     "IngestThirdPartyDataRequestTypedDict": ".ingestthirdpartydataop",
     "IngestThirdPartyDataResponse": ".ingestthirdpartydataop",
     "IngestThirdPartyDataResponseTypedDict": ".ingestthirdpartydataop",
+    "INGEST_THIRD_PARTY_IP_ADDRESS_DATA_OP_SERVERS": ".ingestthirdpartyipaddressdataop",
+    "IngestThirdPartyIPAddressDataRequest": ".ingestthirdpartyipaddressdataop",
+    "IngestThirdPartyIPAddressDataRequestTypedDict": ".ingestthirdpartyipaddressdataop",
+    "IngestThirdPartyIPAddressDataResponse": ".ingestthirdpartyipaddressdataop",
+    "IngestThirdPartyIPAddressDataResponseTypedDict": ".ingestthirdpartyipaddressdataop",
+    "IPAddressData": ".ipaddressdata",
+    "IPAddressDataTypedDict": ".ipaddressdata",
+    "IPAddressDataItem": ".ipaddressdataitem",
+    "IPAddressDataItemTypedDict": ".ipaddressdataitem",
+    "IPAddressDataRequest": ".ipaddressdatarequest",
+    "IPAddressDataRequestTypedDict": ".ipaddressdatarequest",
+    "IPAddressDataResponseErrorCode": ".ipaddressdataresponseerrorcode",
+    "IPAddressDataServerResponse": ".ipaddressdataserverresponse",
+    "IPAddressDataServerResponseTypedDict": ".ipaddressdataserverresponse",
+    "IPAddressDataServerResponseLine": ".ipaddressdataserverresponseline",
+    "IPAddressDataServerResponseLineTypedDict": ".ipaddressdataserverresponseline",
     "MerchantDsrFailedLine": ".merchantdsrfailedline",
     "MerchantDsrFailedLineTypedDict": ".merchantdsrfailedline",
     "MerchantDsrRequest": ".merchantdsrrequest",
