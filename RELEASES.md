@@ -139,3 +139,13 @@ Based on:
 - [python v0.2.5] .
 ### Releases
 - [PyPI v0.2.5] https://pypi.org/project/ttd-data/0.2.5 - .
+
+## 2026-08-17 00:07:11
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.794.0 (2.930.0) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [python v0.2.7] .
+### Releases
+- [PyPI v0.2.7] https://pypi.org/project/ttd-data/0.2.7 - .
