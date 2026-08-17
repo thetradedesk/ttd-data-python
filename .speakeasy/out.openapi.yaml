@@ -140,6 +140,118 @@ paths:
           description: "Service Unavailable - Handler disabled or request dropped"
       servers:
         - url: "https://bulk-data.adsrvr.org"
+  /data/firstpartyipaddress:
+    post:
+      tags:
+        - "IPAddress"
+      summary: "Upload first-party IP address data for the specified ID."
+      operationId: "IngestFirstPartyIPAddressData"
+      parameters:
+        - name: "TTD-Auth"
+          in: "header"
+          description: "Data API token for authentication."
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IPAddressDataRequest"
+        required: true
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IPAddressDataServerResponse"
+        "400":
+          description: "Bad Request - Invalid JSON, missing items, advertiser not configured, or policy restrictions"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IPAddressDataServerResponse"
+        "401":
+          description: "Unauthorized - Invalid or missing authentication token"
+          content:
+            application/json:
+              schema:
+                type: "string"
+        "403":
+          description: "Forbidden - Cannot upload IP address data for this advertiser"
+          content:
+            application/json:
+              schema:
+                type: "string"
+        "429":
+          description: "Too Many Requests - Rate limit exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IPAddressDataServerResponse"
+        "500":
+          description: "Internal Server Error - Unexpected server error"
+        "503":
+          description: "Service Unavailable - Handler disabled or request dropped"
+      servers:
+        - url: "https://usw-data.adsrvr.org"
+  /data/thirdpartyipaddress:
+    post:
+      tags:
+        - "IPAddress"
+      summary: "Upload third-party IP address data for the specified ID."
+      operationId: "IngestThirdPartyIPAddressData"
+      parameters:
+        - name: "TTD-Auth"
+          in: "header"
+          description: "Data API token for authentication."
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IPAddressDataRequest"
+        required: true
+      responses:
+        "200":
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IPAddressDataServerResponse"
+        "400":
+          description: "Bad Request - Invalid JSON, missing items, data provider not configured, or policy restrictions"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IPAddressDataServerResponse"
+        "401":
+          description: "Unauthorized - Invalid or missing authentication token"
+          content:
+            application/json:
+              schema:
+                type: "string"
+        "403":
+          description: "Forbidden - Cannot upload IP address data for this data provider"
+          content:
+            application/json:
+              schema:
+                type: "string"
+        "429":
+          description: "Too Many Requests - Rate limit exceeded"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IPAddressDataServerResponse"
+        "500":
+          description: "Internal Server Error - Unexpected server error"
+        "503":
+          description: "Service Unavailable - Handler disabled or request dropped"
+      servers:
+        - url: "https://usw-data.adsrvr.org"
   /providerapi/offlineconversion:
     post:
       tags:
@@ -461,6 +573,9 @@ components:
         MerkuryID:
           type: "string"
           nullable: true
+        RealID:
+          type: "string"
+          nullable: true
         IqviaPPID:
           type: "string"
           nullable: true
@@ -609,6 +724,172 @@ components:
         - "ItemDeserializationError"
         - "Uid2Error"
       type: "string"
+    ExpandedIpAddress:
+      type: "object"
+      properties:
+        IPAddress:
+          type: "string"
+          nullable: true
+        IPAddressRange:
+          type: "string"
+          nullable: true
+        TargetingDataMetadataId:
+          type: "integer"
+          format: "int64"
+          nullable: true
+      additionalProperties: false
+    IPAddressData:
+      required:
+        - "Name"
+      type: "object"
+      properties:
+        Name:
+          type: "string"
+        TimestampUtc:
+          type: "string"
+          format: "date-time"
+          nullable: true
+        TtlInMinutes:
+          type: "integer"
+          format: "int32"
+          nullable: true
+        TargetingDataMetadataId:
+          type: "integer"
+          format: "int64"
+          nullable: true
+        IPAddresses:
+          type: "array"
+          items:
+            type: "string"
+          nullable: true
+        IPAddressRanges:
+          type: "array"
+          items:
+            type: "string"
+          nullable: true
+        ExpandedIpAddresses:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/ExpandedIpAddress"
+          nullable: true
+      additionalProperties: false
+    IPAddressDataItem:
+      required:
+        - "Data"
+      type: "object"
+      properties:
+        TDID:
+          type: "string"
+          nullable: true
+        DAID:
+          type: "string"
+          nullable: true
+        UID2:
+          type: "string"
+          nullable: true
+        UID2Token:
+          type: "string"
+          nullable: true
+        RampID:
+          type: "string"
+          nullable: true
+        CoreID:
+          type: "string"
+          nullable: true
+        EUID:
+          type: "string"
+          nullable: true
+        EUIDToken:
+          type: "string"
+          nullable: true
+        ID5:
+          type: "string"
+          nullable: true
+        NetID:
+          type: "string"
+          nullable: true
+        FirstID:
+          type: "string"
+          nullable: true
+        UtiqID:
+          type: "string"
+          nullable: true
+        MerkuryID:
+          type: "string"
+          nullable: true
+        RealID:
+          type: "string"
+          nullable: true
+        IqviaPPID:
+          type: "string"
+          nullable: true
+        Data:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/IPAddressData"
+        CookieMappingPartnerId:
+          type: "string"
+          nullable: true
+      additionalProperties: false
+    IPAddressDataRequest:
+      required:
+        - "DataOwnerId"
+      type: "object"
+      properties:
+        DataOwnerId:
+          type: "string"
+        Items:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/IPAddressDataItem"
+          nullable: true
+        DataLoadTraceId:
+          type: "string"
+          nullable: true
+      additionalProperties: false
+    IPAddressDataResponseErrorCode:
+      enum:
+        - "Unknown"
+        - "MissingDataOwnerId"
+        - "DataOwnerIdNotMapped"
+        - "InvalidIPAddress"
+        - "InvalidIPAddressRange"
+        - "EuIpTargetingNotAllowedForPartner"
+        - "NotTargetable"
+      type: "string"
+    IPAddressDataServerResponse:
+      type: "object"
+      properties:
+        DataOwnerId:
+          type: "string"
+          nullable: true
+        FailedLines:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/IPAddressDataServerResponseLine"
+          nullable: true
+      additionalProperties: false
+    IPAddressDataServerResponseLine:
+      type: "object"
+      properties:
+        DataName:
+          type: "string"
+          nullable: true
+        ErrorCode:
+          $ref: "#/components/schemas/IPAddressDataResponseErrorCode"
+        IPAddress:
+          type: "string"
+          nullable: true
+        Message:
+          type: "string"
+          nullable: true
+        ItemNumber:
+          type: "string"
+          nullable: true
+        DataNumber:
+          type: "string"
+          nullable: true
+      additionalProperties: false
     MerchantDsrFailedLine:
       type: "object"
       properties:
@@ -897,6 +1178,9 @@ components:
         MerkuryID:
           type: "string"
           nullable: true
+        RealID:
+          type: "string"
+          nullable: true
         IqviaPPID:
           type: "string"
           nullable: true
@@ -1010,6 +1294,9 @@ components:
           type: "string"
           nullable: true
         MerkuryID:
+          type: "string"
+          nullable: true
+        RealID:
           type: "string"
           nullable: true
         IqviaPPID:

@@ -19,6 +19,10 @@ if TYPE_CHECKING:
         AdvertiserDsrResponseErrorData,
     )
     from .apierror import APIError
+    from .ipaddressdataserverresponse_error import (
+        IPAddressDataServerResponseError,
+        IPAddressDataServerResponseErrorData,
+    )
     from .merchantdsrresponse_error import (
         MerchantDsrResponseError,
         MerchantDsrResponseErrorData,
@@ -45,6 +49,8 @@ __all__ = [
     "AdvertiserDsrResponseError",
     "AdvertiserDsrResponseErrorData",
     "DataError",
+    "IPAddressDataServerResponseError",
+    "IPAddressDataServerResponseErrorData",
     "MerchantDsrResponseError",
     "MerchantDsrResponseErrorData",
     "NoResponseError",
@@ -64,6 +70,8 @@ _dynamic_imports: dict[str, str] = {
     "AdvertiserDsrResponseError": ".advertiserdsrresponse_error",
     "AdvertiserDsrResponseErrorData": ".advertiserdsrresponse_error",
     "APIError": ".apierror",
+    "IPAddressDataServerResponseError": ".ipaddressdataserverresponse_error",
+    "IPAddressDataServerResponseErrorData": ".ipaddressdataserverresponse_error",
     "MerchantDsrResponseError": ".merchantdsrresponse_error",
     "MerchantDsrResponseErrorData": ".merchantdsrresponse_error",
     "NoResponseError": ".no_response_error",
