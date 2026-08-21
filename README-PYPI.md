@@ -332,6 +332,57 @@ async def main():
 
 asyncio.run(main())
 ```
+### 9. Third-Party Data Taxonomy (GraphQL)
+
+Taxonomy operations run as GraphQL requests against the Platform API supergraph. They live under `client.third_party_taxonomy`, and the platform token is passed per call as `ttd_auth`.
+
+| SDK function | REST equivalent | What it does |
+| --- | --- | --- |
+| `query_segments(...)` | [`POST /v3/thirdpartydata/query`](https://open.thetradedesk.com/provider/docsApp/GuidesProvider/audience/ref/post-thirdpartydata-query) | Lists a provider's segments, optionally filtered by element ID. |
+| `query_segment_taxonomy_status(...)` | [`GET /v3/thirdpartydata/status/{providerId}/{providerElementId}`](https://open.thetradedesk.com/provider/docsApp/GuidesProvider/audience/ref/get-thirdpartydata-status-providerid-providerelementid) | Returns one segment's taxonomy approval status. |
+| `upsert_segments(...)` | [`POST`](https://open.thetradedesk.com/provider/docsApp/GuidesProvider/audience/ref/post-thirdpartydata) / [`PUT /v3/thirdpartydata`](https://open.thetradedesk.com/provider/docsApp/GuidesProvider/audience/ref/put-thirdpartydata) | Creates or updates up to 1000 segments in one call. |
+| `client.graphql.execute(...)` | — | Sends any GraphQL document and returns the parsed response body. |
+
+```python
+from ttd_data import DataClient
+
+client = DataClient()
+
+# List segments. Paginate with page.end_cursor while page.has_next_page.
+page = client.third_party_taxonomy.query_segments(
+    ttd_auth=TTD_AUTH_TOKEN, provider_id=PROVIDER_ID, first=100
+)
+for node in page.nodes:
+    print(node["providerElementId"], node["taxonomyApprovalStatus"])
+
+# One segment's approval status: APPROVED, DENIED, PENDING, NOT_IN_QUEUE, or None.
+status = client.third_party_taxonomy.query_segment_taxonomy_status(
+    ttd_auth=TTD_AUTH_TOKEN, provider_id=PROVIDER_ID, provider_element_id="auto/in-market/ev"
+)
+
+# Create or update. The server decides per segment and reports it as `mode`.
+result = client.third_party_taxonomy.upsert_segments(
+    ttd_auth=TTD_AUTH_TOKEN,
+    segments=[
+        {
+            "providerId": PROVIDER_ID,
+            "providerElementId": "auto/in-market/ev",
+            "displayName": "Interest > Auto > In-Market > EV",
+            "parentElementId": "ROOT",
+            "buyable": True,
+        }
+    ],
+)
+for entry in result.succeeded:
+    print(entry["mode"], entry["segment"]["id"])   # CREATE or UPDATE
+if result.failed:
+    print(result.failed)   # a batch can partially succeed; always check this
+```
+
+Each segment is a `SegmentInput`. `providerId` and `providerElementId` are always required; `displayName`, `parentElementId` and `buyable` are additionally required when creating. Keys are camelCase to match the schema, and omitting a key leaves that field unchanged on update.
+
+The supergraph reports authorization and policy failures as HTTP 200 with a top-level `errors` array, so those raise `GraphQLError` — which, like `APIError`, derives from `DataError`, so one `except DataError` covers the REST and GraphQL suites. Retries use the same configuration as the REST operations.
+
 <!-- No SDK Example Usage [usage] -->
 
 <!-- Start Available Resources and Operations [operations] -->

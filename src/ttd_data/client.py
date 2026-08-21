@@ -12,6 +12,7 @@ from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Type, U
 
 from uid2_client import IdentityMapV3Client, IdentityMapV3Input  # type: ignore[import-not-found,import-untyped]
 
+from ttd_data.graphql import GraphQLTransport, TaxonomyOperations
 from ttd_data.sdk import BaseDataClient
 from ttd_data.types import BaseModel, OptionalNullable
 from ttd_data.utils import RetryConfig
@@ -80,6 +81,7 @@ class ClientConfig:
     timeout_ms: Optional[int]
     ttd_auth: TtdAuth
     uid2_config: Optional[UID2Config]
+    graphql_server_url: Optional[str]
 
 
 class DataClient:
@@ -97,10 +99,12 @@ class DataClient:
         self,
         uid2_config: Optional[UID2Config] = None,
         data_client: Optional[BaseDataClient] = None,
+        graphql_server_url: Optional[str] = None,
         **data_client_kwargs: Any,
     ) -> None:
         self.uid2_config = uid2_config
         self.data_client = data_client or BaseDataClient(**data_client_kwargs)
+        self._graphql_server_url = graphql_server_url
 
     @property
     def config(self) -> ClientConfig:
@@ -113,6 +117,7 @@ class DataClient:
             timeout_ms=sdk_config.timeout_ms,
             ttd_auth=_ttd_auth_from_security(sdk_config.security),
             uid2_config=self.uid2_config,
+            graphql_server_url=self._graphql_server_url,
         )
 
     @classmethod
@@ -317,6 +322,34 @@ class DataClient:
     @cached_property
     def deletion_opt_out(self) -> "_DeletionOptOutProxy":
         return _DeletionOptOutProxy(self)
+
+    @cached_property
+    def _graphql_transport(self) -> GraphQLTransport:
+        """Shared GraphQL transport. Reuses the REST client's httpx client, so
+        both suites share one connection pool."""
+        sdk_config = self.data_client.sdk_configuration
+        return GraphQLTransport(
+            server_url=self._graphql_server_url,
+            client=sdk_config.client,
+            retry_config=sdk_config.retry_config,
+            timeout_ms=sdk_config.timeout_ms,
+            debug_logger=sdk_config.debug_logger,
+        )
+
+    @cached_property
+    def third_party_taxonomy(self) -> TaxonomyOperations:
+        """Third-party data taxonomy operations over GraphQL: segment upsert,
+        segment query, and taxonomy approval status.
+
+        Not part of the UID2 pipeline: these operate on segment metadata,
+        never on user identifiers."""
+        return TaxonomyOperations(self._graphql_transport)
+
+    @cached_property
+    def graphql(self) -> GraphQLTransport:
+        """Escape hatch for GraphQL operations the typed namespaces above do
+        not cover. Send a document with `client.graphql.execute(...)`."""
+        return self._graphql_transport
 
     # ----- Pass-through for any sub-SDK without a UID2 wrapper -----
 

@@ -18,7 +18,7 @@ features:
   python:
     additionalDependencies: 1.1.0
     constsAndDefaults: 1.0.7
-    core: 6.0.36
+    core: 6.1.0
     defaultEnabledRetries: 0.2.0
     devContainers: 3.0.0
     enumUnions: 0.1.1
@@ -33,7 +33,7 @@ features:
     nameOverrides: 3.0.3
     nullables: 1.0.2
     responseFormat: 1.1.0
-    retries: 3.0.7
+    retries: 3.1.0
     sdkHooks: 1.3.0
 trackedFiles:
   .devcontainer/devcontainer.json:
@@ -682,8 +682,8 @@ trackedFiles:
     pristine_git_object: 5bc70856007fcb6807f1799f8a7900ae7a58aa1a
   src/ttd_data/utils/retries.py:
     id: 04accebbe68a
-    last_write_checksum: sha1:72b69874b569187013180f4ee1729e033016aa57
-    pristine_git_object: 5cef7c40b61d7110bb49931d20ba1a8da02769a8
+    last_write_checksum: sha1:ec14524be2802965a615b7a57d5d2bfe2149968f
+    pristine_git_object: f20abf23165385c311373cd59acafdbb26b82f01
   src/ttd_data/utils/security.py:
     id: e38af000ccc5
     last_write_checksum: sha1:d7d901c2ae152ed07734fc7c7943723bcf38cffc
@@ -702,8 +702,8 @@ trackedFiles:
     pristine_git_object: 178fae653a8b5c5e166f124ad4ce590f87085cb9
   src/ttd_data/utils/values.py:
     id: 45979a7770a1
-    last_write_checksum: sha1:3a4ec34b2221dd825f7432e2d913b21d8ff92506
-    pristine_git_object: 53c869685607f3756168d82e0cfaa581d333efbc
+    last_write_checksum: sha1:430ffa8f56b20db092f98952b2f4c909fbcee6f0
+    pristine_git_object: a75c6e1622dcdc3eeef51fc51acbcb8f5a190ac2
 examples:
   IngestAdvertiserData:
     speakeasy-default-ingest-advertiser-data:

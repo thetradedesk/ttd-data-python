@@ -16,6 +16,7 @@ license = { text = "map[name:Apache License 2.0 shortName:Apache-2.0 url:https:/
 
 [dependency-groups]
 dev = [
+    "graphql-core >=3.2.0,<4.0.0",
     "mypy ==1.15.0",
     "pylint ==3.2.3",
     "pyright ==1.1.398",

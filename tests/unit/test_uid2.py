@@ -105,7 +105,12 @@ def test_client_config_tracks_base_data_client_constructor_params():
         "self",
         *not_reconstructable,
     }
-    config_fields = {f.name for f in dataclasses.fields(ClientConfig)} - {"uid2_config"}
+    # uid2_config and graphql_server_url are DataClient-level additions,
+    # not BaseDataClient constructor params.
+    config_fields = {f.name for f in dataclasses.fields(ClientConfig)} - {
+        "uid2_config",
+        "graphql_server_url",
+    }
 
     assert base_params == config_fields
 
