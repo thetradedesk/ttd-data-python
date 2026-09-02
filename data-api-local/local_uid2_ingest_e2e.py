@@ -209,7 +209,6 @@ def exercise_advertiser_ingest(client: DataClient) -> None:
     _print_items("Submitting items", items)
     response = client.advertiser.ingest_advertiser_data(
         advertiser_id=ADVERTISER_ID,
-        ttd_auth=TTD_AUTH_TOKEN,
         items=items,
     )
     _print_items("Items after resolution", items)
@@ -234,7 +233,6 @@ def exercise_third_party_ingest(client: DataClient) -> None:
     _print_items("Submitting items", items)
     response = client.third_party.ingest_third_party_data(
         data_provider_id=DATA_PROVIDER_ID,
-        ttd_auth=TTD_AUTH_TOKEN,
         items=items,
     )
     _print_items("Items after resolution", items)
@@ -278,7 +276,6 @@ def exercise_offline_conversion_ingest(client: DataClient) -> None:
     ]
     _print_items("Submitting items", items)
     response = client.offline_conversion.ingest_offline_conversion_data(
-        ttd_auth=TTD_AUTH_TOKEN,
         data_provider_id=DATA_PROVIDER_ID,
         items=items,
         user_id_array_metadata_format=["type", "id"],
@@ -303,7 +300,6 @@ def exercise_dsr_advertiser(client: DataClient) -> None:
     _print_items("Submitting items", items)
     response = client.deletion_opt_out.data_subject_request_advertiser_data(
         advertiser_id=ADVERTISER_ID,
-        ttd_auth=TTD_AUTH_TOKEN,
         items=items,
         request_type=PartnerDsrRequestType.OPT_OUT,
     )
@@ -327,7 +323,6 @@ def exercise_dsr_merchant(client: DataClient) -> None:
     _print_items("Submitting items", items)
     response = client.deletion_opt_out.data_subject_request_merchant_data(
         merchant_id=MERCHANT_ID,
-        ttd_auth=TTD_AUTH_TOKEN,
         items=items,
         request_type=PartnerDsrRequestType.OPT_OUT,
     )
@@ -351,7 +346,6 @@ def exercise_dsr_third_party(client: DataClient) -> None:
     _print_items("Submitting items", items)
     response = client.deletion_opt_out.data_subject_request_third_party_data(
         data_provider_id=DATA_PROVIDER_ID,
-        ttd_auth=TTD_AUTH_TOKEN,
         items=items,
         request_type=PartnerDsrRequestType.OPT_OUT,
     )
@@ -371,7 +365,7 @@ def _make_uid2_client() -> DataClient:
         client_secret=UID2_CLIENT_SECRET,
         identity_scope=IdentityScope.UID2,
     )
-    return DataClient(config, server_url=TTD_DATA_SERVER_URL)
+    return DataClient(config, ttd_auth=TTD_AUTH_TOKEN, server_url=TTD_DATA_SERVER_URL)
 
 
 def _register_capture(client: DataClient) -> _RequestBodyCapture:
@@ -401,7 +395,6 @@ def verify_pii_not_in_request_with_uid2_config() -> None:
     try:
         response = client.advertiser.ingest_advertiser_data(
             advertiser_id=ADVERTISER_ID,
-            ttd_auth=TTD_AUTH_TOKEN,
             items=items,
         )
         _print_response("TTD response", response, "advertiser_data_server_response")
@@ -420,7 +413,7 @@ def verify_pii_not_in_request_no_uid2_config() -> None:
     BaseAdvertiserDataItem has no such fields — pydantic silently ignores them.
     """
     # No uid2_config — UID2 resolution is intentionally skipped.
-    client = DataClient(server_url=TTD_DATA_SERVER_URL)
+    client = DataClient(ttd_auth=TTD_AUTH_TOKEN, server_url=TTD_DATA_SERVER_URL)
     capture = _register_capture(client)
 
     items = [
@@ -432,7 +425,6 @@ def verify_pii_not_in_request_no_uid2_config() -> None:
     try:
         response = client.advertiser.ingest_advertiser_data(
             advertiser_id=ADVERTISER_ID,
-            ttd_auth=TTD_AUTH_TOKEN,
             items=items,
         )
         _print_response("TTD response", response, "advertiser_data_server_response")
@@ -448,7 +440,7 @@ def verify_user_id_array_pii_not_in_request_no_uid2_config() -> None:
     (`mark_raw_pii_failures_without_uid2`) substitutes the UID2 sentinel `*`
     into each offending slot before serialization.
     """
-    client = DataClient(server_url=TTD_DATA_SERVER_URL)
+    client = DataClient(ttd_auth=TTD_AUTH_TOKEN, server_url=TTD_DATA_SERVER_URL)
     capture = _register_capture(client)
 
     now = datetime.now(timezone.utc)
@@ -472,7 +464,6 @@ def verify_user_id_array_pii_not_in_request_no_uid2_config() -> None:
     _print_items("Input items (no UID2 config, user_id_array)", items)
     try:
         response = client.offline_conversion.ingest_offline_conversion_data(
-            ttd_auth=TTD_AUTH_TOKEN,
             data_provider_id=DATA_PROVIDER_ID,
             items=items,
             user_id_array_metadata_format=["type", "id"],
@@ -517,7 +508,6 @@ def verify_user_id_array_pii_not_in_request_with_uid2_config() -> None:
     _print_items("Input items (with UID2 config, user_id_array)", items)
     try:
         response = client.offline_conversion.ingest_offline_conversion_data(
-            ttd_auth=TTD_AUTH_TOKEN,
             data_provider_id=DATA_PROVIDER_ID,
             items=items,
             user_id_array_metadata_format=["type", "id"],
@@ -544,7 +534,7 @@ def main() -> None:
         client_secret=UID2_CLIENT_SECRET,
         identity_scope=IdentityScope.UID2,
     )
-    client = DataClient(config, server_url=TTD_DATA_SERVER_URL)
+    client = DataClient(config, ttd_auth=TTD_AUTH_TOKEN, server_url=TTD_DATA_SERVER_URL)
 
     # `_hooks` is a private attribute on the speakeasy SDK config; `register_before_request_hook`
     # appends to its hook list so all subsequent requests run through it.

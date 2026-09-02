@@ -83,11 +83,11 @@ def test_sdk_initialization():
     print_section("Test 1: SDK Initialization")
     
     try:
-        with DataClient(server_url=SERVER_URL) as client:
-            print_success("SDK initialized successfully")
-            print_info(f"Server URL: {SERVER_URL}")
-            print_info(f"SDK has advertiser attribute: {hasattr(client, 'advertiser')}")
-            return True
+        client = DataClient(server_url=SERVER_URL)
+        print_success("SDK initialized successfully")
+        print_info(f"Server URL: {SERVER_URL}")
+        print_info(f"SDK has advertiser attribute: {hasattr(client, 'advertiser')}")
+        return True
     except Exception as e:
         print_error(f"Failed to initialize SDK: {e}")
         return False
@@ -107,36 +107,35 @@ def test_basic_data_ingestion():
         return False
     
     try:
-        with DataClient(server_url=SERVER_URL) as client:
-            # Create a simple data item using sample TDID
-            data_item = models.AdvertiserDataItem(
-                tdid=SAMPLE_TDID,
-                data=[
-                    models.AdvertiserData(
-                        name="test_segment_1",
-                    )
-                ]
-            )
-            
-            print_info(f"Ingesting data for advertiser: {ADVERTISER_ID}")
-            print_info(f"Using TDID: {SAMPLE_TDID}")
-            
-            # Ingest the data
-            response = client.advertiser.ingest_advertiser_data(
-                advertiser_id=ADVERTISER_ID,
-                ttd_auth=TTD_AUTH_TOKEN,
-                items=[data_item]
-            )
-            
-            print_success("Data ingestion completed")
-            server_response = response.advertiser_data_server_response
-            if server_response and server_response.failed_lines:
-                print_info(f"Failed lines: {server_response.failed_lines}")
-            else:
-                print_info("No failed lines")
-            
-            return True
-            
+        client = DataClient(ttd_auth=TTD_AUTH_TOKEN, server_url=SERVER_URL)
+        # Create a simple data item using sample TDID
+        data_item = models.AdvertiserDataItem(
+            tdid=SAMPLE_TDID,
+            data=[
+                models.AdvertiserData(
+                    name="test_segment_1",
+                )
+            ]
+        )
+        
+        print_info(f"Ingesting data for advertiser: {ADVERTISER_ID}")
+        print_info(f"Using TDID: {SAMPLE_TDID}")
+        
+        # Ingest the data
+        response = client.advertiser.ingest_advertiser_data(
+            advertiser_id=ADVERTISER_ID,
+            items=[data_item]
+        )
+        
+        print_success("Data ingestion completed")
+        server_response = response.advertiser_data_server_response
+        if server_response and server_response.failed_lines:
+            print_info(f"Failed lines: {server_response.failed_lines}")
+        else:
+            print_info("No failed lines")
+        
+        return True
+        
     except errors.AdvertiserDataServerResponseError as e:
         print_error(f"Server returned error: {e.message}")
         print_error(f"Status code: {e.status_code}")
@@ -169,54 +168,53 @@ def test_advanced_data_ingestion():
         return False
     
     try:
-        with DataClient(server_url=SERVER_URL) as client:
-            # Create a comprehensive data item with all fields using sample DAID
-            data_item = models.AdvertiserDataItem(
-                daid=SAMPLE_DAID,
-                data=[
-                    models.AdvertiserData(
-                        name="premium_segment",
-                        base_bid_cpm=5.50,
-                        base_bid_cpm_metadata="High-value audience",
-                        bid_factor=1.2,
-                        timestamp_utc=datetime.now(timezone.utc),
-                        ttl_in_minutes=10080,  # 7 days
-                    ),
-                    models.AdvertiserData(
-                        name="standard_segment",
-                        base_bid_cpm=2.00,
-                        bid_factor=1.0,
-                        ttl_in_minutes=1440,  # 1 day
-                    )
-                ]
-            )
-            
-            print_info(f"Ingesting advanced data for advertiser: {ADVERTISER_ID}")
-            print_info(f"Using DAID: {SAMPLE_DAID}")
-            print_info(f"Number of segments: {len(data_item.data)}")
-            
-            # Ingest with data provider ID if available
-            kwargs = {
-                "advertiser_id": ADVERTISER_ID,
-                "ttd_auth": TTD_AUTH_TOKEN,
-                "items": [data_item]
-            }
-            
-            if DATA_PROVIDER_ID:
-                kwargs["data_provider_id"] = DATA_PROVIDER_ID
-                print_info(f"Using data provider ID: {DATA_PROVIDER_ID}")
-            
-            response = client.advertiser.ingest_advertiser_data(**kwargs)
-            
-            print_success("Advanced data ingestion completed")
-            server_response = response.advertiser_data_server_response
-            if server_response and server_response.failed_lines:
-                print_info(f"Failed lines: {server_response.failed_lines}")
-            else:
-                print_info("No failed lines")
-            
-            return True
-            
+        client = DataClient(ttd_auth=TTD_AUTH_TOKEN, server_url=SERVER_URL)
+        # Create a comprehensive data item with all fields using sample DAID
+        data_item = models.AdvertiserDataItem(
+            daid=SAMPLE_DAID,
+            data=[
+                models.AdvertiserData(
+                    name="premium_segment",
+                    base_bid_cpm=5.50,
+                    base_bid_cpm_metadata="High-value audience",
+                    bid_factor=1.2,
+                    timestamp_utc=datetime.now(timezone.utc),
+                    ttl_in_minutes=10080,  # 7 days
+                ),
+                models.AdvertiserData(
+                    name="standard_segment",
+                    base_bid_cpm=2.00,
+                    bid_factor=1.0,
+                    ttl_in_minutes=1440,  # 1 day
+                )
+            ]
+        )
+        
+        print_info(f"Ingesting advanced data for advertiser: {ADVERTISER_ID}")
+        print_info(f"Using DAID: {SAMPLE_DAID}")
+        print_info(f"Number of segments: {len(data_item.data)}")
+        
+        # Ingest with data provider ID if available
+        kwargs = {
+            "advertiser_id": ADVERTISER_ID,
+            "items": [data_item]
+        }
+        
+        if DATA_PROVIDER_ID:
+            kwargs["data_provider_id"] = DATA_PROVIDER_ID
+            print_info(f"Using data provider ID: {DATA_PROVIDER_ID}")
+        
+        response = client.advertiser.ingest_advertiser_data(**kwargs)
+        
+        print_success("Advanced data ingestion completed")
+        server_response = response.advertiser_data_server_response
+        if server_response and server_response.failed_lines:
+            print_info(f"Failed lines: {server_response.failed_lines}")
+        else:
+            print_info("No failed lines")
+        
+        return True
+        
     except errors.APIError as e:
         # Check status code directly
         if hasattr(e, 'status_code') and e.status_code == 200:
@@ -251,48 +249,47 @@ def test_multiple_user_ids():
         return False
     
     try:
-        with DataClient(server_url=SERVER_URL) as client:
-            # Test with different ID types using sample IDs
-            test_items = [
-                models.AdvertiserDataItem(
-                    tdid=SAMPLE_TDID,
-                    data=[models.AdvertiserData(name="tdid_segment")]
-                ),
-                models.AdvertiserDataItem(
-                    daid=SAMPLE_DAID,
-                    data=[models.AdvertiserData(name="daid_segment")]
-                ),
-                models.AdvertiserDataItem(
-                    euid=SAMPLE_EUID,
-                    data=[models.AdvertiserData(name="euid_segment")]
-                ),
-                models.AdvertiserDataItem(
-                    ramp_id=SAMPLE_RAMP_ID,
-                    data=[models.AdvertiserData(name="ramp_segment")]
-                )
-            ]
-            
-            print_info(f"Testing {len(test_items)} different ID types")
-            print_info(f"  - TDID: {SAMPLE_TDID}")
-            print_info(f"  - DAID: {SAMPLE_DAID}")
-            print_info(f"  - EUID: {SAMPLE_EUID[:20]}...")
-            print_info(f"  - RampID: {SAMPLE_RAMP_ID[:20]}...")
-            
-            response = client.advertiser.ingest_advertiser_data(
-                advertiser_id=ADVERTISER_ID,
-                ttd_auth=TTD_AUTH_TOKEN,
-                items=test_items
+        client = DataClient(ttd_auth=TTD_AUTH_TOKEN, server_url=SERVER_URL)
+        # Test with different ID types using sample IDs
+        test_items = [
+            models.AdvertiserDataItem(
+                tdid=SAMPLE_TDID,
+                data=[models.AdvertiserData(name="tdid_segment")]
+            ),
+            models.AdvertiserDataItem(
+                daid=SAMPLE_DAID,
+                data=[models.AdvertiserData(name="daid_segment")]
+            ),
+            models.AdvertiserDataItem(
+                euid=SAMPLE_EUID,
+                data=[models.AdvertiserData(name="euid_segment")]
+            ),
+            models.AdvertiserDataItem(
+                ramp_id=SAMPLE_RAMP_ID,
+                data=[models.AdvertiserData(name="ramp_segment")]
             )
-            
-            print_success("Multiple ID types ingestion completed")
-            server_response = response.advertiser_data_server_response
-            if server_response and server_response.failed_lines:
-                print_info(f"Failed lines: {server_response.failed_lines}")
-            else:
-                print_info("No failed lines")
-            
-            return True
-            
+        ]
+        
+        print_info(f"Testing {len(test_items)} different ID types")
+        print_info(f"  - TDID: {SAMPLE_TDID}")
+        print_info(f"  - DAID: {SAMPLE_DAID}")
+        print_info(f"  - EUID: {SAMPLE_EUID[:20]}...")
+        print_info(f"  - RampID: {SAMPLE_RAMP_ID[:20]}...")
+        
+        response = client.advertiser.ingest_advertiser_data(
+            advertiser_id=ADVERTISER_ID,
+            items=test_items
+        )
+        
+        print_success("Multiple ID types ingestion completed")
+        server_response = response.advertiser_data_server_response
+        if server_response and server_response.failed_lines:
+            print_info(f"Failed lines: {server_response.failed_lines}")
+        else:
+            print_info("No failed lines")
+        
+        return True
+        
     except errors.APIError as e:
         # Check if we got a 200 status - if so, treat as success
         if hasattr(e, 'status_code') and e.status_code == 200:
@@ -315,37 +312,36 @@ def test_error_handling():
     print_section("Test 5: Error Handling")
     
     try:
-        with DataClient(server_url=SERVER_URL) as client:
-            # Try to ingest without authentication (should fail)
-            print_info("Testing error handling with missing authentication...")
+        client = DataClient(ttd_auth="", server_url=SERVER_URL)
+        # Try to ingest without authentication (should fail)
+        print_info("Testing error handling with missing authentication...")
+        
+        try:
+            response = client.advertiser.ingest_advertiser_data(
+                advertiser_id=ADVERTISER_ID,
+                items=[
+                    models.AdvertiserDataItem(
+                        tdid="test",
+                        data=[models.AdvertiserData(name="test")]
+                    )
+                ]
+            )
+            print_error("Expected authentication error but succeeded")
+            return False
             
-            try:
-                response = client.advertiser.ingest_advertiser_data(
-                    advertiser_id=ADVERTISER_ID,
-                    ttd_auth="",
-                    items=[
-                        models.AdvertiserDataItem(
-                            tdid="test",
-                            data=[models.AdvertiserData(name="test")]
-                        )
-                    ]
-                )
-                print_error("Expected authentication error but succeeded")
-                return False
-                
-            except errors.DataError as e:
-                print_success(f"Correctly caught TTD API error: {e.message}")
-                print_info(f"Status code: {e.status_code}")
+        except errors.DataError as e:
+            print_success(f"Correctly caught TTD API error: {e.message}")
+            print_info(f"Status code: {e.status_code}")
+            return True
+        except OSError as e:
+            # Network/DNS errors are expected with dummy URLs
+            if "nodename nor servname provided" in str(e) or "Name or service not known" in str(e):
+                print_success(f"Correctly caught network error (expected with placeholder URL)")
+                print_info(f"Error: {e}")
+                print_info("This is normal when using a placeholder SERVER_URL")
                 return True
-            except OSError as e:
-                # Network/DNS errors are expected with dummy URLs
-                if "nodename nor servname provided" in str(e) or "Name or service not known" in str(e):
-                    print_success(f"Correctly caught network error (expected with placeholder URL)")
-                    print_info(f"Error: {e}")
-                    print_info("This is normal when using a placeholder SERVER_URL")
-                    return True
-                raise
-                
+            raise
+            
     except Exception as e:
         print_error(f"Unexpected error: {e}")
         return False
@@ -372,15 +368,15 @@ def test_retry_configuration():
             retry_connection_errors=True
         )
         
-        with DataClient(
+        client = DataClient(
             server_url=SERVER_URL,
             retry_config=retry_config
-        ) as client:
-            print_success("SDK initialized with custom retry configuration")
-            print_info("Retry strategy: backoff with exponential increase")
-            print_info("Max elapsed time: 30 seconds")
-            return True
-            
+        )
+        print_success("SDK initialized with custom retry configuration")
+        print_info("Retry strategy: backoff with exponential increase")
+        print_info("Max elapsed time: 30 seconds")
+        return True
+        
     except Exception as e:
         print_error(f"Error setting retry config: {e}")
         return False
@@ -401,29 +397,28 @@ async def test_async_operations():
     try:
         import asyncio
         
-        async with DataClient(server_url=SERVER_URL) as client:
-            data_item = models.AdvertiserDataItem(
-                tdid=SAMPLE_TDID,
-                data=[models.AdvertiserData(name="async_segment")]
-            )
-            
-            print_info("Testing async data ingestion...")
-            print_info(f"Using TDID: {SAMPLE_TDID}")
-            
-            response = await client.advertiser.ingest_advertiser_data_async(
-                advertiser_id=ADVERTISER_ID,
-                ttd_auth=TTD_AUTH_TOKEN,
-                items=[data_item]
-            )
-            
-            print_success("Async data ingestion completed")
-            server_response = response.advertiser_data_server_response
-            if server_response and server_response.failed_lines:
-                print_info(f"Failed lines: {server_response.failed_lines}")
-            else:
-                print_info("No failed lines")
-            return True
-            
+        client = DataClient(ttd_auth=TTD_AUTH_TOKEN, server_url=SERVER_URL)
+        data_item = models.AdvertiserDataItem(
+            tdid=SAMPLE_TDID,
+            data=[models.AdvertiserData(name="async_segment")]
+        )
+        
+        print_info("Testing async data ingestion...")
+        print_info(f"Using TDID: {SAMPLE_TDID}")
+        
+        response = await client.advertiser.ingest_advertiser_data_async(
+            advertiser_id=ADVERTISER_ID,
+            items=[data_item]
+        )
+        
+        print_success("Async data ingestion completed")
+        server_response = response.advertiser_data_server_response
+        if server_response and server_response.failed_lines:
+            print_info(f"Failed lines: {server_response.failed_lines}")
+        else:
+            print_info("No failed lines")
+        return True
+        
     except ImportError:
         print_error("asyncio not available")
         return False
@@ -509,18 +504,17 @@ def test_data_origins_hook_default():
 
     try:
         http_client = _httpx.Client(transport=CapturingTransport())
-        with DataClient(server_url=SERVER_URL, client=http_client) as client:
-            client.advertiser.ingest_advertiser_data(
-                advertiser_id=ADVERTISER_ID,
-                ttd_auth=TTD_AUTH_TOKEN or "test",
-                items=[
-                    models.AdvertiserDataItem(
-                        tdid=SAMPLE_TDID,
-                        data=[models.AdvertiserData(name="hook_test_segment")],
-                    )
-                ],
-                # NOTE: data_origins intentionally omitted — the hook should inject ttd_data_sdk.
-            )
+        client = DataClient(ttd_auth=TTD_AUTH_TOKEN or "test", server_url=SERVER_URL, client=http_client)
+        client.advertiser.ingest_advertiser_data(
+            advertiser_id=ADVERTISER_ID,
+            items=[
+                models.AdvertiserDataItem(
+                    tdid=SAMPLE_TDID,
+                    data=[models.AdvertiserData(name="hook_test_segment")],
+                )
+            ],
+            # NOTE: data_origins intentionally omitted — the hook should inject ttd_data_sdk.
+        )
 
         # Inspect what the hook wrote into the request body.
         data_origin_list = captured.get("body", {}).get("DataOrigins", [])
@@ -564,22 +558,21 @@ def test_data_origins_hook_append():
 
     try:
         http_client = _httpx.Client(transport=CapturingTransport())
-        with DataClient(server_url=SERVER_URL, client=http_client) as client:
-            client.advertiser.ingest_advertiser_data(
-                advertiser_id=ADVERTISER_ID,
-                ttd_auth=TTD_AUTH_TOKEN or "test",
-                items=[
-                    models.AdvertiserDataItem(
-                        tdid=SAMPLE_TDID,
-                        data=[models.AdvertiserData(name="hook_test_segment")],
-                    )
-                ],
-                # Simulates ttd-databricks-sdk passing its own origin —
-                # the hook should append ttd_data_sdk without removing this.
-                data_origins=[
-                    models.DataOrigin(id="ttd_databricks_sdk", type=models.DataOriginType.INTEGRATION)
-                ],
-            )
+        client = DataClient(ttd_auth=TTD_AUTH_TOKEN or "test", server_url=SERVER_URL, client=http_client)
+        client.advertiser.ingest_advertiser_data(
+            advertiser_id=ADVERTISER_ID,
+            items=[
+                models.AdvertiserDataItem(
+                    tdid=SAMPLE_TDID,
+                    data=[models.AdvertiserData(name="hook_test_segment")],
+                )
+            ],
+            # Simulates ttd-databricks-sdk passing its own origin —
+            # the hook should append ttd_data_sdk without removing this.
+            data_origins=[
+                models.DataOrigin(id="ttd_databricks_sdk", type=models.DataOriginType.INTEGRATION)
+            ],
+        )
 
         # Inspect what the hook produced — both origins should be present.
         data_origin_list = captured.get("body", {}).get("DataOrigins", [])
@@ -622,32 +615,31 @@ def test_data_origins_advertiser():
         return False
 
     try:
-        with DataClient(server_url=SERVER_URL) as client:
-            data_origin = models.DataOrigin(
-                id="test_ttd_data",
-                type=models.DataOriginType.INTEGRATION,
-            )
-            print_info(f"DataOrigins: [{{Type: '{data_origin.type}', Id: '{data_origin.id}'}}]")
+        client = DataClient(ttd_auth=TTD_AUTH_TOKEN, server_url=SERVER_URL)
+        data_origin = models.DataOrigin(
+            id="test_ttd_data",
+            type=models.DataOriginType.INTEGRATION,
+        )
+        print_info(f"DataOrigins: [{{Type: '{data_origin.type}', Id: '{data_origin.id}'}}]")
 
-            response = client.advertiser.ingest_advertiser_data(
-                advertiser_id=ADVERTISER_ID,
-                ttd_auth=TTD_AUTH_TOKEN,
-                items=[
-                    models.AdvertiserDataItem(
-                        tdid=SAMPLE_TDID,
-                        data=[models.AdvertiserData(name="data_origins_segment")]
-                    )
-                ],
-                data_origins=[data_origin],
-            )
+        response = client.advertiser.ingest_advertiser_data(
+            advertiser_id=ADVERTISER_ID,
+            items=[
+                models.AdvertiserDataItem(
+                    tdid=SAMPLE_TDID,
+                    data=[models.AdvertiserData(name="data_origins_segment")]
+                )
+            ],
+            data_origins=[data_origin],
+        )
 
-            print_success("Advertiser ingestion with DataOrigins completed")
-            server_response = response.advertiser_data_server_response
-            if server_response and server_response.failed_lines:
-                print_info(f"Failed lines: {server_response.failed_lines}")
-            else:
-                print_info("No failed lines")
-            return True
+        print_success("Advertiser ingestion with DataOrigins completed")
+        server_response = response.advertiser_data_server_response
+        if server_response and server_response.failed_lines:
+            print_info(f"Failed lines: {server_response.failed_lines}")
+        else:
+            print_info("No failed lines")
+        return True
 
     except errors.AdvertiserDataServerResponseError as e:
         print_error(f"Server returned error: {e.message}")
@@ -674,32 +666,31 @@ def test_data_origins_thirdparty():
         return False
 
     try:
-        with DataClient(server_url=SERVER_URL) as client:
-            data_origin = models.DataOrigin(
-                id="test_ttd_data",
-                type=models.DataOriginType.INTEGRATION,
-            )
-            print_info(f"DataOrigins: [{{Type: '{data_origin.type}', Id: '{data_origin.id}'}}]")
+        client = DataClient(ttd_auth=TTD_AUTH_TOKEN, server_url=SERVER_URL)
+        data_origin = models.DataOrigin(
+            id="test_ttd_data",
+            type=models.DataOriginType.INTEGRATION,
+        )
+        print_info(f"DataOrigins: [{{Type: '{data_origin.type}', Id: '{data_origin.id}'}}]")
 
-            response = client.third_party.ingest_third_party_data(
-                data_provider_id=DATA_PROVIDER_ID,
-                ttd_auth=TTD_AUTH_TOKEN,
-                items=[
-                    models.ThirdPartyDataItem(
-                        tdid=SAMPLE_TDID,
-                        data=[models.ThirdPartyData(name="data_origins_segment")]
-                    )
-                ],
-                data_origins=[data_origin],
-            )
+        response = client.third_party.ingest_third_party_data(
+            data_provider_id=DATA_PROVIDER_ID,
+            items=[
+                models.ThirdPartyDataItem(
+                    tdid=SAMPLE_TDID,
+                    data=[models.ThirdPartyData(name="data_origins_segment")]
+                )
+            ],
+            data_origins=[data_origin],
+        )
 
-            print_success("ThirdParty ingestion with DataOrigins completed")
-            server_response = response.third_party_data_server_response
-            if server_response and server_response.failed_lines:
-                print_info(f"Failed lines: {server_response.failed_lines}")
-            else:
-                print_info("No failed lines")
-            return True
+        print_success("ThirdParty ingestion with DataOrigins completed")
+        server_response = response.third_party_data_server_response
+        if server_response and server_response.failed_lines:
+            print_info(f"Failed lines: {server_response.failed_lines}")
+        else:
+            print_info("No failed lines")
+        return True
 
     except errors.APIError as e:
         print_error(f"API error: {str(e)}")
@@ -722,33 +713,32 @@ def test_data_origins_offline_conversion():
         return False
 
     try:
-        with DataClient(server_url=SERVER_URL) as client:
-            data_origin = models.DataOrigin(
-                id="test_ttd_data",
-                type=models.DataOriginType.INTEGRATION,
-            )
-            print_info(f"DataOrigins: [{{Type: '{data_origin.type}', Id: '{data_origin.id}'}}]")
+        client = DataClient(ttd_auth=TTD_AUTH_TOKEN, server_url=SERVER_URL)
+        data_origin = models.DataOrigin(
+            id="test_ttd_data",
+            type=models.DataOriginType.INTEGRATION,
+        )
+        print_info(f"DataOrigins: [{{Type: '{data_origin.type}', Id: '{data_origin.id}'}}]")
 
-            response = client.offline_conversion.ingest_offline_conversion_data(
-                data_provider_id=DATA_PROVIDER_ID,
-                ttd_auth=TTD_AUTH_TOKEN,
-                items=[
-                    models.OfflineConversionDataItem(
-                        tracking_tag_id=TRACKING_TAG_ID,
-                        timestamp_utc=datetime.now(timezone.utc),
-                        tdid=SAMPLE_TDID,
-                    )
-                ],
-                data_origins=[data_origin],
-            )
+        response = client.offline_conversion.ingest_offline_conversion_data(
+            data_provider_id=DATA_PROVIDER_ID,
+            items=[
+                models.OfflineConversionDataItem(
+                    tracking_tag_id=TRACKING_TAG_ID,
+                    timestamp_utc=datetime.now(timezone.utc),
+                    tdid=SAMPLE_TDID,
+                )
+            ],
+            data_origins=[data_origin],
+        )
 
-            print_success("Offline conversion ingestion with DataOrigins completed")
-            server_response = response.offline_conversion_data_server_response
-            if server_response and server_response.failed_lines:
-                print_info(f"Failed lines: {server_response.failed_lines}")
-            else:
-                print_info("No failed lines")
-            return True
+        print_success("Offline conversion ingestion with DataOrigins completed")
+        server_response = response.offline_conversion_data_server_response
+        if server_response and server_response.failed_lines:
+            print_info(f"Failed lines: {server_response.failed_lines}")
+        else:
+            print_info("No failed lines")
+        return True
 
     except errors.APIError as e:
         print_error(f"API error: {str(e)}")
