@@ -156,6 +156,6 @@ Based on:
 - OpenAPI Doc  
 - Speakeasy CLI 1.794.0 (2.930.0) https://github.com/speakeasy-api/speakeasy
 ### Generated
-- [python v0.3.1] .
+- [python v0.3.0] .
 ### Releases
-- [PyPI v0.3.1] https://pypi.org/project/ttd-data/0.3.1 - .
+- [PyPI v0.3.0] https://pypi.org/project/ttd-data/0.3.0 - .

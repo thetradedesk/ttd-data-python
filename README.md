@@ -127,9 +127,8 @@ Generally, the SDK will work well with most IDEs out of the box. However, when u
 ```python
 from ttd_data import DataClient, models
 
-with DataClient() as client:
+with DataClient(ttd_auth=TTD_AUTH_TOKEN) as client:
     response = client.advertiser.ingest_advertiser_data(
-        ttd_auth=TTD_AUTH_TOKEN,
         advertiser_id=ADVERTISER_ID,
         items=[
             models.AdvertiserDataItem(
@@ -148,9 +147,8 @@ with DataClient() as client:
 ```python
 from ttd_data import DataClient, models
 
-with DataClient() as client:
+with DataClient(ttd_auth=TTD_AUTH_TOKEN) as client:
     response = client.third_party.ingest_third_party_data(
-        ttd_auth=TTD_AUTH_TOKEN,
         data_provider_id=DATA_PROVIDER_ID,
         items=[
             models.ThirdPartyDataItem(
@@ -169,9 +167,8 @@ with DataClient() as client:
 from datetime import datetime, timezone
 from ttd_data import DataClient, UserIdType, models
 
-with DataClient() as client:
+with DataClient(ttd_auth=TTD_AUTH_TOKEN) as client:
     response = client.offline_conversion.ingest_offline_conversion_data(
-        ttd_auth=TTD_AUTH_TOKEN,
         data_provider_id=DATA_PROVIDER_ID,
         items=[
             # Pre-resolved TDID
@@ -198,9 +195,8 @@ with DataClient() as client:
 ```python
 from ttd_data import DataClient, models
 
-with DataClient() as client:
+with DataClient(ttd_auth=TTD_AUTH_TOKEN) as client:
     response = client.deletion_opt_out.data_subject_request_advertiser_data(
-        ttd_auth=TTD_AUTH_TOKEN,
         advertiser_id=ADVERTISER_ID,
         request_type=models.PartnerDsrRequestType.DELETION,
         items=[
@@ -216,9 +212,8 @@ with DataClient() as client:
 ```python
 from ttd_data import DataClient, models
 
-with DataClient() as client:
+with DataClient(ttd_auth=TTD_AUTH_TOKEN) as client:
     response = client.deletion_opt_out.data_subject_request_third_party_data(
-        ttd_auth=TTD_AUTH_TOKEN,
         data_provider_id=DATA_PROVIDER_ID,
         request_type=models.PartnerDsrRequestType.OPT_OUT,
         items=[
@@ -233,9 +228,8 @@ with DataClient() as client:
 ```python
 from ttd_data import DataClient, models
 
-with DataClient() as client:
+with DataClient(ttd_auth=TTD_AUTH_TOKEN) as client:
     response = client.deletion_opt_out.data_subject_request_merchant_data(
-        ttd_auth=TTD_AUTH_TOKEN,
         merchant_id=MERCHANT_ID,
         request_type=models.PartnerDsrRequestType.DELETION,
         items=[
@@ -261,9 +255,12 @@ uid2_config = UID2Config(
 )
 
 try:
-    with DataClient(uid2_config=uid2_config, server_url="<TTD_DATA_SERVER_URL>") as client:
+    with DataClient(
+        ttd_auth=TTD_AUTH_TOKEN,
+        uid2_config=uid2_config,
+        server_url="<TTD_DATA_SERVER_URL>",
+    ) as client:
         response = client.advertiser.ingest_advertiser_data(
-            ttd_auth=TTD_AUTH_TOKEN,
             advertiser_id=ADVERTISER_ID,
             items=[
                 # Raw email — resolved to UID2 before ingest
@@ -316,9 +313,8 @@ from ttd_data import DataClient, models
 
 async def main():
 
-    async with DataClient() as data_client:
+    async with DataClient(ttd_auth=TTD_AUTH_TOKEN) as data_client:
         response = data_client.advertiser.ingest_advertiser_data(
-            ttd_auth=TTD_AUTH_TOKEN,
             advertiser_id=ADVERTISER_ID,
             items=[
                 models.AdvertiserDataItem(
@@ -375,10 +371,10 @@ from ttd_data import DataClient
 from ttd_data.utils import BackoffStrategy, RetryConfig
 
 
-with DataClient() as data_client:
+with DataClient(ttd_auth="<value>") as data_client:
 
-    res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>",
-        RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
+    res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>",
+        retries=RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
 
     assert res.advertiser_data_server_response is not None
 
@@ -394,10 +390,11 @@ from ttd_data.utils import BackoffStrategy, RetryConfig
 
 
 with DataClient(
+    ttd_auth="<value>",
     retry_config=RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False),
 ) as data_client:
 
-    res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
+    res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
 
     assert res.advertiser_data_server_response is not None
 
@@ -426,11 +423,11 @@ with DataClient(
 from ttd_data import DataClient, errors
 
 
-with DataClient() as data_client:
+with DataClient(ttd_auth="<value>") as data_client:
     res = None
     try:
 
-        res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
+        res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
 
         assert res.advertiser_data_server_response is not None
 

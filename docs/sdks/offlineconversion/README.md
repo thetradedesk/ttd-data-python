@@ -17,9 +17,9 @@ Upload offline conversion data for the specified data provider.
 from ttd_data import BaseDataClient
 
 
-with BaseDataClient() as base_data_client:
+with BaseDataClient(ttd_auth="<value>") as base_data_client:
 
-    res = base_data_client.offline_conversion.ingest_offline_conversion_data(ttd_auth="<value>", data_provider_id="<id>")
+    res = base_data_client.offline_conversion.ingest_offline_conversion_data(data_provider_id="<id>")
 
     assert res.offline_conversion_data_server_response is not None
 
@@ -32,7 +32,6 @@ with BaseDataClient() as base_data_client:
 
 | Parameter                                                                                   | Type                                                                                        | Required                                                                                    | Description                                                                                 |
 | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| `ttd_auth`                                                                                  | *str*                                                                                       | :heavy_check_mark:                                                                          | Data API token for authentication.                                                          |
 | `data_provider_id`                                                                          | *str*                                                                                       | :heavy_check_mark:                                                                          | N/A                                                                                         |
 | `user_id_array_metadata_format`                                                             | List[*str*]                                                                                 | :heavy_minus_sign:                                                                          | N/A                                                                                         |
 | `items`                                                                                     | List[[models.BaseOfflineConversionDataItem](../../models/baseofflineconversiondataitem.md)] | :heavy_minus_sign:                                                                          | N/A                                                                                         |
