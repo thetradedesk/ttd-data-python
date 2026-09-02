@@ -3,7 +3,7 @@
 
 from .sdkconfiguration import SDKConfiguration
 import httpx
-from ttd_data import errors, utils
+from ttd_data import errors, models, utils
 from ttd_data._hooks import (
     AfterErrorContext,
     AfterSuccessContext,
@@ -193,7 +193,7 @@ class BaseSDK:
         if security is not None:
             if callable(security):
                 security = security()
-
+        security = utils.get_security_from_env(security, models.Security)
         if security is not None:
             security_headers, security_query_params = utils.get_security(
                 security, allowed_fields

@@ -9,9 +9,10 @@ from .utils.retries import RetryConfig
 import httpx
 import importlib
 import sys
+from ttd_data import models
 from ttd_data._hooks import SDKHooks
 from ttd_data.types import OptionalNullable, UNSET
-from typing import Optional, TYPE_CHECKING, cast
+from typing import Any, Callable, Optional, TYPE_CHECKING, Union, cast
 import weakref
 
 if TYPE_CHECKING:
@@ -53,6 +54,7 @@ class BaseDataClient(BaseSDK):
 
     def __init__(
         self,
+        ttd_auth: Optional[Union[Optional[str], Callable[[], Optional[str]]]] = None,
         server_url: Optional[str] = None,
         client: Optional[HttpClient] = None,
         async_client: Optional[AsyncHttpClient] = None,
@@ -62,6 +64,7 @@ class BaseDataClient(BaseSDK):
     ) -> None:
         r"""Instantiates the SDK configuring it with the provided parameters.
 
+        :param ttd_auth: The ttd_auth required for authentication
         :param server_idx: The index of the server to use for all methods
         :param server_url: The server URL to use for all methods
         :param url_params: Parameters to optionally template the server URL with
@@ -91,6 +94,15 @@ class BaseDataClient(BaseSDK):
             type(async_client), AsyncHttpClient
         ), "The provided async_client must implement the AsyncHttpClient protocol."
 
+        security: Any = None
+        if ttd_auth is None:
+            security = None
+        elif callable(ttd_auth):
+            # pylint: disable=unnecessary-lambda-assignment
+            security = lambda: models.Security(ttd_auth=ttd_auth())
+        else:
+            security = models.Security(ttd_auth=ttd_auth)
+
         BaseSDK.__init__(
             self,
             SDKConfiguration(
@@ -98,6 +110,7 @@ class BaseDataClient(BaseSDK):
                 client_supplied=client_supplied,
                 async_client=async_client,
                 async_client_supplied=async_client_supplied,
+                security=security,
                 server_url=server_url,
                 retry_config=retry_config,
                 timeout_ms=timeout_ms,

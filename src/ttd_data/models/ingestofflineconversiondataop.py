@@ -3,10 +3,6 @@
 
 from __future__ import annotations
 from .httpmetadata import HTTPMetadata, HTTPMetadataTypedDict
-from .offlineconversiondatarequest import (
-    OfflineConversionDataRequest,
-    OfflineConversionDataRequestTypedDict,
-)
 from .offlineconversiondataserverresponse import (
     OfflineConversionDataServerResponse,
     OfflineConversionDataServerResponseTypedDict,
@@ -14,7 +10,6 @@ from .offlineconversiondataserverresponse import (
 import pydantic
 from pydantic import model_serializer
 from ttd_data.types import BaseModel, UNSET_SENTINEL
-from ttd_data.utils import FieldMetadata, HeaderMetadata, RequestMetadata
 from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
@@ -22,26 +17,6 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 INGEST_OFFLINE_CONVERSION_DATA_OP_SERVERS = [
     "https://offlineattrib.adsrvr.org",
 ]
-
-
-class IngestOfflineConversionDataRequestTypedDict(TypedDict):
-    ttd_auth: str
-    r"""Data API token for authentication."""
-    body: OfflineConversionDataRequestTypedDict
-
-
-class IngestOfflineConversionDataRequest(BaseModel):
-    ttd_auth: Annotated[
-        str,
-        pydantic.Field(alias="TTD-Auth"),
-        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ]
-    r"""Data API token for authentication."""
-
-    body: Annotated[
-        OfflineConversionDataRequest,
-        FieldMetadata(request=RequestMetadata(media_type="application/json")),
-    ]
 
 
 class IngestOfflineConversionDataResponseTypedDict(TypedDict):

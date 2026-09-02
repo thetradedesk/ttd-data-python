@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 from .httpmetadata import HTTPMetadata, HTTPMetadataTypedDict
-from .ipaddressdatarequest import IPAddressDataRequest, IPAddressDataRequestTypedDict
 from .ipaddressdataserverresponse import (
     IPAddressDataServerResponse,
     IPAddressDataServerResponseTypedDict,
@@ -11,7 +10,6 @@ from .ipaddressdataserverresponse import (
 import pydantic
 from pydantic import model_serializer
 from ttd_data.types import BaseModel, UNSET_SENTINEL
-from ttd_data.utils import FieldMetadata, HeaderMetadata, RequestMetadata
 from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
@@ -19,26 +17,6 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 INGEST_THIRD_PARTY_IP_ADDRESS_DATA_OP_SERVERS = [
     "https://usw-data.adsrvr.org",
 ]
-
-
-class IngestThirdPartyIPAddressDataRequestTypedDict(TypedDict):
-    ttd_auth: str
-    r"""Data API token for authentication."""
-    body: IPAddressDataRequestTypedDict
-
-
-class IngestThirdPartyIPAddressDataRequest(BaseModel):
-    ttd_auth: Annotated[
-        str,
-        pydantic.Field(alias="TTD-Auth"),
-        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ]
-    r"""Data API token for authentication."""
-
-    body: Annotated[
-        IPAddressDataRequest,
-        FieldMetadata(request=RequestMetadata(media_type="application/json")),
-    ]
 
 
 class IngestThirdPartyIPAddressDataResponseTypedDict(TypedDict):
