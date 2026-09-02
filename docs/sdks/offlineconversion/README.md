@@ -14,17 +14,17 @@ Upload offline conversion data for the specified data provider.
 
 <!-- UsageSnippet language="python" operationID="IngestOfflineConversionData" method="post" path="/providerapi/offlineconversion" -->
 ```python
-from ttd_data import BaseDataClient
+from ttd_data import DataClient
 
 
-with BaseDataClient(ttd_auth="<value>") as base_data_client:
+client = DataClient(ttd_auth="<value>")
 
-    res = base_data_client.offline_conversion.ingest_offline_conversion_data(data_provider_id="<id>")
+res = client.offline_conversion.ingest_offline_conversion_data(data_provider_id="<id>")
 
-    assert res.offline_conversion_data_server_response is not None
+assert res.offline_conversion_data_server_response is not None
 
-    # Handle response
-    print(res.offline_conversion_data_server_response)
+# Handle response
+print(res.offline_conversion_data_server_response)
 
 ```
 

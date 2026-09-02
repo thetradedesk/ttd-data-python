@@ -14,17 +14,17 @@ Upload first-party data for the specified ID for use in audience targeting.
 
 <!-- UsageSnippet language="python" operationID="IngestAdvertiserData" method="post" path="/data/advertiser" -->
 ```python
-from ttd_data import BaseDataClient
+from ttd_data import DataClient
 
 
-with BaseDataClient(ttd_auth="<value>") as base_data_client:
+client = DataClient(ttd_auth="<value>")
 
-    res = base_data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
+res = client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
 
-    assert res.advertiser_data_server_response is not None
+assert res.advertiser_data_server_response is not None
 
-    # Handle response
-    print(res.advertiser_data_server_response)
+# Handle response
+print(res.advertiser_data_server_response)
 
 ```
 
