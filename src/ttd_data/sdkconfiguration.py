@@ -11,8 +11,9 @@ from .httpclient import AsyncHttpClient, HttpClient
 from .utils import Logger, RetryConfig, remove_suffix
 from dataclasses import dataclass
 from pydantic import Field
+from ttd_data import models
 from ttd_data.types import OptionalNullable, UNSET
-from typing import Dict, Optional, Tuple, Union
+from typing import Callable, Dict, Optional, Tuple, Union
 
 
 @dataclass
@@ -22,6 +23,7 @@ class SDKConfiguration:
     async_client: Union[AsyncHttpClient, None]
     async_client_supplied: bool
     debug_logger: Logger
+    security: Optional[Union[models.Security, Callable[[], models.Security]]] = None
     server_url: Optional[str] = ""
     language: str = "python"
     openapi_doc_version: str = __openapi_doc_version__

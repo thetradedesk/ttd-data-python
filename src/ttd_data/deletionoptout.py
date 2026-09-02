@@ -5,6 +5,7 @@ from .basesdk import BaseSDK
 from ttd_data import errors, models, utils
 from ttd_data._hooks import HookContext
 from ttd_data.types import OptionalNullable, UNSET
+from ttd_data.utils import get_security_from_env
 from ttd_data.utils.unmarshal_json_response import unmarshal_json_response
 from typing import Any, Iterable, List, Mapping, Optional, Union
 
@@ -13,7 +14,6 @@ class DeletionOptOut(BaseSDK):
     def data_subject_request_advertiser_data(
         self,
         *,
-        ttd_auth: str,
         advertiser_id: OptionalNullable[str] = UNSET,
         data_provider_id: OptionalNullable[str] = UNSET,
         items: OptionalNullable[
@@ -31,7 +31,6 @@ class DeletionOptOut(BaseSDK):
     ) -> models.DataSubjectRequestAdvertiserDataResponse:
         r"""Delete IDs shared with The Trade Desk for the specified advertiser ID.
 
-        :param ttd_auth: Data API token for authentication.
         :param advertiser_id:
         :param data_provider_id:
         :param items:
@@ -52,17 +51,14 @@ class DeletionOptOut(BaseSDK):
         else:
             base_url = models.DATA_SUBJECT_REQUEST_ADVERTISER_DATA_OP_SERVERS[0]
 
-        request = models.DataSubjectRequestAdvertiserDataRequest(
-            ttd_auth=ttd_auth,
-            body=models.AdvertiserDsrRequest(
-                advertiser_id=advertiser_id,
-                data_provider_id=data_provider_id,
-                items=utils.get_pydantic_model(
-                    items, OptionalNullable[List[models.BasePartnerDsrDataItem]]
-                ),
-                data_load_trace_id=data_load_trace_id,
-                request_type=request_type,
+        request = models.AdvertiserDsrRequest(
+            advertiser_id=advertiser_id,
+            data_provider_id=data_provider_id,
+            items=utils.get_pydantic_model(
+                items, OptionalNullable[List[models.BasePartnerDsrDataItem]]
             ),
+            data_load_trace_id=data_load_trace_id,
+            request_type=request_type,
         )
 
         req = self._build_request(
@@ -73,12 +69,13 @@ class DeletionOptOut(BaseSDK):
             request=request,
             request_body_required=True,
             request_has_path_params=False,
-            request_has_query_params=False,
+            request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
+            security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.body, False, False, "json", models.AdvertiserDsrRequest
+                request, False, False, "json", models.AdvertiserDsrRequest
             ),
             allow_empty_value=None,
             timeout_ms=timeout_ms,
@@ -98,7 +95,9 @@ class DeletionOptOut(BaseSDK):
                 base_url=base_url or "",
                 operation_id="DataSubjectRequestAdvertiserData",
                 oauth2_scopes=None,
-                security_source=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
                 tags=["DeletionOptOut"],
                 extensions=None,
             ),
@@ -135,7 +134,6 @@ class DeletionOptOut(BaseSDK):
     async def data_subject_request_advertiser_data_async(
         self,
         *,
-        ttd_auth: str,
         advertiser_id: OptionalNullable[str] = UNSET,
         data_provider_id: OptionalNullable[str] = UNSET,
         items: OptionalNullable[
@@ -153,7 +151,6 @@ class DeletionOptOut(BaseSDK):
     ) -> models.DataSubjectRequestAdvertiserDataResponse:
         r"""Delete IDs shared with The Trade Desk for the specified advertiser ID.
 
-        :param ttd_auth: Data API token for authentication.
         :param advertiser_id:
         :param data_provider_id:
         :param items:
@@ -174,17 +171,14 @@ class DeletionOptOut(BaseSDK):
         else:
             base_url = models.DATA_SUBJECT_REQUEST_ADVERTISER_DATA_OP_SERVERS[0]
 
-        request = models.DataSubjectRequestAdvertiserDataRequest(
-            ttd_auth=ttd_auth,
-            body=models.AdvertiserDsrRequest(
-                advertiser_id=advertiser_id,
-                data_provider_id=data_provider_id,
-                items=utils.get_pydantic_model(
-                    items, OptionalNullable[List[models.BasePartnerDsrDataItem]]
-                ),
-                data_load_trace_id=data_load_trace_id,
-                request_type=request_type,
+        request = models.AdvertiserDsrRequest(
+            advertiser_id=advertiser_id,
+            data_provider_id=data_provider_id,
+            items=utils.get_pydantic_model(
+                items, OptionalNullable[List[models.BasePartnerDsrDataItem]]
             ),
+            data_load_trace_id=data_load_trace_id,
+            request_type=request_type,
         )
 
         req = self._build_request_async(
@@ -195,12 +189,13 @@ class DeletionOptOut(BaseSDK):
             request=request,
             request_body_required=True,
             request_has_path_params=False,
-            request_has_query_params=False,
+            request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
+            security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.body, False, False, "json", models.AdvertiserDsrRequest
+                request, False, False, "json", models.AdvertiserDsrRequest
             ),
             allow_empty_value=None,
             timeout_ms=timeout_ms,
@@ -220,7 +215,9 @@ class DeletionOptOut(BaseSDK):
                 base_url=base_url or "",
                 operation_id="DataSubjectRequestAdvertiserData",
                 oauth2_scopes=None,
-                security_source=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
                 tags=["DeletionOptOut"],
                 extensions=None,
             ),
@@ -257,7 +254,6 @@ class DeletionOptOut(BaseSDK):
     def data_subject_request_merchant_data(
         self,
         *,
-        ttd_auth: str,
         merchant_id: OptionalNullable[int] = UNSET,
         items: OptionalNullable[
             Union[
@@ -274,7 +270,6 @@ class DeletionOptOut(BaseSDK):
     ) -> models.DataSubjectRequestMerchantDataResponse:
         r"""Delete IDs shared with The Trade Desk via a product catalog for the specified merchant ID.
 
-        :param ttd_auth: Data API token for authentication.
         :param merchant_id:
         :param items:
         :param data_load_trace_id:
@@ -294,16 +289,13 @@ class DeletionOptOut(BaseSDK):
         else:
             base_url = models.DATA_SUBJECT_REQUEST_MERCHANT_DATA_OP_SERVERS[0]
 
-        request = models.DataSubjectRequestMerchantDataRequest(
-            ttd_auth=ttd_auth,
-            body=models.MerchantDsrRequest(
-                merchant_id=merchant_id,
-                items=utils.get_pydantic_model(
-                    items, OptionalNullable[List[models.BasePartnerDsrDataItem]]
-                ),
-                data_load_trace_id=data_load_trace_id,
-                request_type=request_type,
+        request = models.MerchantDsrRequest(
+            merchant_id=merchant_id,
+            items=utils.get_pydantic_model(
+                items, OptionalNullable[List[models.BasePartnerDsrDataItem]]
             ),
+            data_load_trace_id=data_load_trace_id,
+            request_type=request_type,
         )
 
         req = self._build_request(
@@ -314,12 +306,13 @@ class DeletionOptOut(BaseSDK):
             request=request,
             request_body_required=True,
             request_has_path_params=False,
-            request_has_query_params=False,
+            request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
+            security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.body, False, False, "json", models.MerchantDsrRequest
+                request, False, False, "json", models.MerchantDsrRequest
             ),
             allow_empty_value=None,
             timeout_ms=timeout_ms,
@@ -339,7 +332,9 @@ class DeletionOptOut(BaseSDK):
                 base_url=base_url or "",
                 operation_id="DataSubjectRequestMerchantData",
                 oauth2_scopes=None,
-                security_source=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
                 tags=["DeletionOptOut"],
                 extensions=None,
             ),
@@ -376,7 +371,6 @@ class DeletionOptOut(BaseSDK):
     async def data_subject_request_merchant_data_async(
         self,
         *,
-        ttd_auth: str,
         merchant_id: OptionalNullable[int] = UNSET,
         items: OptionalNullable[
             Union[
@@ -393,7 +387,6 @@ class DeletionOptOut(BaseSDK):
     ) -> models.DataSubjectRequestMerchantDataResponse:
         r"""Delete IDs shared with The Trade Desk via a product catalog for the specified merchant ID.
 
-        :param ttd_auth: Data API token for authentication.
         :param merchant_id:
         :param items:
         :param data_load_trace_id:
@@ -413,16 +406,13 @@ class DeletionOptOut(BaseSDK):
         else:
             base_url = models.DATA_SUBJECT_REQUEST_MERCHANT_DATA_OP_SERVERS[0]
 
-        request = models.DataSubjectRequestMerchantDataRequest(
-            ttd_auth=ttd_auth,
-            body=models.MerchantDsrRequest(
-                merchant_id=merchant_id,
-                items=utils.get_pydantic_model(
-                    items, OptionalNullable[List[models.BasePartnerDsrDataItem]]
-                ),
-                data_load_trace_id=data_load_trace_id,
-                request_type=request_type,
+        request = models.MerchantDsrRequest(
+            merchant_id=merchant_id,
+            items=utils.get_pydantic_model(
+                items, OptionalNullable[List[models.BasePartnerDsrDataItem]]
             ),
+            data_load_trace_id=data_load_trace_id,
+            request_type=request_type,
         )
 
         req = self._build_request_async(
@@ -433,12 +423,13 @@ class DeletionOptOut(BaseSDK):
             request=request,
             request_body_required=True,
             request_has_path_params=False,
-            request_has_query_params=False,
+            request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
+            security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.body, False, False, "json", models.MerchantDsrRequest
+                request, False, False, "json", models.MerchantDsrRequest
             ),
             allow_empty_value=None,
             timeout_ms=timeout_ms,
@@ -458,7 +449,9 @@ class DeletionOptOut(BaseSDK):
                 base_url=base_url or "",
                 operation_id="DataSubjectRequestMerchantData",
                 oauth2_scopes=None,
-                security_source=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
                 tags=["DeletionOptOut"],
                 extensions=None,
             ),
@@ -495,7 +488,6 @@ class DeletionOptOut(BaseSDK):
     def data_subject_request_third_party_data(
         self,
         *,
-        ttd_auth: str,
         data_provider_id: OptionalNullable[str] = UNSET,
         brand_id: OptionalNullable[str] = UNSET,
         items: OptionalNullable[
@@ -513,7 +505,6 @@ class DeletionOptOut(BaseSDK):
     ) -> models.DataSubjectRequestThirdPartyDataResponse:
         r"""Delete IDs shared with The Trade Desk for the specified data provider ID.
 
-        :param ttd_auth: Data API token for authentication.
         :param data_provider_id:
         :param brand_id:
         :param items:
@@ -534,17 +525,14 @@ class DeletionOptOut(BaseSDK):
         else:
             base_url = models.DATA_SUBJECT_REQUEST_THIRD_PARTY_DATA_OP_SERVERS[0]
 
-        request = models.DataSubjectRequestThirdPartyDataRequest(
-            ttd_auth=ttd_auth,
-            body=models.ThirdPartyDsrRequest(
-                data_provider_id=data_provider_id,
-                brand_id=brand_id,
-                items=utils.get_pydantic_model(
-                    items, OptionalNullable[List[models.BasePartnerDsrDataItem]]
-                ),
-                data_load_trace_id=data_load_trace_id,
-                request_type=request_type,
+        request = models.ThirdPartyDsrRequest(
+            data_provider_id=data_provider_id,
+            brand_id=brand_id,
+            items=utils.get_pydantic_model(
+                items, OptionalNullable[List[models.BasePartnerDsrDataItem]]
             ),
+            data_load_trace_id=data_load_trace_id,
+            request_type=request_type,
         )
 
         req = self._build_request(
@@ -555,12 +543,13 @@ class DeletionOptOut(BaseSDK):
             request=request,
             request_body_required=True,
             request_has_path_params=False,
-            request_has_query_params=False,
+            request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
+            security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.body, False, False, "json", models.ThirdPartyDsrRequest
+                request, False, False, "json", models.ThirdPartyDsrRequest
             ),
             allow_empty_value=None,
             timeout_ms=timeout_ms,
@@ -580,7 +569,9 @@ class DeletionOptOut(BaseSDK):
                 base_url=base_url or "",
                 operation_id="DataSubjectRequestThirdPartyData",
                 oauth2_scopes=None,
-                security_source=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
                 tags=["DeletionOptOut"],
                 extensions=None,
             ),
@@ -617,7 +608,6 @@ class DeletionOptOut(BaseSDK):
     async def data_subject_request_third_party_data_async(
         self,
         *,
-        ttd_auth: str,
         data_provider_id: OptionalNullable[str] = UNSET,
         brand_id: OptionalNullable[str] = UNSET,
         items: OptionalNullable[
@@ -635,7 +625,6 @@ class DeletionOptOut(BaseSDK):
     ) -> models.DataSubjectRequestThirdPartyDataResponse:
         r"""Delete IDs shared with The Trade Desk for the specified data provider ID.
 
-        :param ttd_auth: Data API token for authentication.
         :param data_provider_id:
         :param brand_id:
         :param items:
@@ -656,17 +645,14 @@ class DeletionOptOut(BaseSDK):
         else:
             base_url = models.DATA_SUBJECT_REQUEST_THIRD_PARTY_DATA_OP_SERVERS[0]
 
-        request = models.DataSubjectRequestThirdPartyDataRequest(
-            ttd_auth=ttd_auth,
-            body=models.ThirdPartyDsrRequest(
-                data_provider_id=data_provider_id,
-                brand_id=brand_id,
-                items=utils.get_pydantic_model(
-                    items, OptionalNullable[List[models.BasePartnerDsrDataItem]]
-                ),
-                data_load_trace_id=data_load_trace_id,
-                request_type=request_type,
+        request = models.ThirdPartyDsrRequest(
+            data_provider_id=data_provider_id,
+            brand_id=brand_id,
+            items=utils.get_pydantic_model(
+                items, OptionalNullable[List[models.BasePartnerDsrDataItem]]
             ),
+            data_load_trace_id=data_load_trace_id,
+            request_type=request_type,
         )
 
         req = self._build_request_async(
@@ -677,12 +663,13 @@ class DeletionOptOut(BaseSDK):
             request=request,
             request_body_required=True,
             request_has_path_params=False,
-            request_has_query_params=False,
+            request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
+            security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.body, False, False, "json", models.ThirdPartyDsrRequest
+                request, False, False, "json", models.ThirdPartyDsrRequest
             ),
             allow_empty_value=None,
             timeout_ms=timeout_ms,
@@ -702,7 +689,9 @@ class DeletionOptOut(BaseSDK):
                 base_url=base_url or "",
                 operation_id="DataSubjectRequestThirdPartyData",
                 oauth2_scopes=None,
-                security_source=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
                 tags=["DeletionOptOut"],
                 extensions=None,
             ),

@@ -5,6 +5,7 @@ from .basesdk import BaseSDK
 from ttd_data import errors, models, utils
 from ttd_data._hooks import HookContext
 from ttd_data.types import OptionalNullable, UNSET
+from ttd_data.utils import get_security_from_env
 from ttd_data.utils.unmarshal_json_response import unmarshal_json_response
 from typing import Any, Iterable, List, Mapping, Optional, Union
 
@@ -13,7 +14,6 @@ class IPAddress(BaseSDK):
     def ingest_first_party_ip_address_data(
         self,
         *,
-        ttd_auth: str,
         data_owner_id: str,
         items: OptionalNullable[
             Union[
@@ -29,7 +29,6 @@ class IPAddress(BaseSDK):
     ) -> models.IngestFirstPartyIPAddressDataResponse:
         r"""Upload first-party IP address data for the specified ID.
 
-        :param ttd_auth: Data API token for authentication.
         :param data_owner_id:
         :param items:
         :param data_load_trace_id:
@@ -48,15 +47,12 @@ class IPAddress(BaseSDK):
         else:
             base_url = models.INGEST_FIRST_PARTY_IP_ADDRESS_DATA_OP_SERVERS[0]
 
-        request = models.IngestFirstPartyIPAddressDataRequest(
-            ttd_auth=ttd_auth,
-            body=models.IPAddressDataRequest(
-                data_owner_id=data_owner_id,
-                items=utils.get_pydantic_model(
-                    items, OptionalNullable[List[models.IPAddressDataItem]]
-                ),
-                data_load_trace_id=data_load_trace_id,
+        request = models.IPAddressDataRequest(
+            data_owner_id=data_owner_id,
+            items=utils.get_pydantic_model(
+                items, OptionalNullable[List[models.IPAddressDataItem]]
             ),
+            data_load_trace_id=data_load_trace_id,
         )
 
         req = self._build_request(
@@ -67,12 +63,13 @@ class IPAddress(BaseSDK):
             request=request,
             request_body_required=True,
             request_has_path_params=False,
-            request_has_query_params=False,
+            request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
+            security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.body, False, False, "json", models.IPAddressDataRequest
+                request, False, False, "json", models.IPAddressDataRequest
             ),
             allow_empty_value=None,
             timeout_ms=timeout_ms,
@@ -92,7 +89,9 @@ class IPAddress(BaseSDK):
                 base_url=base_url or "",
                 operation_id="IngestFirstPartyIPAddressData",
                 oauth2_scopes=None,
-                security_source=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
                 tags=["IPAddress"],
                 extensions=None,
             ),
@@ -129,7 +128,6 @@ class IPAddress(BaseSDK):
     async def ingest_first_party_ip_address_data_async(
         self,
         *,
-        ttd_auth: str,
         data_owner_id: str,
         items: OptionalNullable[
             Union[
@@ -145,7 +143,6 @@ class IPAddress(BaseSDK):
     ) -> models.IngestFirstPartyIPAddressDataResponse:
         r"""Upload first-party IP address data for the specified ID.
 
-        :param ttd_auth: Data API token for authentication.
         :param data_owner_id:
         :param items:
         :param data_load_trace_id:
@@ -164,15 +161,12 @@ class IPAddress(BaseSDK):
         else:
             base_url = models.INGEST_FIRST_PARTY_IP_ADDRESS_DATA_OP_SERVERS[0]
 
-        request = models.IngestFirstPartyIPAddressDataRequest(
-            ttd_auth=ttd_auth,
-            body=models.IPAddressDataRequest(
-                data_owner_id=data_owner_id,
-                items=utils.get_pydantic_model(
-                    items, OptionalNullable[List[models.IPAddressDataItem]]
-                ),
-                data_load_trace_id=data_load_trace_id,
+        request = models.IPAddressDataRequest(
+            data_owner_id=data_owner_id,
+            items=utils.get_pydantic_model(
+                items, OptionalNullable[List[models.IPAddressDataItem]]
             ),
+            data_load_trace_id=data_load_trace_id,
         )
 
         req = self._build_request_async(
@@ -183,12 +177,13 @@ class IPAddress(BaseSDK):
             request=request,
             request_body_required=True,
             request_has_path_params=False,
-            request_has_query_params=False,
+            request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
+            security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.body, False, False, "json", models.IPAddressDataRequest
+                request, False, False, "json", models.IPAddressDataRequest
             ),
             allow_empty_value=None,
             timeout_ms=timeout_ms,
@@ -208,7 +203,9 @@ class IPAddress(BaseSDK):
                 base_url=base_url or "",
                 operation_id="IngestFirstPartyIPAddressData",
                 oauth2_scopes=None,
-                security_source=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
                 tags=["IPAddress"],
                 extensions=None,
             ),
@@ -245,7 +242,6 @@ class IPAddress(BaseSDK):
     def ingest_third_party_ip_address_data(
         self,
         *,
-        ttd_auth: str,
         data_owner_id: str,
         items: OptionalNullable[
             Union[
@@ -261,7 +257,6 @@ class IPAddress(BaseSDK):
     ) -> models.IngestThirdPartyIPAddressDataResponse:
         r"""Upload third-party IP address data for the specified ID.
 
-        :param ttd_auth: Data API token for authentication.
         :param data_owner_id:
         :param items:
         :param data_load_trace_id:
@@ -280,15 +275,12 @@ class IPAddress(BaseSDK):
         else:
             base_url = models.INGEST_THIRD_PARTY_IP_ADDRESS_DATA_OP_SERVERS[0]
 
-        request = models.IngestThirdPartyIPAddressDataRequest(
-            ttd_auth=ttd_auth,
-            body=models.IPAddressDataRequest(
-                data_owner_id=data_owner_id,
-                items=utils.get_pydantic_model(
-                    items, OptionalNullable[List[models.IPAddressDataItem]]
-                ),
-                data_load_trace_id=data_load_trace_id,
+        request = models.IPAddressDataRequest(
+            data_owner_id=data_owner_id,
+            items=utils.get_pydantic_model(
+                items, OptionalNullable[List[models.IPAddressDataItem]]
             ),
+            data_load_trace_id=data_load_trace_id,
         )
 
         req = self._build_request(
@@ -299,12 +291,13 @@ class IPAddress(BaseSDK):
             request=request,
             request_body_required=True,
             request_has_path_params=False,
-            request_has_query_params=False,
+            request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
+            security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.body, False, False, "json", models.IPAddressDataRequest
+                request, False, False, "json", models.IPAddressDataRequest
             ),
             allow_empty_value=None,
             timeout_ms=timeout_ms,
@@ -324,7 +317,9 @@ class IPAddress(BaseSDK):
                 base_url=base_url or "",
                 operation_id="IngestThirdPartyIPAddressData",
                 oauth2_scopes=None,
-                security_source=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
                 tags=["IPAddress"],
                 extensions=None,
             ),
@@ -361,7 +356,6 @@ class IPAddress(BaseSDK):
     async def ingest_third_party_ip_address_data_async(
         self,
         *,
-        ttd_auth: str,
         data_owner_id: str,
         items: OptionalNullable[
             Union[
@@ -377,7 +371,6 @@ class IPAddress(BaseSDK):
     ) -> models.IngestThirdPartyIPAddressDataResponse:
         r"""Upload third-party IP address data for the specified ID.
 
-        :param ttd_auth: Data API token for authentication.
         :param data_owner_id:
         :param items:
         :param data_load_trace_id:
@@ -396,15 +389,12 @@ class IPAddress(BaseSDK):
         else:
             base_url = models.INGEST_THIRD_PARTY_IP_ADDRESS_DATA_OP_SERVERS[0]
 
-        request = models.IngestThirdPartyIPAddressDataRequest(
-            ttd_auth=ttd_auth,
-            body=models.IPAddressDataRequest(
-                data_owner_id=data_owner_id,
-                items=utils.get_pydantic_model(
-                    items, OptionalNullable[List[models.IPAddressDataItem]]
-                ),
-                data_load_trace_id=data_load_trace_id,
+        request = models.IPAddressDataRequest(
+            data_owner_id=data_owner_id,
+            items=utils.get_pydantic_model(
+                items, OptionalNullable[List[models.IPAddressDataItem]]
             ),
+            data_load_trace_id=data_load_trace_id,
         )
 
         req = self._build_request_async(
@@ -415,12 +405,13 @@ class IPAddress(BaseSDK):
             request=request,
             request_body_required=True,
             request_has_path_params=False,
-            request_has_query_params=False,
+            request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
+            security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.body, False, False, "json", models.IPAddressDataRequest
+                request, False, False, "json", models.IPAddressDataRequest
             ),
             allow_empty_value=None,
             timeout_ms=timeout_ms,
@@ -440,7 +431,9 @@ class IPAddress(BaseSDK):
                 base_url=base_url or "",
                 operation_id="IngestThirdPartyIPAddressData",
                 oauth2_scopes=None,
-                security_source=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
                 tags=["IPAddress"],
                 extensions=None,
             ),

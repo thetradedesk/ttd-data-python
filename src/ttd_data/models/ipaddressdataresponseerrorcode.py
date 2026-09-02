@@ -13,3 +13,4 @@ class IPAddressDataResponseErrorCode(str, Enum):
     INVALID_IP_ADDRESS_RANGE = "InvalidIPAddressRange"
     EU_IP_TARGETING_NOT_ALLOWED_FOR_PARTNER = "EuIpTargetingNotAllowedForPartner"
     NOT_TARGETABLE = "NotTargetable"
+    INVALID_TIMESTAMP_UTC = "InvalidTimestampUtc"

@@ -2,7 +2,6 @@
 # @generated-id: 536d8288fda4
 
 from __future__ import annotations
-from .advertiserdatarequest import AdvertiserDataRequest, AdvertiserDataRequestTypedDict
 from .advertiserdataserverresponse import (
     AdvertiserDataServerResponse,
     AdvertiserDataServerResponseTypedDict,
@@ -11,7 +10,6 @@ from .httpmetadata import HTTPMetadata, HTTPMetadataTypedDict
 import pydantic
 from pydantic import model_serializer
 from ttd_data.types import BaseModel, UNSET_SENTINEL
-from ttd_data.utils import FieldMetadata, HeaderMetadata, RequestMetadata
 from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
@@ -19,26 +17,6 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 INGEST_ADVERTISER_DATA_OP_SERVERS = [
     "https://usw-data.adsrvr.org",
 ]
-
-
-class IngestAdvertiserDataRequestTypedDict(TypedDict):
-    ttd_auth: str
-    r"""Data API token for authentication."""
-    body: AdvertiserDataRequestTypedDict
-
-
-class IngestAdvertiserDataRequest(BaseModel):
-    ttd_auth: Annotated[
-        str,
-        pydantic.Field(alias="TTD-Auth"),
-        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ]
-    r"""Data API token for authentication."""
-
-    body: Annotated[
-        AdvertiserDataRequest,
-        FieldMetadata(request=RequestMetadata(media_type="application/json")),
-    ]
 
 
 class IngestAdvertiserDataResponseTypedDict(TypedDict):

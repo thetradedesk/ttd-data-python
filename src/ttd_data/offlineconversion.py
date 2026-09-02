@@ -5,6 +5,7 @@ from .basesdk import BaseSDK
 from ttd_data import errors, models, utils
 from ttd_data._hooks import HookContext
 from ttd_data.types import OptionalNullable, UNSET
+from ttd_data.utils import get_security_from_env
 from ttd_data.utils.unmarshal_json_response import unmarshal_json_response
 from typing import Any, Iterable, List, Mapping, Optional, Union
 
@@ -13,7 +14,6 @@ class OfflineConversion(BaseSDK):
     def ingest_offline_conversion_data(
         self,
         *,
-        ttd_auth: str,
         data_provider_id: str,
         user_id_array_metadata_format: OptionalNullable[Iterable[str]] = UNSET,
         items: OptionalNullable[
@@ -33,7 +33,6 @@ class OfflineConversion(BaseSDK):
     ) -> models.IngestOfflineConversionDataResponse:
         r"""Upload offline conversion data for the specified data provider.
 
-        :param ttd_auth: Data API token for authentication.
         :param data_provider_id:
         :param user_id_array_metadata_format:
         :param items:
@@ -54,20 +53,17 @@ class OfflineConversion(BaseSDK):
         else:
             base_url = models.INGEST_OFFLINE_CONVERSION_DATA_OP_SERVERS[0]
 
-        request = models.IngestOfflineConversionDataRequest(
-            ttd_auth=ttd_auth,
-            body=models.OfflineConversionDataRequest(
-                data_provider_id=data_provider_id,
-                user_id_array_metadata_format=utils.unmarshal(
-                    user_id_array_metadata_format, OptionalNullable[List[str]]
-                ),
-                items=utils.get_pydantic_model(
-                    items, OptionalNullable[List[models.BaseOfflineConversionDataItem]]
-                ),
-                data_load_trace_id=data_load_trace_id,
-                data_origins=utils.get_pydantic_model(
-                    data_origins, OptionalNullable[List[models.DataOrigin]]
-                ),
+        request = models.OfflineConversionDataRequest(
+            data_provider_id=data_provider_id,
+            user_id_array_metadata_format=utils.unmarshal(
+                user_id_array_metadata_format, OptionalNullable[List[str]]
+            ),
+            items=utils.get_pydantic_model(
+                items, OptionalNullable[List[models.BaseOfflineConversionDataItem]]
+            ),
+            data_load_trace_id=data_load_trace_id,
+            data_origins=utils.get_pydantic_model(
+                data_origins, OptionalNullable[List[models.DataOrigin]]
             ),
         )
 
@@ -79,12 +75,13 @@ class OfflineConversion(BaseSDK):
             request=request,
             request_body_required=True,
             request_has_path_params=False,
-            request_has_query_params=False,
+            request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
+            security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.body, False, False, "json", models.OfflineConversionDataRequest
+                request, False, False, "json", models.OfflineConversionDataRequest
             ),
             allow_empty_value=None,
             timeout_ms=timeout_ms,
@@ -104,7 +101,9 @@ class OfflineConversion(BaseSDK):
                 base_url=base_url or "",
                 operation_id="IngestOfflineConversionData",
                 oauth2_scopes=None,
-                security_source=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
                 tags=["OfflineConversion"],
                 extensions=None,
             ),
@@ -143,7 +142,6 @@ class OfflineConversion(BaseSDK):
     async def ingest_offline_conversion_data_async(
         self,
         *,
-        ttd_auth: str,
         data_provider_id: str,
         user_id_array_metadata_format: OptionalNullable[Iterable[str]] = UNSET,
         items: OptionalNullable[
@@ -163,7 +161,6 @@ class OfflineConversion(BaseSDK):
     ) -> models.IngestOfflineConversionDataResponse:
         r"""Upload offline conversion data for the specified data provider.
 
-        :param ttd_auth: Data API token for authentication.
         :param data_provider_id:
         :param user_id_array_metadata_format:
         :param items:
@@ -184,20 +181,17 @@ class OfflineConversion(BaseSDK):
         else:
             base_url = models.INGEST_OFFLINE_CONVERSION_DATA_OP_SERVERS[0]
 
-        request = models.IngestOfflineConversionDataRequest(
-            ttd_auth=ttd_auth,
-            body=models.OfflineConversionDataRequest(
-                data_provider_id=data_provider_id,
-                user_id_array_metadata_format=utils.unmarshal(
-                    user_id_array_metadata_format, OptionalNullable[List[str]]
-                ),
-                items=utils.get_pydantic_model(
-                    items, OptionalNullable[List[models.BaseOfflineConversionDataItem]]
-                ),
-                data_load_trace_id=data_load_trace_id,
-                data_origins=utils.get_pydantic_model(
-                    data_origins, OptionalNullable[List[models.DataOrigin]]
-                ),
+        request = models.OfflineConversionDataRequest(
+            data_provider_id=data_provider_id,
+            user_id_array_metadata_format=utils.unmarshal(
+                user_id_array_metadata_format, OptionalNullable[List[str]]
+            ),
+            items=utils.get_pydantic_model(
+                items, OptionalNullable[List[models.BaseOfflineConversionDataItem]]
+            ),
+            data_load_trace_id=data_load_trace_id,
+            data_origins=utils.get_pydantic_model(
+                data_origins, OptionalNullable[List[models.DataOrigin]]
             ),
         )
 
@@ -209,12 +203,13 @@ class OfflineConversion(BaseSDK):
             request=request,
             request_body_required=True,
             request_has_path_params=False,
-            request_has_query_params=False,
+            request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
+            security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.body, False, False, "json", models.OfflineConversionDataRequest
+                request, False, False, "json", models.OfflineConversionDataRequest
             ),
             allow_empty_value=None,
             timeout_ms=timeout_ms,
@@ -234,7 +229,9 @@ class OfflineConversion(BaseSDK):
                 base_url=base_url or "",
                 operation_id="IngestOfflineConversionData",
                 oauth2_scopes=None,
-                security_source=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
                 tags=["OfflineConversion"],
                 extensions=None,
             ),

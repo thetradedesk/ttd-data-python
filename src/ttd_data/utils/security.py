@@ -2,6 +2,7 @@
 # @generated-id: e38af000ccc5
 
 import base64
+
 from typing import (
     Any,
     Dict,
@@ -16,6 +17,7 @@ from .metadata import (
     SecurityMetadata,
     find_field_metadata,
 )
+import os
 
 
 def get_security(
@@ -64,6 +66,21 @@ def get_security(
                 return headers, query_params
 
     return headers, query_params
+
+
+def get_security_from_env(security: Any, security_class: Any) -> Optional[BaseModel]:
+    if security is not None:
+        return security
+
+    if not issubclass(security_class, BaseModel):
+        raise TypeError("security_class must be a pydantic model class")
+
+    security_dict: Any = {}
+
+    if os.getenv("TTD_DATA_TTD_AUTH"):
+        security_dict["ttd_auth"] = os.getenv("TTD_DATA_TTD_AUTH")
+
+    return security_class(**security_dict) if security_dict else None
 
 
 def _parse_security_option(
