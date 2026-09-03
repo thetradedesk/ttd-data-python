@@ -55,9 +55,9 @@ def transport(statuses: Sequence[int], **kwargs: Any):
 def test_a_retryable_status_is_retried():
     """One representative status is enough: RETRYABLE_STATUS_CODES is a flat
     membership check, with no per-status branch to exercise separately."""
-    gql, sequence = transport([429, 200], retry_config=backoff_config())
+    gql, sequence = transport([429, 200], retry_config=backoff_config(), ttd_auth="token")
 
-    body: Dict[str, Any] = gql.execute(QUERY, ttd_auth="token")
+    body: Dict[str, Any] = gql.execute(QUERY)
 
     assert sequence.attempts == 2
     assert body["data"]["__typename"] == "Query"
@@ -65,20 +65,20 @@ def test_a_retryable_status_is_retried():
 
 def test_non_retryable_status_fails_on_the_first_attempt():
     """A 400 is the caller's fault; retrying it just delays the error."""
-    gql, sequence = transport([400], retry_config=backoff_config())
+    gql, sequence = transport([400], retry_config=backoff_config(), ttd_auth="token")
 
     with pytest.raises(APIError):
-        gql.execute(QUERY, ttd_auth="token")
+        gql.execute(QUERY)
 
     assert sequence.attempts == 1
 
 
 def test_without_a_retry_config_a_429_is_raised_immediately():
     """Retries stay opt-in, so behaviour is unchanged for callers who set none."""
-    gql, sequence = transport([429, 200])
+    gql, sequence = transport([429, 200], ttd_auth="token")
 
     with pytest.raises(APIError):
-        gql.execute(QUERY, ttd_auth="token")
+        gql.execute(QUERY)
 
     assert sequence.attempts == 1
 
@@ -90,9 +90,10 @@ def test_per_call_retries_override_the_client_configuration():
         retry_config=RetryConfig(
             "none", FAST_BACKOFF, retry_connection_errors=False
         ),
+        ttd_auth="token",
     )
 
-    gql.execute(QUERY, ttd_auth="token", retries=backoff_config())
+    gql.execute(QUERY, retries=backoff_config())
 
     assert sequence.attempts == 2
 
@@ -112,9 +113,9 @@ def test_the_credential_is_masked_in_debug_output():
     """Debug logging dumps the request headers; the token must not be among
     them, which is only enforceable because auth is a typed parameter."""
     logger = CollectingLogger()
-    gql, _ = transport([200], debug_logger=logger)
+    gql, _ = transport([200], debug_logger=logger, ttd_auth="super-secret-token")
 
-    gql.execute(QUERY, ttd_auth="super-secret-token")
+    gql.execute(QUERY)
 
     logged = "\n".join(logger.lines)
     assert "super-secret-token" not in logged

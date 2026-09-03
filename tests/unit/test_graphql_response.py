@@ -11,7 +11,7 @@ def graphql_client(graphql_ops):
     from ttd_data.graphql import TaxonomyOperations
 
     def make(response=None):
-        return graphql_ops(TaxonomyOperations, response)
+        return graphql_ops(TaxonomyOperations, response, ttd_auth="tok")
 
     return make
 
@@ -28,7 +28,7 @@ def test_graphql_errors_raise_even_on_http_200(graphql_client):
     client, _ = graphql_client(response)
 
     with pytest.raises(GraphQLError, match="not authorized"):
-        client.query_segments(ttd_auth="tok", provider_id="eltoro")
+        client.query_segments(provider_id="eltoro")
 
 
 def test_graphql_failures_are_catchable_as_sdk_errors(graphql_client):
@@ -40,7 +40,7 @@ def test_graphql_failures_are_catchable_as_sdk_errors(graphql_client):
     client, _ = graphql_client({"errors": [{"message": "nope"}]})
 
     with pytest.raises(DataError) as excinfo:
-        client.query_segments(ttd_auth="tok", provider_id="eltoro")
+        client.query_segments(provider_id="eltoro")
 
     assert excinfo.value.status_code == 200, "policy failures arrive as HTTP 200"
     assert excinfo.value.raw_response is not None
@@ -57,7 +57,7 @@ def test_graphql_error_keeps_partially_resolved_data(graphql_client):
     client, _ = graphql_client(response)
 
     with pytest.raises(GraphQLError) as excinfo:
-        client.query_segments(ttd_auth="tok", provider_id="eltoro")
+        client.query_segments(provider_id="eltoro")
 
     assert excinfo.value.data == {"thirdPartyDataProvider": None}
     assert excinfo.value.errors[0]["message"] == "policy denied"
@@ -77,7 +77,7 @@ def test_page_flattens_the_connection(graphql_client):
     }
     client, _ = graphql_client(response)
 
-    page = client.query_segments(ttd_auth="tok", provider_id="eltoro")
+    page = client.query_segments(provider_id="eltoro")
 
     assert page.nodes == [{"providerElementId": "seg-1"}]
     assert page.total_count == 42
@@ -92,7 +92,7 @@ def test_page_is_empty_when_the_body_does_not_match_the_document(graphql_client)
     deep in a `.get` chain."""
     client, _ = graphql_client({"data": {"thirdPartyDataProvider": None}})
 
-    page = client.query_segments(ttd_auth="tok", provider_id="eltoro")
+    page = client.query_segments(provider_id="eltoro")
 
     assert page.nodes == []
     assert page.total_count is None
@@ -119,7 +119,6 @@ def test_upsert_result_separates_accepted_from_rejected(graphql_client):
     client, _ = graphql_client(response)
 
     result = client.upsert_segments(
-        ttd_auth="tok",
         segments=[
             {"providerId": "eltoro", "providerElementId": f"seg-{i}"} for i in (1, 2)
         ],
@@ -137,7 +136,6 @@ def test_upsert_result_tolerates_omitted_lists(graphql_client):
     client, _ = graphql_client({"data": {"thirdPartyDataUpsert": {}}})
 
     result = client.upsert_segments(
-        ttd_auth="tok",
         segments=[{"providerId": "eltoro", "providerElementId": "seg-1"}],
     )
 

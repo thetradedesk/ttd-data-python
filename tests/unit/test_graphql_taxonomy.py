@@ -11,7 +11,7 @@ def graphql_client(graphql_ops):
     from ttd_data.graphql import TaxonomyOperations
 
     def make(response=None):
-        return graphql_ops(TaxonomyOperations, response)
+        return graphql_ops(TaxonomyOperations, response, ttd_auth="tok")
 
     return make
 
@@ -31,7 +31,7 @@ def test_upsert_segments_sends_the_batch_verbatim(graphql_client):
         {"providerId": "eltoro", "providerElementId": "seg-2"},
     ]
 
-    client.upsert_segments(ttd_auth="tok", segments=batch)
+    client.upsert_segments(segments=batch)
 
     assert recorder.last_variables["input"] == batch
     assert "mutation ThirdPartyDataUpsert" in recorder.last_query
@@ -42,7 +42,7 @@ def test_upsert_segments_rejects_out_of_range_batches(graphql_client, size):
     client, recorder = graphql_client()
 
     with pytest.raises(ValueError, match="between 1 and 1000"):
-        client.upsert_segments(ttd_auth="tok", segments=[{"providerId": "p"}] * size)
+        client.upsert_segments(segments=[{"providerId": "p"}] * size)
 
     assert recorder.requests == [], "no request should be sent"
 
@@ -50,7 +50,7 @@ def test_upsert_segments_rejects_out_of_range_batches(graphql_client, size):
 def test_query_segments_omits_where_when_unfiltered(graphql_client):
     client, recorder = graphql_client()
 
-    client.query_segments(ttd_auth="tok", provider_id="eltoro")
+    client.query_segments(provider_id="eltoro")
 
     variables = recorder.last_variables
     assert variables == {"providerId": "eltoro", "first": 1000, "after": None}
@@ -61,7 +61,6 @@ def test_query_segments_filters_by_provider_element_ids(graphql_client):
     client, recorder = graphql_client()
 
     client.query_segments(
-        ttd_auth="tok",
         provider_id="eltoro",
         provider_element_ids=("seg-1", "seg-2"),
         first=50,
@@ -89,7 +88,7 @@ def test_query_segment_taxonomy_status_filters_to_one_segment(graphql_client):
     client, recorder = graphql_client(response)
 
     status = client.query_segment_taxonomy_status(
-        ttd_auth="tok", provider_id="eltoro", provider_element_id="seg-1"
+        provider_id="eltoro", provider_element_id="seg-1"
     )
 
     assert recorder.last_variables["where"] == {"providerElementId": {"eq": "seg-1"}}
@@ -102,7 +101,7 @@ def test_query_segment_taxonomy_status_returns_none_for_unknown_segment(graphql_
 
     assert (
         client.query_segment_taxonomy_status(
-            ttd_auth="tok", provider_id="eltoro", provider_element_id="nope"
+            provider_id="eltoro", provider_element_id="nope"
         )
         is None
     )

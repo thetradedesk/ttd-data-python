@@ -145,6 +145,27 @@ def test_from_config_keeps_callable_ttd_auth_lazy():
     assert security().ttd_auth == "token-2"
 
 
+def test_graphql_calls_use_the_client_configured_ttd_auth():
+    """The credential passed to `DataClient(ttd_auth=...)` also backs GraphQL
+    calls, so a caller need not repeat it on every taxonomy/rates method."""
+    import httpx
+    from ttd_data import DataClient
+
+    requests = []
+    http = httpx.Client(
+        transport=httpx.MockTransport(
+            lambda request: requests.append(request) or httpx.Response(
+                200, json={"data": {}}
+            )
+        )
+    )
+    client = DataClient(ttd_auth="client-token", client=http)
+
+    client.third_party_taxonomy.query_segments(provider_id="eltoro")
+
+    assert requests[-1].headers["ttd-auth"] == "client-token"
+
+
 def test_base_data_client_hidden_from_package_root():
     """Locks in the `from .sdk import *` deletion in `__init__.py`. If a
     future regen re-adds the wildcard, this test fails loudly so we don't
