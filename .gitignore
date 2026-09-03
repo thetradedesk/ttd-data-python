@@ -34,3 +34,8 @@ restructure.sh
 .agents
 .claude
 .cursor
+# Impala subgraph SDL used by scripts/validate_graphql.py and the offline
+# schema test. Never committed: it carries internal feature-flag/permission
+# names, tenant-specific policy, and staff email addresses from deprecation
+# directives. Keep it local, or point TTD_GRAPHQL_SCHEMA_PATH elsewhere.
+impala.graphql

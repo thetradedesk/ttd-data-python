@@ -105,7 +105,12 @@ def test_client_config_tracks_base_data_client_constructor_params():
         "self",
         *not_reconstructable,
     }
-    config_fields = {f.name for f in dataclasses.fields(ClientConfig)} - {"uid2_config"}
+    # uid2_config and graphql_server_url are DataClient-level additions,
+    # not BaseDataClient constructor params.
+    config_fields = {f.name for f in dataclasses.fields(ClientConfig)} - {
+        "uid2_config",
+        "graphql_server_url",
+    }
 
     assert base_params == config_fields
 
@@ -138,6 +143,27 @@ def test_from_config_keeps_callable_ttd_auth_lazy():
     security = DataClient.from_config(config).data_client.sdk_configuration.security
     assert security().ttd_auth == "token-1"
     assert security().ttd_auth == "token-2"
+
+
+def test_graphql_calls_use_the_client_configured_ttd_auth():
+    """The credential passed to `DataClient(ttd_auth=...)` also backs GraphQL
+    calls, so a caller need not repeat it on every taxonomy/rates method."""
+    import httpx
+    from ttd_data import DataClient
+
+    requests = []
+    http = httpx.Client(
+        transport=httpx.MockTransport(
+            lambda request: requests.append(request) or httpx.Response(
+                200, json={"data": {}}
+            )
+        )
+    )
+    client = DataClient(ttd_auth="client-token", client=http)
+
+    client.third_party_taxonomy.query_segments(provider_id="eltoro")
+
+    assert requests[-1].headers["ttd-auth"] == "client-token"
 
 
 def test_base_data_client_hidden_from_package_root():

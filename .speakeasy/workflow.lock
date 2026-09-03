@@ -1,4 +1,4 @@
-speakeasyVersion: 1.794.0
+speakeasyVersion: 1.795.3
 sources:
     Data API:
         sourceNamespace: data-api
