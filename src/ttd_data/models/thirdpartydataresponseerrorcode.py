@@ -21,4 +21,5 @@ class ThirdPartyDataResponseErrorCode(str, Enum):
     TENANT_RESTRICTIONS_EXTERNAL_DATA = "TenantRestrictionsExternalData"
     TARGETING_DATA_DISABLED = "TargetingDataDisabled"
     ITEM_DESERIALIZATION_ERROR = "ItemDeserializationError"
+    INVALID_TIMESTAMP_UTC = "InvalidTimestampUtc"
     UID2_ERROR = "Uid2Error"

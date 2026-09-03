@@ -4,18 +4,20 @@
 from ttd_data import DataClient
 from ttd_data.models import AdvertiserData, AdvertiserDataItem
 
-with DataClient(server_url="<TTD_DATA_SERVER_URL>") as client:
-    response = client.advertiser.ingest_advertiser_data(
-        ttd_auth="<TTD_AUTH_TOKEN>",
-        advertiser_id="<ADVERTISER_ID>",
-        items=[
-            AdvertiserDataItem(
-                data=[AdvertiserData(name="loyalty_members")],
-                tdid="<TDID>",
-            )
-        ],
-    )
-    print(response.advertiser_data_server_response)
+client = DataClient(
+    ttd_auth="<TTD_AUTH_TOKEN>",
+    server_url="<TTD_DATA_SERVER_URL>",
+)
+response = client.advertiser.ingest_advertiser_data(
+    advertiser_id="<ADVERTISER_ID>",
+    items=[
+        AdvertiserDataItem(
+            data=[AdvertiserData(name="loyalty_members")],
+            tdid="<TDID>",
+        )
+    ],
+)
+print(response.advertiser_data_server_response)
 ```
 
 </br>
@@ -33,18 +35,21 @@ uid2_config = UID2Config(
 )
 
 try:
-    with DataClient(uid2_config=uid2_config, server_url="<TTD_DATA_SERVER_URL>") as client:
-        response = client.advertiser.ingest_advertiser_data(
-            ttd_auth="<TTD_AUTH_TOKEN>",
-            advertiser_id="<ADVERTISER_ID>",
-            items=[
-                AdvertiserDataItem(
-                    data=[AdvertiserData(name="loyalty_members")],
-                    email="user@example.com",
-                )
-            ],
-        )
-        print(response.advertiser_data_server_response)
+    client = DataClient(
+        ttd_auth="<TTD_AUTH_TOKEN>",
+        uid2_config=uid2_config,
+        server_url="<TTD_DATA_SERVER_URL>",
+    )
+    response = client.advertiser.ingest_advertiser_data(
+        advertiser_id="<ADVERTISER_ID>",
+        items=[
+            AdvertiserDataItem(
+                data=[AdvertiserData(name="loyalty_members")],
+                email="user@example.com",
+            )
+        ],
+    )
+    print(response.advertiser_data_server_response)
 except UID2ServiceError as e:
     print(f"UID2 service error: {e}")
 ```
@@ -60,18 +65,20 @@ from ttd_data import DataClient
 from ttd_data.models import AdvertiserData, AdvertiserDataItem
 
 async def main():
-    async with DataClient(server_url="<TTD_DATA_SERVER_URL>") as client:
-        response = await client.advertiser.ingest_advertiser_data_async(
-            ttd_auth="<TTD_AUTH_TOKEN>",
-            advertiser_id="<ADVERTISER_ID>",
-            items=[
-                AdvertiserDataItem(
-                    data=[AdvertiserData(name="loyalty_members")],
-                    tdid="<TDID>",
-                )
-            ],
-        )
-        print(response.advertiser_data_server_response)
+    client = DataClient(
+        ttd_auth="<TTD_AUTH_TOKEN>",
+        server_url="<TTD_DATA_SERVER_URL>",
+    )
+    response = await client.advertiser.ingest_advertiser_data_async(
+        advertiser_id="<ADVERTISER_ID>",
+        items=[
+            AdvertiserDataItem(
+                data=[AdvertiserData(name="loyalty_members")],
+                tdid="<TDID>",
+            )
+        ],
+    )
+    print(response.advertiser_data_server_response)
 
 asyncio.run(main())
 ```
@@ -93,18 +100,21 @@ uid2_config = UID2Config(
 
 async def main():
     try:
-        async with DataClient(uid2_config=uid2_config, server_url="<TTD_DATA_SERVER_URL>") as client:
-            response = await client.advertiser.ingest_advertiser_data_async(
-                ttd_auth="<TTD_AUTH_TOKEN>",
-                advertiser_id="<ADVERTISER_ID>",
-                items=[
-                    AdvertiserDataItem(
-                        data=[AdvertiserData(name="loyalty_members")],
-                        email="user@example.com",
-                    )
-                ],
-            )
-            print(response.advertiser_data_server_response)
+        client = DataClient(
+            ttd_auth="<TTD_AUTH_TOKEN>",
+            uid2_config=uid2_config,
+            server_url="<TTD_DATA_SERVER_URL>",
+        )
+        response = await client.advertiser.ingest_advertiser_data_async(
+            advertiser_id="<ADVERTISER_ID>",
+            items=[
+                AdvertiserDataItem(
+                    data=[AdvertiserData(name="loyalty_members")],
+                    email="user@example.com",
+                )
+            ],
+        )
+        print(response.advertiser_data_server_response)
     except UID2ServiceError as e:
         print(f"UID2 service error: {e}")
 

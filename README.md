@@ -127,19 +127,18 @@ Generally, the SDK will work well with most IDEs out of the box. However, when u
 ```python
 from ttd_data import DataClient, models
 
-with DataClient() as client:
-    response = client.advertiser.ingest_advertiser_data(
-        ttd_auth=TTD_AUTH_TOKEN,
-        advertiser_id=ADVERTISER_ID,
-        items=[
-            models.AdvertiserDataItem(
-                tdid="<TDID>",
-                data=[
-                    models.AdvertiserData(name="loyalty_members"),
-                ],
-            )
-        ],
-    )
+client = DataClient(ttd_auth=TTD_AUTH_TOKEN)
+response = client.advertiser.ingest_advertiser_data(
+    advertiser_id=ADVERTISER_ID,
+    items=[
+        models.AdvertiserDataItem(
+            tdid="<TDID>",
+            data=[
+                models.AdvertiserData(name="loyalty_members"),
+            ],
+        )
+    ],
+)
 
 ```
 
@@ -148,19 +147,18 @@ with DataClient() as client:
 ```python
 from ttd_data import DataClient, models
 
-with DataClient() as client:
-    response = client.third_party.ingest_third_party_data(
-        ttd_auth=TTD_AUTH_TOKEN,
-        data_provider_id=DATA_PROVIDER_ID,
-        items=[
-            models.ThirdPartyDataItem(
-                tdid="<TDID>",
-                data=[
-                    models.ThirdPartyData(name="in_market_auto"),
-                ],
-            )
-        ],
-    )
+client = DataClient(ttd_auth=TTD_AUTH_TOKEN)
+response = client.third_party.ingest_third_party_data(
+    data_provider_id=DATA_PROVIDER_ID,
+    items=[
+        models.ThirdPartyDataItem(
+            tdid="<TDID>",
+            data=[
+                models.ThirdPartyData(name="in_market_auto"),
+            ],
+        )
+    ],
+)
 ```
 
 ### 3. Offline Conversions Data (CAPI)
@@ -169,28 +167,29 @@ with DataClient() as client:
 from datetime import datetime, timezone
 from ttd_data import DataClient, UserIdType, models
 
-with DataClient() as client:
-    response = client.offline_conversion.ingest_offline_conversion_data(
-        ttd_auth=TTD_AUTH_TOKEN,
-        data_provider_id=DATA_PROVIDER_ID,
-        items=[
-            # Pre-resolved TDID
-            models.OfflineConversionDataItem(
-                tracking_tag_id=TRACKING_TAG_ID,
-                timestamp_utc=datetime.now(timezone.utc),
-                tdid="<TDID>",
-            ),
-            # Multiple identifiers via UserIdArray
-            models.OfflineConversionDataItem(
-                tracking_tag_id=TRACKING_TAG_ID,
-                timestamp_utc=datetime.now(timezone.utc),
-                user_id_array=[
-                    [UserIdType.TDID, "<TDID>"],
-                    [UserIdType.UID2, "<UID2>"],
-                ],
-            ),
-        ],
-    )
+client = DataClient(ttd_auth=TTD_AUTH_TOKEN)
+response = client.offline_conversion.ingest_offline_conversion_data(
+    data_provider_id=DATA_PROVIDER_ID,
+    items=[
+        # Pre-resolved TDID
+        models.OfflineConversionDataItem(
+            tracking_tag_id=TRACKING_TAG_ID,
+            timestamp_utc=datetime.now(timezone.utc),
+            tdid="<TDID>",
+        ),
+        # Multiple identifiers via UserIdArray
+        models.OfflineConversionDataItem(
+            tracking_tag_id=TRACKING_TAG_ID,
+            timestamp_utc=datetime.now(timezone.utc),
+            user_id_array=[
+                [UserIdType.TDID, "<TDID>"],
+                [UserIdType.UID2, "<UID2>"],
+            ],
+        ),
+    ],
+    # Required whenever any item uses user_id_array
+    user_id_array_metadata_format=["type", "id"],
+)
 ```
 
 ### 4. Optouts and Deletion - Advertiser - Data Subject Request
@@ -198,17 +197,16 @@ with DataClient() as client:
 ```python
 from ttd_data import DataClient, models
 
-with DataClient() as client:
-    response = client.deletion_opt_out.data_subject_request_advertiser_data(
-        ttd_auth=TTD_AUTH_TOKEN,
-        advertiser_id=ADVERTISER_ID,
-        request_type=models.PartnerDsrRequestType.DELETION,
-        items=[
-            models.PartnerDsrDataItem(tdid="<TDID>"),
-            models.PartnerDsrDataItem(daid="<DAID>"),
-            models.PartnerDsrDataItem(euid="<EUID>"),
-        ],
-    )
+client = DataClient(ttd_auth=TTD_AUTH_TOKEN)
+response = client.deletion_opt_out.data_subject_request_advertiser_data(
+    advertiser_id=ADVERTISER_ID,
+    request_type=models.PartnerDsrRequestType.DELETION,
+    items=[
+        models.PartnerDsrDataItem(tdid="<TDID>"),
+        models.PartnerDsrDataItem(daid="<DAID>"),
+        models.PartnerDsrDataItem(euid="<EUID>"),
+    ],
+)
 ```
 
 ### 5. Optouts and Deletion - Data Provider - Data Subject Request
@@ -216,16 +214,15 @@ with DataClient() as client:
 ```python
 from ttd_data import DataClient, models
 
-with DataClient() as client:
-    response = client.deletion_opt_out.data_subject_request_third_party_data(
-        ttd_auth=TTD_AUTH_TOKEN,
-        data_provider_id=DATA_PROVIDER_ID,
-        request_type=models.PartnerDsrRequestType.OPT_OUT,
-        items=[
-            models.PartnerDsrDataItem(tdid="<TDID>"),
-            models.PartnerDsrDataItem(ramp_id="<RAMP_ID>"),
-        ],
-    )
+client = DataClient(ttd_auth=TTD_AUTH_TOKEN)
+response = client.deletion_opt_out.data_subject_request_third_party_data(
+    data_provider_id=DATA_PROVIDER_ID,
+    request_type=models.PartnerDsrRequestType.OPT_OUT,
+    items=[
+        models.PartnerDsrDataItem(tdid="<TDID>"),
+        models.PartnerDsrDataItem(ramp_id="<RAMP_ID>"),
+    ],
+)
 ```
 
 ### 6. Optouts and Deletion - Merchant - Data Subject Request
@@ -233,15 +230,14 @@ with DataClient() as client:
 ```python
 from ttd_data import DataClient, models
 
-with DataClient() as client:
-    response = client.deletion_opt_out.data_subject_request_merchant_data(
-        ttd_auth=TTD_AUTH_TOKEN,
-        merchant_id=MERCHANT_ID,
-        request_type=models.PartnerDsrRequestType.DELETION,
-        items=[
-            models.PartnerDsrDataItem(tdid="<TDID>"),
-        ],
-    )
+client = DataClient(ttd_auth=TTD_AUTH_TOKEN)
+response = client.deletion_opt_out.data_subject_request_merchant_data(
+    merchant_id=MERCHANT_ID,
+    request_type=models.PartnerDsrRequestType.DELETION,
+    items=[
+        models.PartnerDsrDataItem(tdid="<TDID>"),
+    ],
+)
 ```
 
 
@@ -261,44 +257,47 @@ uid2_config = UID2Config(
 )
 
 try:
-    with DataClient(uid2_config=uid2_config, server_url="<TTD_DATA_SERVER_URL>") as client:
-        response = client.advertiser.ingest_advertiser_data(
-            ttd_auth=TTD_AUTH_TOKEN,
-            advertiser_id=ADVERTISER_ID,
-            items=[
-                # Raw email — resolved to UID2 before ingest
-                AdvertiserDataItem(
-                    data=[AdvertiserData(name="loyalty_members")],
-                    email="user@example.com",
-                ),
-                # Pre-hashed email (SHA-256, base64-encoded)
-                AdvertiserDataItem(
-                    data=[AdvertiserData(name="loyalty_members")],
-                    hashed_email="<SHA256_BASE64>",
-                ),
-                # Raw phone (E.164 format) — resolved to UID2 before ingest
-                AdvertiserDataItem(
-                    data=[AdvertiserData(name="loyalty_members")],
-                    phone="+15555550123",
-                ),
-                # Pre-hashed phone (SHA-256 of the normalized E.164 string, base64-encoded)
-                AdvertiserDataItem(
-                    data=[AdvertiserData(name="loyalty_members")],
-                    hashed_phone="<SHA256_BASE64>",
-                ),
-                # Pre-resolved TDID — no UID2 work needed
-                AdvertiserDataItem(
-                    data=[AdvertiserData(name="loyalty_members")],
-                    tdid="<TDID>",
-                ),
-            ],
-        )
+    client = DataClient(
+        ttd_auth=TTD_AUTH_TOKEN,
+        uid2_config=uid2_config,
+        server_url="<TTD_DATA_SERVER_URL>",
+    )
+    response = client.advertiser.ingest_advertiser_data(
+        advertiser_id=ADVERTISER_ID,
+        items=[
+            # Raw email — resolved to UID2 before ingest
+            AdvertiserDataItem(
+                data=[AdvertiserData(name="loyalty_members")],
+                email="user@example.com",
+            ),
+            # Pre-hashed email (SHA-256, base64-encoded)
+            AdvertiserDataItem(
+                data=[AdvertiserData(name="loyalty_members")],
+                hashed_email="<SHA256_BASE64>",
+            ),
+            # Raw phone (E.164 format) — resolved to UID2 before ingest
+            AdvertiserDataItem(
+                data=[AdvertiserData(name="loyalty_members")],
+                phone="+15555550123",
+            ),
+            # Pre-hashed phone (SHA-256 of the normalized E.164 string, base64-encoded)
+            AdvertiserDataItem(
+                data=[AdvertiserData(name="loyalty_members")],
+                hashed_phone="<SHA256_BASE64>",
+            ),
+            # Pre-resolved TDID — no UID2 work needed
+            AdvertiserDataItem(
+                data=[AdvertiserData(name="loyalty_members")],
+                tdid="<TDID>",
+            ),
+        ],
+    )
 
-        # Check for per-item mapping failures
-        server_response = response.advertiser_data_server_response
-        if server_response and server_response.failed_lines:
-            for line in server_response.failed_lines:
-                print(f"Item {line.item_number} failed: {line.error_code} — {line.message}")
+    # Check for per-item mapping failures
+    server_response = response.advertiser_data_server_response
+    if server_response and server_response.failed_lines:
+        for line in server_response.failed_lines:
+            print(f"Item {line.item_number} failed: {line.error_code} — {line.message}")
 
 except UID2ServiceError as e:
     # The UID2 identity-map service itself failed — no items were sent
@@ -315,23 +314,21 @@ import asyncio
 from ttd_data import DataClient, models
 
 async def main():
+    data_client = DataClient(ttd_auth=TTD_AUTH_TOKEN)
+    response = await data_client.advertiser.ingest_advertiser_data_async(
+        advertiser_id=ADVERTISER_ID,
+        items=[
+            models.AdvertiserDataItem(
+                tdid="<TDID>",
+                data=[
+                    models.AdvertiserData(name="loyalty_members"),
+                ],
+            )
+        ],
+    )
 
-    async with DataClient() as data_client:
-        response = data_client.advertiser.ingest_advertiser_data(
-            ttd_auth=TTD_AUTH_TOKEN,
-            advertiser_id=ADVERTISER_ID,
-            items=[
-                models.AdvertiserDataItem(
-                    tdid="<TDID>",
-                    data=[
-                        models.AdvertiserData(name="loyalty_members"),
-                    ],
-                )
-            ],
-        )
-
-        # Handle response
-        print(response.advertiser_data_server_response)
+    # Handle response
+    print(response.advertiser_data_server_response)
 
 asyncio.run(main())
 ```
@@ -375,15 +372,15 @@ from ttd_data import DataClient
 from ttd_data.utils import BackoffStrategy, RetryConfig
 
 
-with DataClient() as data_client:
+data_client = DataClient(ttd_auth="<value>")
 
-    res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>",
-        RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
+res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>",
+    retries=RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
 
-    assert res.advertiser_data_server_response is not None
+assert res.advertiser_data_server_response is not None
 
-    # Handle response
-    print(res.advertiser_data_server_response)
+# Handle response
+print(res.advertiser_data_server_response)
 
 ```
 
@@ -393,16 +390,17 @@ from ttd_data import DataClient
 from ttd_data.utils import BackoffStrategy, RetryConfig
 
 
-with DataClient(
+data_client = DataClient(
+    ttd_auth="<value>",
     retry_config=RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False),
-) as data_client:
+)
 
-    res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
+res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
 
-    assert res.advertiser_data_server_response is not None
+assert res.advertiser_data_server_response is not None
 
-    # Handle response
-    print(res.advertiser_data_server_response)
+# Handle response
+print(res.advertiser_data_server_response)
 
 ```
 <!-- End Retries [retries] -->
@@ -426,30 +424,30 @@ with DataClient(
 from ttd_data import DataClient, errors
 
 
-with DataClient() as data_client:
-    res = None
-    try:
+data_client = DataClient(ttd_auth="<value>")
+res = None
+try:
 
-        res = data_client.advertiser.ingest_advertiser_data(ttd_auth="<value>", advertiser_id="<id>")
+    res = data_client.advertiser.ingest_advertiser_data(advertiser_id="<id>")
 
-        assert res.advertiser_data_server_response is not None
+    assert res.advertiser_data_server_response is not None
 
-        # Handle response
-        print(res.advertiser_data_server_response)
+    # Handle response
+    print(res.advertiser_data_server_response)
 
 
-    except errors.DataError as e:
-        # The base class for HTTP error responses
-        print(e.message)
-        print(e.status_code)
-        print(e.body)
-        print(e.headers)
-        print(e.raw_response)
+except errors.DataError as e:
+    # The base class for HTTP error responses
+    print(e.message)
+    print(e.status_code)
+    print(e.body)
+    print(e.headers)
+    print(e.raw_response)
 
-        # Depending on the method different errors may be thrown
-        if isinstance(e, errors.AdvertiserDataServerResponseError):
-            print(e.data.failed_lines)  # OptionalNullable[List[models.AdvertiserDataServerResponseLine]]
-            print(e.data.http_meta)  # models.HTTPMetadata
+    # Depending on the method different errors may be thrown
+    if isinstance(e, errors.AdvertiserDataServerResponseError):
+        print(e.data.failed_lines)  # OptionalNullable[List[models.AdvertiserDataServerResponseLine]]
+        print(e.data.http_meta)  # models.HTTPMetadata
 ```
 
 ### Error Classes
@@ -500,6 +498,7 @@ or you could wrap the client with your own custom logic:
 ```python
 from ttd_data import DataClient
 from ttd_data.httpclient import AsyncHttpClient
+from typing import Any, Optional, Union
 import httpx
 
 class CustomClient(AsyncHttpClient):
@@ -564,23 +563,22 @@ s = DataClient(async_client=CustomClient(httpx.AsyncClient()))
 <!-- Start Resource Management [resource-management] -->
 ## Resource Management
 
-The `DataClient` class implements the context manager protocol and registers a finalizer function to close the underlying sync and async HTTPX clients it uses under the hood. This will close HTTP connections, release memory and free up other resources held by the SDK. In short-lived Python programs and notebooks that make a few SDK method calls, resource management may not be a concern. However, in longer-lived programs, it is beneficial to create a single SDK instance via a [context manager][context-manager] and reuse it across the application.
-
-[context-manager]: https://docs.python.org/3/reference/datamodel.html#context-managers
+`DataClient` registers a finalizer that closes the underlying sync and async HTTPX clients when the instance is garbage collected. This closes HTTP connections, releases memory and frees up other resources held by the SDK. In short-lived Python programs and notebooks that make a few SDK method calls, resource management may not be a concern. However, in longer-lived programs, it is beneficial to create a single SDK instance and reuse it across the application.
 
 ```python
 from ttd_data import DataClient
+
+client = DataClient(ttd_auth="<TTD_AUTH_TOKEN>")
+
+
 def main():
+    # Reuse the single client for every request
+    ...
 
-    with DataClient() as data_client:
-        # Rest of application here...
 
-
-# Or when using async:
+# The same instance also serves async calls:
 async def amain():
-
-    async with DataClient() as data_client:
-        # Rest of application here...
+    ...
 ```
 <!-- End Resource Management [resource-management] -->
 

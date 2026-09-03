@@ -3,12 +3,10 @@
 
 from __future__ import annotations
 from .httpmetadata import HTTPMetadata, HTTPMetadataTypedDict
-from .thirdpartydsrrequest import ThirdPartyDsrRequest, ThirdPartyDsrRequestTypedDict
 from .thirdpartydsrresponse import ThirdPartyDsrResponse, ThirdPartyDsrResponseTypedDict
 import pydantic
 from pydantic import model_serializer
 from ttd_data.types import BaseModel, UNSET_SENTINEL
-from ttd_data.utils import FieldMetadata, HeaderMetadata, RequestMetadata
 from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
@@ -16,26 +14,6 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 DATA_SUBJECT_REQUEST_THIRD_PARTY_DATA_OP_SERVERS = [
     "https://usw-data.adsrvr.org",
 ]
-
-
-class DataSubjectRequestThirdPartyDataRequestTypedDict(TypedDict):
-    ttd_auth: str
-    r"""Data API token for authentication."""
-    body: ThirdPartyDsrRequestTypedDict
-
-
-class DataSubjectRequestThirdPartyDataRequest(BaseModel):
-    ttd_auth: Annotated[
-        str,
-        pydantic.Field(alias="TTD-Auth"),
-        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ]
-    r"""Data API token for authentication."""
-
-    body: Annotated[
-        ThirdPartyDsrRequest,
-        FieldMetadata(request=RequestMetadata(media_type="application/json")),
-    ]
 
 
 class DataSubjectRequestThirdPartyDataResponseTypedDict(TypedDict):

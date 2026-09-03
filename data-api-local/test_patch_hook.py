@@ -101,12 +101,11 @@ class TestPlainTextErrorNormalizerIntegration(unittest.TestCase):
         from ttd_data import DataClient
         from ttd_data.models import PartnerDsrDataItem
 
-        with DataClient() as client:
-            response = client.deletion_opt_out.data_subject_request_merchant_data(
-                merchant_id=MERCHANT_ID,
-                ttd_auth=TTD_AUTH_TOKEN,
-                items=[PartnerDsrDataItem(tdid=SAMPLE_TDID)],
-            )
+        client = DataClient(ttd_auth=TTD_AUTH_TOKEN)
+        response = client.deletion_opt_out.data_subject_request_merchant_data(
+            merchant_id=MERCHANT_ID,
+            items=[PartnerDsrDataItem(tdid=SAMPLE_TDID)],
+        )
 
         ct = response.http_meta.response.headers.get("content-type", "")
         self.assertIn("application/json", ct, f"Expected application/json content-type, got: {ct!r}")
@@ -120,13 +119,12 @@ class TestPlainTextErrorNormalizerIntegration(unittest.TestCase):
         from ttd_data.errors import MerchantDsrResponseError
         from ttd_data.models import PartnerDsrDataItem
 
-        with DataClient() as client:
-            with self.assertRaises(MerchantDsrResponseError) as ctx:
-                client.deletion_opt_out.data_subject_request_merchant_data(
-                    merchant_id=0,
-                    ttd_auth=TTD_AUTH_TOKEN,
-                    items=[PartnerDsrDataItem(tdid=SAMPLE_TDID)],
-                )
+        client = DataClient(ttd_auth=TTD_AUTH_TOKEN)
+        with self.assertRaises(MerchantDsrResponseError) as ctx:
+            client.deletion_opt_out.data_subject_request_merchant_data(
+                merchant_id=0,
+                items=[PartnerDsrDataItem(tdid=SAMPLE_TDID)],
+            )
 
         error = ctx.exception
         ct = error.raw_response.headers.get("content-type", "")

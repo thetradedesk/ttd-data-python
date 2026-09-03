@@ -3,12 +3,10 @@
 
 from __future__ import annotations
 from .httpmetadata import HTTPMetadata, HTTPMetadataTypedDict
-from .merchantdsrrequest import MerchantDsrRequest, MerchantDsrRequestTypedDict
 from .merchantdsrresponse import MerchantDsrResponse, MerchantDsrResponseTypedDict
 import pydantic
 from pydantic import model_serializer
 from ttd_data.types import BaseModel, UNSET_SENTINEL
-from ttd_data.utils import FieldMetadata, HeaderMetadata, RequestMetadata
 from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
@@ -16,26 +14,6 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 DATA_SUBJECT_REQUEST_MERCHANT_DATA_OP_SERVERS = [
     "https://usw-data.adsrvr.org",
 ]
-
-
-class DataSubjectRequestMerchantDataRequestTypedDict(TypedDict):
-    ttd_auth: str
-    r"""Data API token for authentication."""
-    body: MerchantDsrRequestTypedDict
-
-
-class DataSubjectRequestMerchantDataRequest(BaseModel):
-    ttd_auth: Annotated[
-        str,
-        pydantic.Field(alias="TTD-Auth"),
-        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ]
-    r"""Data API token for authentication."""
-
-    body: Annotated[
-        MerchantDsrRequest,
-        FieldMetadata(request=RequestMetadata(media_type="application/json")),
-    ]
 
 
 class DataSubjectRequestMerchantDataResponseTypedDict(TypedDict):

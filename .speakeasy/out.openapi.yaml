@@ -22,13 +22,6 @@ paths:
         - "Advertiser"
       summary: "Upload first-party data for the specified ID for use in audience targeting."
       operationId: "IngestAdvertiserData"
-      parameters:
-        - name: "TTD-Auth"
-          in: "header"
-          description: "Data API token for authentication."
-          required: true
-          schema:
-            type: "string"
       requestBody:
         content:
           application/json:
@@ -84,13 +77,6 @@ paths:
         - "ThirdParty"
       summary: "Upload third-party data for the specified data provider for use in audience targeting."
       operationId: "IngestThirdPartyData"
-      parameters:
-        - name: "TTD-Auth"
-          in: "header"
-          description: "Data API token for authentication."
-          required: true
-          schema:
-            type: "string"
       requestBody:
         content:
           application/json:
@@ -146,13 +132,6 @@ paths:
         - "IPAddress"
       summary: "Upload first-party IP address data for the specified ID."
       operationId: "IngestFirstPartyIPAddressData"
-      parameters:
-        - name: "TTD-Auth"
-          in: "header"
-          description: "Data API token for authentication."
-          required: true
-          schema:
-            type: "string"
       requestBody:
         content:
           application/json:
@@ -202,13 +181,6 @@ paths:
         - "IPAddress"
       summary: "Upload third-party IP address data for the specified ID."
       operationId: "IngestThirdPartyIPAddressData"
-      parameters:
-        - name: "TTD-Auth"
-          in: "header"
-          description: "Data API token for authentication."
-          required: true
-          schema:
-            type: "string"
       requestBody:
         content:
           application/json:
@@ -258,13 +230,6 @@ paths:
         - "OfflineConversion"
       summary: "Upload offline conversion data for the specified data provider."
       operationId: "IngestOfflineConversionData"
-      parameters:
-        - name: "TTD-Auth"
-          in: "header"
-          description: "Data API token for authentication."
-          required: true
-          schema:
-            type: "string"
       requestBody:
         content:
           application/json:
@@ -320,13 +285,6 @@ paths:
         - "DeletionOptOut"
       summary: "Delete IDs shared with The Trade Desk for the specified advertiser ID."
       operationId: "DataSubjectRequestAdvertiserData"
-      parameters:
-        - name: "TTD-Auth"
-          in: "header"
-          description: "Data API token for authentication."
-          required: true
-          schema:
-            type: "string"
       requestBody:
         content:
           application/json:
@@ -382,13 +340,6 @@ paths:
         - "DeletionOptOut"
       summary: "Delete IDs shared with The Trade Desk via a product catalog for the specified merchant ID."
       operationId: "DataSubjectRequestMerchantData"
-      parameters:
-        - name: "TTD-Auth"
-          in: "header"
-          description: "Data API token for authentication."
-          required: true
-          schema:
-            type: "string"
       requestBody:
         content:
           application/json:
@@ -444,13 +395,6 @@ paths:
         - "DeletionOptOut"
       summary: "Delete IDs shared with The Trade Desk for the specified data provider ID."
       operationId: "DataSubjectRequestThirdPartyData"
-      parameters:
-        - name: "TTD-Auth"
-          in: "header"
-          description: "Data API token for authentication."
-          required: true
-          schema:
-            type: "string"
       requestBody:
         content:
           application/json:
@@ -630,6 +574,7 @@ components:
         - "TenantRestrictionsExternalData"
         - "TargetingDataDisabled"
         - "ItemDeserializationError"
+        - "InvalidTimestampUtc"
         - "Uid2Error"
       type: "string"
     AdvertiserDataServerResponse:
@@ -856,6 +801,7 @@ components:
         - "InvalidIPAddressRange"
         - "EuIpTargetingNotAllowedForPartner"
         - "NotTargetable"
+        - "InvalidTimestampUtc"
       type: "string"
     IPAddressDataServerResponse:
       type: "object"
@@ -1350,6 +1296,7 @@ components:
         - "TenantRestrictionsExternalData"
         - "TargetingDataDisabled"
         - "ItemDeserializationError"
+        - "InvalidTimestampUtc"
         - "Uid2Error"
       type: "string"
     ThirdPartyDataServerResponse:
@@ -1455,3 +1402,11 @@ components:
         Type:
           $ref: "#/components/schemas/DataOriginType"
       additionalProperties: false
+  securitySchemes:
+    TTD-Auth:
+      type: "apiKey"
+      description: "API token for authentication."
+      name: "TTD-Auth"
+      in: "header"
+security:
+  - TTD-Auth: []

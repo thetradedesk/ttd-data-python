@@ -110,6 +110,36 @@ def test_client_config_tracks_base_data_client_constructor_params():
     assert base_params == config_fields
 
 
+def test_from_config_round_trip_preserves_ttd_auth():
+    """`ttd_auth` is a client-level constructor param, so a ClientConfig that
+    drops it rebuilds an unauthenticated client with no error."""
+    from ttd_data import DataClient
+
+    client = DataClient(ttd_auth="secret-token")
+    rebuilt = DataClient.from_config(client.config)
+
+    assert rebuilt.data_client.sdk_configuration.security.ttd_auth == "secret-token"
+
+
+def test_from_config_keeps_callable_ttd_auth_lazy():
+    """A callable credential must survive as a callable: reading `config` must
+    not resolve it, so token rotation keeps working after a round trip."""
+    from ttd_data import DataClient
+
+    calls = []
+
+    def rotating_token():
+        calls.append(1)
+        return f"token-{len(calls)}"
+
+    config = DataClient(ttd_auth=rotating_token).config
+    assert not calls, "reading config must not resolve the credential"
+
+    security = DataClient.from_config(config).data_client.sdk_configuration.security
+    assert security().ttd_auth == "token-1"
+    assert security().ttd_auth == "token-2"
+
+
 def test_base_data_client_hidden_from_package_root():
     """Locks in the `from .sdk import *` deletion in `__init__.py`. If a
     future regen re-adds the wildcard, this test fails loudly so we don't

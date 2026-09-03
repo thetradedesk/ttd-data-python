@@ -8,7 +8,7 @@ from __future__ import annotations
 import asyncio
 from dataclasses import dataclass, fields
 from functools import cached_property
-from typing import Any, Dict, Iterable, List, Optional, Tuple, Type
+from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Type, Union
 
 from uid2_client import IdentityMapV3Client, IdentityMapV3Input  # type: ignore[import-not-found,import-untyped]
 
@@ -25,6 +25,7 @@ from ttd_data.models.baseofflineconversiondataitem import (
     BaseOfflineConversionDataItem,
 )
 from ttd_data.models.dsrerrorcode import DsrErrorCode
+from ttd_data.models.security import Security
 from ttd_data.models.offlineconversiondataresponseerrorcode import (
     OfflineConversionDataResponseErrorCode,
 )
@@ -53,11 +54,31 @@ from .uid2.resolver import (
 )
 
 
+TtdAuth = Optional[Union[str, Callable[[], Optional[str]]]]
+
+
+def _ttd_auth_from_security(
+    security: Optional[Union[Security, Callable[[], Security]]],
+) -> TtdAuth:
+    """Recover the credential a `BaseDataClient` was built with.
+
+    A callable credential is rewrapped rather than called, so reading `config`
+    never triggers a token refresh and `from_config` preserves the refresh
+    behaviour instead of freezing one token.
+    """
+    if security is None:
+        return None
+    if callable(security):
+        return lambda: security().ttd_auth
+    return security.ttd_auth
+
+
 @dataclass(frozen=True)
 class ClientConfig:
     server_url: Optional[str]
     retry_config: OptionalNullable[RetryConfig]
     timeout_ms: Optional[int]
+    ttd_auth: TtdAuth
     uid2_config: Optional[UID2Config]
 
 
@@ -90,6 +111,7 @@ class DataClient:
             server_url=sdk_config.server_url,
             retry_config=sdk_config.retry_config,
             timeout_ms=sdk_config.timeout_ms,
+            ttd_auth=_ttd_auth_from_security(sdk_config.security),
             uid2_config=self.uid2_config,
         )
 

@@ -16,17 +16,17 @@ Delete IDs shared with The Trade Desk for the specified advertiser ID.
 
 <!-- UsageSnippet language="python" operationID="DataSubjectRequestAdvertiserData" method="post" path="/data/deletion-optout/advertiser" -->
 ```python
-from ttd_data import BaseDataClient
+from ttd_data import DataClient
 
 
-with BaseDataClient() as base_data_client:
+client = DataClient(ttd_auth="<value>")
 
-    res = base_data_client.deletion_opt_out.data_subject_request_advertiser_data(ttd_auth="<value>")
+res = client.deletion_opt_out.data_subject_request_advertiser_data()
 
-    assert res.advertiser_dsr_response is not None
+assert res.advertiser_dsr_response is not None
 
-    # Handle response
-    print(res.advertiser_dsr_response)
+# Handle response
+print(res.advertiser_dsr_response)
 
 ```
 
@@ -34,7 +34,6 @@ with BaseDataClient() as base_data_client:
 
 | Parameter                                                                       | Type                                                                            | Required                                                                        | Description                                                                     |
 | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `ttd_auth`                                                                      | *str*                                                                           | :heavy_check_mark:                                                              | Data API token for authentication.                                              |
 | `advertiser_id`                                                                 | *OptionalNullable[str]*                                                         | :heavy_minus_sign:                                                              | N/A                                                                             |
 | `data_provider_id`                                                              | *OptionalNullable[str]*                                                         | :heavy_minus_sign:                                                              | N/A                                                                             |
 | `items`                                                                         | List[[models.BasePartnerDsrDataItem](../../models/basepartnerdsrdataitem.md)]   | :heavy_minus_sign:                                                              | N/A                                                                             |
@@ -62,17 +61,17 @@ Delete IDs shared with The Trade Desk via a product catalog for the specified me
 
 <!-- UsageSnippet language="python" operationID="DataSubjectRequestMerchantData" method="post" path="/data/deletion-optout/merchant" -->
 ```python
-from ttd_data import BaseDataClient
+from ttd_data import DataClient
 
 
-with BaseDataClient() as base_data_client:
+client = DataClient(ttd_auth="<value>")
 
-    res = base_data_client.deletion_opt_out.data_subject_request_merchant_data(ttd_auth="<value>")
+res = client.deletion_opt_out.data_subject_request_merchant_data()
 
-    assert res.merchant_dsr_response is not None
+assert res.merchant_dsr_response is not None
 
-    # Handle response
-    print(res.merchant_dsr_response)
+# Handle response
+print(res.merchant_dsr_response)
 
 ```
 
@@ -80,7 +79,6 @@ with BaseDataClient() as base_data_client:
 
 | Parameter                                                                       | Type                                                                            | Required                                                                        | Description                                                                     |
 | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `ttd_auth`                                                                      | *str*                                                                           | :heavy_check_mark:                                                              | Data API token for authentication.                                              |
 | `merchant_id`                                                                   | *OptionalNullable[int]*                                                         | :heavy_minus_sign:                                                              | N/A                                                                             |
 | `items`                                                                         | List[[models.BasePartnerDsrDataItem](../../models/basepartnerdsrdataitem.md)]   | :heavy_minus_sign:                                                              | N/A                                                                             |
 | `data_load_trace_id`                                                            | *OptionalNullable[str]*                                                         | :heavy_minus_sign:                                                              | N/A                                                                             |
@@ -107,17 +105,17 @@ Delete IDs shared with The Trade Desk for the specified data provider ID.
 
 <!-- UsageSnippet language="python" operationID="DataSubjectRequestThirdPartyData" method="post" path="/data/deletion-optout/thirdparty" -->
 ```python
-from ttd_data import BaseDataClient
+from ttd_data import DataClient
 
 
-with BaseDataClient() as base_data_client:
+client = DataClient(ttd_auth="<value>")
 
-    res = base_data_client.deletion_opt_out.data_subject_request_third_party_data(ttd_auth="<value>")
+res = client.deletion_opt_out.data_subject_request_third_party_data()
 
-    assert res.third_party_dsr_response is not None
+assert res.third_party_dsr_response is not None
 
-    # Handle response
-    print(res.third_party_dsr_response)
+# Handle response
+print(res.third_party_dsr_response)
 
 ```
 
@@ -125,7 +123,6 @@ with BaseDataClient() as base_data_client:
 
 | Parameter                                                                       | Type                                                                            | Required                                                                        | Description                                                                     |
 | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `ttd_auth`                                                                      | *str*                                                                           | :heavy_check_mark:                                                              | Data API token for authentication.                                              |
 | `data_provider_id`                                                              | *OptionalNullable[str]*                                                         | :heavy_minus_sign:                                                              | N/A                                                                             |
 | `brand_id`                                                                      | *OptionalNullable[str]*                                                         | :heavy_minus_sign:                                                              | N/A                                                                             |
 | `items`                                                                         | List[[models.BasePartnerDsrDataItem](../../models/basepartnerdsrdataitem.md)]   | :heavy_minus_sign:                                                              | N/A                                                                             |
