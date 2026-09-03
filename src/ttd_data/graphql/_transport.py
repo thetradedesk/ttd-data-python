@@ -4,7 +4,7 @@ Knows nothing about any particular domain: the operation classes hold one of
 these and call `execute`.
 """
 
-from typing import Any, Dict, Final, List, Mapping, Optional
+from typing import Any, Callable, Dict, Final, List, Mapping, Optional, Union
 
 import httpx
 from ttd_data import utils
@@ -18,6 +18,8 @@ from ttd_data.utils.logger import Logger, get_default_logger
 
 
 AUTH_HEADER: Final = "TTD-Auth"
+
+TtdAuth = Optional[Union[str, Callable[[], Optional[str]]]]
 
 # Same set the generated REST operations retry on.
 RETRYABLE_STATUS_CODES: Final[List[str]] = ["429", "500", "502", "503", "504"]
@@ -47,6 +49,7 @@ class GraphQLTransport:
         retry_config: OptionalNullable[RetryConfig] = UNSET,
         timeout_ms: Optional[int] = None,
         debug_logger: Optional[Logger] = None,
+        ttd_auth: TtdAuth = None,
     ) -> None:
         client_supplied = client is not None
         self.sdk_configuration = SDKConfiguration(
@@ -59,12 +62,19 @@ class GraphQLTransport:
             timeout_ms=timeout_ms,
             debug_logger=debug_logger or get_default_logger(),
         )
+        self._ttd_auth = ttd_auth
+
+    def _default_ttd_auth(self) -> Optional[str]:
+        """Resolve the client-configured credential, calling it if it is
+        a rotating-token callable."""
+        auth = self._ttd_auth
+        return auth() if callable(auth) else auth
 
     def execute(
         self,
         query: str,
         *,
-        ttd_auth: str,
+        ttd_auth: Optional[str] = None,
         variables: Optional[Dict[str, Any]] = None,
         retries: OptionalNullable[RetryConfig] = UNSET,
         timeout_ms: Optional[int] = None,
@@ -76,18 +86,20 @@ class GraphQLTransport:
         POSTs the request and returns the parsed JSON body.
 
         :param query: Full GraphQL query/mutation document.
-        :param ttd_auth: Platform API token. Sent as the `TTD-Auth` header, and
-            supplied per call so one client can serve several tokens and a
-            rotated token takes effect immediately.
+        :param ttd_auth: Platform API token. Sent as the `TTD-Auth` header.
+            Defaults to the credential this transport was constructed with;
+            pass this to use a different token for this call only.
         :param variables: GraphQL variables referenced by the query.
         :param retries: Override the client's retry configuration for this call.
-        :raises ValueError: `ttd_auth` is empty.
+        :raises ValueError: no `ttd_auth` was passed and none is configured
+            on the client, or the resolved token is empty.
         :raises GraphQLError: The response carried top-level `errors`. The
             supergraph reports authorization and policy failures this way, with
             HTTP 200, so this is the usual failure path rather than an edge case.
         :raises APIError: Non-2xx response, matching the REST operations.
         """
-        if not ttd_auth:
+        resolved_ttd_auth = ttd_auth or self._default_ttd_auth()
+        if not resolved_ttd_auth:
             raise ValueError("ttd_auth must be a non-empty platform API token")
 
         client = self.sdk_configuration.client
@@ -101,7 +113,7 @@ class GraphQLTransport:
         if http_headers:
             headers.update(http_headers)
         # Last, so the typed credential always wins over a stray header entry.
-        headers[AUTH_HEADER] = ttd_auth
+        headers[AUTH_HEADER] = resolved_ttd_auth
 
         effective_timeout_ms = timeout_ms or self.sdk_configuration.timeout_ms
         timeout = (

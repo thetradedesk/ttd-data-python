@@ -326,7 +326,8 @@ class DataClient:
     @cached_property
     def _graphql_transport(self) -> GraphQLTransport:
         """Shared GraphQL transport. Reuses the REST client's httpx client, so
-        both suites share one connection pool."""
+        both suites share one connection pool, and its `ttd_auth` so GraphQL
+        calls need not repeat the credential."""
         sdk_config = self.data_client.sdk_configuration
         return GraphQLTransport(
             server_url=self._graphql_server_url,
@@ -334,6 +335,7 @@ class DataClient:
             retry_config=sdk_config.retry_config,
             timeout_ms=sdk_config.timeout_ms,
             debug_logger=sdk_config.debug_logger,
+            ttd_auth=_ttd_auth_from_security(sdk_config.security),
         )
 
     @cached_property

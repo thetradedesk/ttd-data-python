@@ -34,8 +34,7 @@ PROVIDER_ID = required("GRAPHQL_EXAMPLE_PROVIDER_ID", "the provider to operate o
 # Optional: the upsert is skipped entirely when this is unset.
 ELEMENT_ID = os.getenv("GRAPHQL_EXAMPLE_ELEMENT_ID", "").strip()
 
-# The token is passed per call, not baked into the client.
-client = DataClient()
+client = DataClient(ttd_auth=token)
 
 
 def show(label: str, page: Page) -> None:
@@ -48,7 +47,7 @@ def show(label: str, page: Page) -> None:
 # ---------------------------------------------------------------------------
 
 segments = client.third_party_taxonomy.query_segments(
-    ttd_auth=token, provider_id=PROVIDER_ID, first=5
+    provider_id=PROVIDER_ID, first=5
 )
 show("Segments for provider", segments)
 
@@ -56,7 +55,6 @@ if segments.has_next_page:
     show(
         "Segments (next page)",
         client.third_party_taxonomy.query_segments(
-            ttd_auth=token,
             provider_id=PROVIDER_ID,
             first=5,
             after=segments.end_cursor,
@@ -67,13 +65,13 @@ if not ELEMENT_ID:
     print("\nSkipping status and filter (set GRAPHQL_EXAMPLE_ELEMENT_ID to run them).")
 else:
     status = client.third_party_taxonomy.query_segment_taxonomy_status(
-        ttd_auth=token, provider_id=PROVIDER_ID, provider_element_id=ELEMENT_ID
+        provider_id=PROVIDER_ID, provider_element_id=ELEMENT_ID
     )
     print(f"\nTaxonomy approval status for {ELEMENT_ID}: {status}")
     show(
         f"Segments filtered to {ELEMENT_ID}",
         client.third_party_taxonomy.query_segments(
-            ttd_auth=token, provider_id=PROVIDER_ID, provider_element_ids=[ELEMENT_ID]
+            provider_id=PROVIDER_ID, provider_element_ids=[ELEMENT_ID]
         ),
     )
 
@@ -83,7 +81,6 @@ else:
 
 # `execute` returns the raw body — the typed methods are what wrap it.
 raw = client.graphql.execute(
-    ttd_auth=token,
     query="""
     query ThirdPartyDataProvider($id: ID!) {
       thirdPartyDataProvider(id: $id) {
@@ -105,7 +102,6 @@ if not ELEMENT_ID:
     print("\nSkipping upsert (set GRAPHQL_EXAMPLE_ELEMENT_ID to run it).")
 else:
     result = client.third_party_taxonomy.upsert_segments(
-        ttd_auth=token,
         segments=[
             {
                 "providerId": PROVIDER_ID,

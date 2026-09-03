@@ -178,7 +178,7 @@ class TaxonomyOperations:
     def upsert_segments(
         self,
         *,
-        ttd_auth: str,
+        ttd_auth: Optional[str] = None,
         segments: List[SegmentInput],
         retries: OptionalNullable[RetryConfig] = UNSET,
         timeout_ms: Optional[int] = None,
@@ -192,7 +192,9 @@ class TaxonomyOperations:
         Partially succeeds, so a returned result is not proof the whole batch
         landed — check `failed`.
 
-        :param ttd_auth: Platform API token.
+        :param ttd_auth: Platform API token. Defaults to the client's
+            configured credential; pass to use a different token for this
+            call only.
         :param segments: Segments to create or update; omit a key to leave that
             field unchanged. Pass a one-element list to upsert a single segment.
         """
@@ -216,7 +218,7 @@ class TaxonomyOperations:
     def query_segments(
         self,
         *,
-        ttd_auth: str,
+        ttd_auth: Optional[str] = None,
         provider_id: str,
         provider_element_ids: Optional[Iterable[str]] = None,
         first: int = 1000,
@@ -228,7 +230,9 @@ class TaxonomyOperations:
         """
         Query a provider's third-party data segments.
 
-        :param ttd_auth: Platform API token.
+        :param ttd_auth: Platform API token. Defaults to the client's
+            configured credential; pass to use a different token for this
+            call only.
         :param provider_id: ThirdPartyDataProvider ID.
         :param provider_element_ids: Restrict to these provider element IDs.
             Omit to return every segment for the provider.
@@ -259,7 +263,7 @@ class TaxonomyOperations:
     def query_segment_taxonomy_status(
         self,
         *,
-        ttd_auth: str,
+        ttd_auth: Optional[str] = None,
         provider_id: str,
         provider_element_id: str,
         retries: OptionalNullable[RetryConfig] = UNSET,
@@ -273,7 +277,9 @@ class TaxonomyOperations:
         Returns None when the provider has no such segment. Use
         `query_segments` when you need the rest of the segment's fields.
 
-        :param ttd_auth: Platform API token.
+        :param ttd_auth: Platform API token. Defaults to the client's
+            configured credential; pass to use a different token for this
+            call only.
         """
         page = build_page(
             self._transport.execute(

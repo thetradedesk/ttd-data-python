@@ -42,9 +42,9 @@ def graphql_ops():
     wired to a recording transport, RecordingTransport)."""
     from ttd_data.graphql import GraphQLTransport
 
-    def make(ops_cls, response: Dict[str, Any] | None = None):
+    def make(ops_cls, response: Dict[str, Any] | None = None, ttd_auth=None):
         recorder = RecordingTransport(response or {"data": {}})
         http = httpx.Client(transport=httpx.MockTransport(recorder.handler))
-        return ops_cls(GraphQLTransport(client=http)), recorder
+        return ops_cls(GraphQLTransport(client=http, ttd_auth=ttd_auth)), recorder
 
     return make
