@@ -12,7 +12,7 @@ from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Type, U
 
 from uid2_client import IdentityMapV3Client, IdentityMapV3Input  # type: ignore[import-not-found,import-untyped]
 
-from ttd_data.graphql import GraphQLTransport, TaxonomyOperations
+from ttd_data.graphql import DataRateOperations, GraphQLTransport, TaxonomyOperations
 from ttd_data.sdk import BaseDataClient
 from ttd_data.types import BaseModel, OptionalNullable
 from ttd_data.utils import RetryConfig
@@ -346,6 +346,12 @@ class DataClient:
         Not part of the UID2 pipeline: these operate on segment metadata,
         never on user identifiers."""
         return TaxonomyOperations(self._graphql_transport)
+
+    @cached_property
+    def third_party_data_rate(self) -> DataRateOperations:
+        """Third-party data rate operations over GraphQL: brand and rate
+        queries, plus data rate batch submission and lookup."""
+        return DataRateOperations(self._graphql_transport)
 
     @cached_property
     def graphql(self) -> GraphQLTransport:
