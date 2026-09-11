@@ -11,7 +11,7 @@ query only. With it, it also reads that segment's approval status, filters to
 it, and upserts it — which creates or updates it in the provider's taxonomy.
 
     TTD_AUTH_TOKEN=... GRAPHQL_EXAMPLE_PROVIDER_ID=... \
-      python examples/graphql_example.py
+      python examples/graphql_taxonomy_example.py
 """
 
 import json
