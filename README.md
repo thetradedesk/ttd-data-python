@@ -383,6 +383,56 @@ Each segment is a `SegmentInput`. `providerId` and `providerElementId` are alway
 
 The supergraph reports authorization and policy failures as HTTP 200 with a top-level `errors` array, so those raise `GraphQLError` — which, like `APIError`, derives from `DataError`, so one `except DataError` covers the REST and GraphQL suites. Retries use the same configuration as the REST operations.
 
+### 10. Third-Party Data Rates (GraphQL)
+
+Rate operations run as GraphQL requests against the Platform API supergraph. They live under `client.third_party_data_rate`.
+
+| SDK function | REST equivalent | What it does |
+| --- | --- | --- |
+| `query_brands(...)` | [`GET /v3/datarate/brands/{providerId}`](https://open.thetradedesk.com/rest/openttd/provider/content/docs/GuidesProvider/audience/ref/get-datarate-brands-providerid) | Lists a provider's third-party data brands. |
+| `query_segment_data_rates(...)` | [`POST /v3/datarate/query`](https://open.thetradedesk.com/rest/openttd/provider/content/docs/GuidesProvider/audience/ref/post-datarate-query) | Lists data rates for a provider's segments, optionally filtered by segment or brand. |
+| `query_data_rate_batches(...)` | [`GET /v3/datarate/batch/{batchId}`](https://open.thetradedesk.com/rest/openttd/provider/content/docs/GuidesProvider/audience/ref/get-datarate-batch-batchid) | Lists data rate batches for a provider, optionally filtered to one batch. |
+| `create_data_rate_batch(...)` | [`POST /v3/datarate/batch`](https://open.thetradedesk.com/rest/openttd/provider/content/docs/GuidesProvider/audience/ref/post-datarate-batch) | Submits a batch of data rate creates for a provider. |
+| `client.graphql.execute(...)` | — | Sends any GraphQL document and returns the parsed response body. |
+
+```python
+from ttd_data import DataClient
+
+client = DataClient(ttd_auth=TTD_AUTH_TOKEN)
+rates = client.third_party_data_rate
+
+# List brands. Paginate with page.end_cursor while page.has_next_page.
+page = rates.query_brands(provider_id=PROVIDER_ID, first=10)
+for node in page.nodes:
+    print(node["id"], node["name"])
+
+# List data rates for a provider's segments, optionally filtered by brand.
+page = rates.query_segment_data_rates(provider_id=PROVIDER_ID, brand_id="brand-1")
+
+# List/filter data rate batches.
+page = rates.query_data_rate_batches(provider_id=PROVIDER_ID, batch_id="0006A7D")
+
+# Submit a batch of data rate creates. Queued, not applied immediately.
+result = rates.create_data_rate_batch(
+    provider_id=PROVIDER_ID,
+    data_rates=[
+        {
+            "providerElementId": "auto/in-market/ev",
+            "thirdPartyDataBrandId": "brand-1",
+            "cost": {"cpm": {"cpmCost": {"amount": 2.5, "currencyCode": "USD"}}},
+        }
+    ],
+)
+if result.errors:
+    print(result.errors)   # the batch was rejected outright
+else:
+    print(result.data["id"], result.data["processingStatus"])
+```
+
+Each rate is a `DataRateInput`. `subject` sets exactly one of `partner`/`advertiser` (omit for a system rate); `cost` sets exactly one of `cpm`/`revShare`/`hybrid`.
+
+`errors` being non-empty means the batch was rejected outright; poll `query_data_rate_batches` with the returned batch ID to follow processing and approval.
+
 <!-- No SDK Example Usage [usage] -->
 
 <!-- Start Available Resources and Operations [operations] -->

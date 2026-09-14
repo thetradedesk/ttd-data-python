@@ -54,13 +54,18 @@ def test_every_typed_method_has_a_registered_document():
     """Guards the validator's coverage: a new typed method that forgets to
     register its document would otherwise never be schema-checked. Add each
     new operation class here alongside its QUERY_DOCUMENTS entries."""
-    from ttd_data.graphql import QUERY_DOCUMENTS, TaxonomyOperations
+    from ttd_data.graphql import (
+        QUERY_DOCUMENTS,
+        DataRateOperations,
+        TaxonomyOperations,
+    )
 
-    operation_classes = [TaxonomyOperations]
+    operation_classes = [TaxonomyOperations, DataRateOperations]
     typed_methods = {
         name
         for cls in operation_classes
         for name in dir(cls)
-        if name.startswith(("query_", "upsert_")) and callable(getattr(cls, name))
+        if name.startswith(("query_", "upsert_", "create_"))
+        and callable(getattr(cls, name))
     }
     assert typed_methods == set(QUERY_DOCUMENTS)

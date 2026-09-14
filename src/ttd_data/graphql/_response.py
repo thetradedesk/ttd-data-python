@@ -62,6 +62,20 @@ class UpsertResult:
     raw: Dict[str, Any] = field(default_factory=dict)
 
 
+@dataclass(frozen=True)
+class MutationResult:
+    """Outcome of a mutation that returns one entity alongside field errors.
+
+    `data` is None when the mutation was rejected outright; `errors` is
+    non-empty in that case. Both can be set when the server accepted the
+    operation but flagged something about it.
+    """
+
+    data: Optional[Dict[str, Any]] = None
+    errors: List[Dict[str, Any]] = field(default_factory=list)
+    raw: Dict[str, Any] = field(default_factory=dict)
+
+
 def _resolve(raw: Dict[str, Any], *path: str) -> Dict[str, Any]:
     """Walk `path` under `data`, yielding `{}` at the first missing or null link."""
     node: Any = raw.get("data") or {}
@@ -96,5 +110,15 @@ def build_upsert_result(raw: Dict[str, Any], *path: str) -> UpsertResult:
     return UpsertResult(
         succeeded=payload.get("data") or [],
         failed=payload.get("errors") or [],
+        raw=raw,
+    )
+
+
+def build_mutation_result(raw: Dict[str, Any], *path: str) -> MutationResult:
+    """Unwrap a single-entity mutation payload at `path` under `data`."""
+    payload = _resolve(raw, *path)
+    return MutationResult(
+        data=payload.get("data") or None,
+        errors=payload.get("errors") or [],
         raw=raw,
     )
