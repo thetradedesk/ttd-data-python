@@ -82,7 +82,8 @@ if not (ELEMENT_ID and BRAND_ID):
         "and GRAPHQL_EXAMPLE_BRAND_ID)."
     )
 else:
-    # Omitting `subject` makes this a system (syndicated) rate.
+    # `subject` sets exactly one of `partner`/`advertiser` (omit for a system
+    # rate); `cost` sets exactly one of `cpm`/`revShare`/`hybrid`.
     result = rates.create_data_rate_batch(
         provider_id=PROVIDER_ID,
         data_rates=[
@@ -90,6 +91,10 @@ else:
                 "providerElementId": ELEMENT_ID,
                 "thirdPartyDataBrandId": BRAND_ID,
                 "cost": {"cpm": {"cpmCost": {"amount": 2.5, "currencyCode": "USD"}}},
+                # To scope this rate instead of making it a system rate, set
+                # "subject" to one of:
+                #   {"advertiser": {"advertiserId": "..."}}
+                #   {"partner": {"partnerId": "..."}}
             }
         ],
     )
